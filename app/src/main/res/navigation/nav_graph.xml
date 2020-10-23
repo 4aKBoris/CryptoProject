@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.cryptoproject.Fragments.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_encryptFragment"
+            app:destination="@id/encryptFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_decryptFragment"
+            app:destination="@id/decryptFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/decryptFragment"
+        android:name="com.example.cryptoproject.Fragments.DecryptFragment"
+        android:label="fragment_decrypt"
+        tools:layout="@layout/fragment_decrypt" >
+        <action
+            android:id="@+id/action_decryptFragment_to_encryptFragment"
+            app:destination="@id/encryptFragment" />
+        <action
+            android:id="@+id/action_decryptFragment_to_mainFragment2"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/encryptFragment"
+        android:name="com.example.cryptoproject.Fragments.EncryptFragment"
+        android:label="fragment_encrypt"
+        tools:layout="@layout/fragment_encrypt" >
+        <action
+            android:id="@+id/action_encryptFragment_to_decryptFragment"
+            app:destination="@id/decryptFragment" />
+        <action
+            android:id="@+id/action_encryptFragment_to_mainFragment2"
+            app:destination="@id/mainFragment" />
+    </fragment>
+</navigation>

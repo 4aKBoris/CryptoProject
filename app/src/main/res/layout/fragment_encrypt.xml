@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.EncryptFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Шифрование файла"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:textSize="30dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/password1"
+                android:textSize="20dp"/>
+
+            <EditText
+                android:id="@+id/password1"
+                style="@android:style/Widget.Holo.Light.AutoCompleteTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="Введите пароль"
+                android:inputType="textPassword"
+                android:selectAllOnFocus="true"
+                android:singleLine="false"
+                android:textColorHighlight="#000000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:id="@+id/secondpassword"
+            android:visibility="gone"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/password2"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/password2"
+                style="@android:style/Widget.Holo.Light.AutoCompleteTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ellipsize="middle"
+                android:ems="10"
+                android:hint="Введите пароль"
+                android:inputType="textPassword"
+                android:selectAllOnFocus="true"
+                android:singleLine="false" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonencrypt"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Зашифровать" />
+
+        <Button
+            android:id="@+id/buttonopenfile"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Открыть файл" />
+
+        <Button
+            android:id="@+id/buttonpassword"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Скрыть/Показать пароль" />
+
+        <ProgressBar
+            android:id="@+id/progresbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sizefile"
+            android:layout_gravity="center"
+            android:layout_marginTop="50sp"/>
+
+    </LinearLayout>
+
+</FrameLayout>

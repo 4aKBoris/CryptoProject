@@ -1,0 +1,236 @@
+<resources>
+    <!-- Hash Preference -->
+    <string-array name="hash_entriesBC">
+        <item>MD2</item>
+        <item>MD4</item>
+        <item>MD5</item>
+        <item>SHA-1</item>
+        <item>SHA-256</item>
+        <item>SHA-512</item>
+    </string-array>
+
+    <string-array name="hash_valuesBC">
+        <item>MD2</item>
+        <item>MD4</item>
+        <item>MD5</item>
+        <item>SHA-1</item>
+        <item>SHA-256</item>
+        <item>SHA-512</item>
+    </string-array>
+
+    <string-array name="hash_entries">
+        <item>MD5</item>
+        <item>SHA-1</item>
+        <item>SHA-256</item>
+        <item>SHA-512</item>
+    </string-array>
+
+    <string-array name="hash_values">
+        <item>MD5</item>
+        <item>SHA-1</item>
+        <item>SHA-256</item>
+        <item>SHA-512</item>
+    </string-array>
+
+    <!-- Cipher Preference -->
+
+    <string-array name="cipher_entriesBC">
+        <item>AES</item>
+        <item>Blowfish</item>
+        <item>DES</item>
+        <item>DESede</item>
+        <item>RC4</item>
+        <item>Camellia</item>
+        <item>CAST5</item>
+        <item>CAST6</item>
+        <item>GOST28147</item>
+        <item>IDEA</item>
+        <item>Grain128</item>
+        <item>Noekeon</item>
+        <item>Rijndael</item>
+        <item>SEED</item>
+        <item>Shacal2</item>
+        <item>Serpent</item>
+        <item>Skipjack</item>
+        <item>SM4</item>
+        <item>TEA</item>
+        <item>XTEA</item>
+        <item>Twofish</item>
+        <item>RC2</item>
+        <item>RC5</item>
+        <item>RC6</item>
+        <item>HC128</item>
+        <item>HC256</item>
+        <item>ChaCha</item>
+        <item>Salsa20</item>
+        <item>XSalsa20</item>
+        <item>VMPC</item>
+        <item>Grainv1</item>
+        <item>AESWrap</item>
+        <item>ARIA</item>
+        <item>ARIAWrap</item>
+        <item>CamelliaWrap</item>
+        <item>DESedeWrap</item>
+        <item>DSTU7624</item>
+        <item>GCM</item>
+        <item>SEEDWrap</item>
+        <item>Threefish-256</item>
+        <item>Threefish-512</item>
+        <item>Threefish-1024</item>
+        <item>RC5-64</item>
+    </string-array>
+
+    <string-array name="cipher_valuesBC">
+        <item>AES</item>
+        <item>Blowfish</item>
+        <item>DES</item>
+        <item>DESede</item>
+        <item>RC4</item>
+        <item>Camellia</item>
+        <item>CAST5</item>
+        <item>CAST6</item>
+        <item>GOST28147</item>
+        <item>IDEA</item>
+        <item>Grain128</item>
+        <item>Noekeon</item>
+        <item>Rijndael</item>
+        <item>SEED</item>
+        <item>Shacal2</item>
+        <item>Serpent</item>
+        <item>Skipjack</item>
+        <item>SM4</item>
+        <item>TEA</item>
+        <item>XTEA</item>
+        <item>Twofish</item>
+        <item>RC2</item>
+        <item>RC5</item>
+        <item>RC6</item>
+        <item>HC128</item>
+        <item>HC256</item>
+        <item>ChaCha</item>
+        <item>Salsa20</item>
+        <item>XSalsa20</item>
+        <item>VMPC</item>
+        <item>Grainv1</item>
+        <item>AESWrap</item>
+        <item>ARIA</item>
+        <item>ARIAWrap</item>
+        <item>CamelliaWrap</item>
+        <item>DESedeWrap</item>
+        <item>DSTU7624</item>
+        <item>GCM</item>
+        <item>SEEDWrap</item>
+        <item>Threefish-256</item>
+        <item>Threefish-512</item>
+        <item>Threefish-1024</item>
+        <item>RC5-64</item>
+    </string-array>
+
+    <string-array name="cipher_entries">
+        <item>AES</item>
+        <item>Blowfish</item>
+        <item>DES</item>
+        <item>DESede</item>
+        <item>RC4</item>
+    </string-array>
+
+    <string-array name="cipher_values">
+        <item>AES</item>
+        <item>Blowfish</item>
+        <item>DES</item>
+        <item>DESede</item>
+        <item>RC4</item>
+    </string-array>
+
+    <!-- CBC Preference -->
+
+    <string-array name="cbc_entries">
+        <item>ECB</item>
+        <item>CBC</item>
+        <item>OFB</item>
+        <item>CFB</item>
+        <item>CTR</item>
+    </string-array>
+
+    <string-array name="cbc_values">
+        <item>ECB</item>
+        <item>CBC</item>
+        <item>OFB</item>
+        <item>CFB</item>
+        <item>CTR</item>
+    </string-array>
+
+    <string-array name="cbc_entriesBC">
+        <item>ECB</item>
+        <item>CBC</item>
+        <item>OFB</item>
+        <item>CFB</item>
+        <item>CTR</item>
+        <item>OpenPGPCFB</item>
+        <item>CTS</item>
+        <item>GOFB</item>
+        <item>GCFB</item>
+        <item>CCM</item>
+        <item>EAX</item>
+        <item>GCM</item>
+        <item>OCB</item>
+    </string-array>
+
+    <string-array name="cbc_valuesBC">
+        <item>ECB</item>
+        <item>CBC</item>
+        <item>OFB</item>
+        <item>CFB</item>
+        <item>CTR</item>
+        <item>OpenPGPCFB</item>
+        <item>CTS</item>
+        <item>GOFB</item>
+        <item>GCFB</item>
+        <item>CCM</item>
+        <item>EAX</item>
+        <item>GCM</item>
+        <item>OCB</item>
+    </string-array>
+
+    <!-- Padding Preference-->
+
+    <string-array name="padding_entries">
+        <item>No Padding</item>
+        <item>PKCS5</item>
+        <item>ISO10126</item>
+    </string-array>
+
+    <string-array name="padding_values">
+        <item>NoPadding</item>
+        <item>PKCS5Padding</item>
+        <item>ISO10126Padding</item>
+    </string-array>
+
+    <string-array name="padding_entriesBC">
+        <item>No Padding</item>
+        <item>PKCS5</item>
+        <item>ISO10126</item>
+        <item>PKCS7</item>
+        <item>ISO10126-2</item>
+        <item>ISO7816-4</item>
+        <item>ISO9797-1</item>
+        <item>X923</item>
+        <item>X9.23</item>
+        <item>TBC</item>
+        <item>"ZeroByte</item>
+    </string-array>
+
+    <string-array name="padding_valuesBC">
+        <item>NoPadding</item>
+        <item>PKCS5Padding</item>
+        <item>ISO10126Padding</item>
+        <item>PKCS7Padding</item>
+        <item>ISO10126-2Padding</item>
+        <item>ISO7816-4Padding</item>
+        <item>ISO9797-1Padding</item>
+        <item>X923Padding</item>
+        <item>X9.23Padding</item>
+        <item>TBCPadding</item>
+        <item>"ZeroBytePadding</item>
+    </string-array>
+</resources>

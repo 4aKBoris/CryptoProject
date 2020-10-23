@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="minValue">1</integer>
+    <integer name="maxValueHash">10000</integer>
+    <integer name="maxValueCipher">127</integer>
+    <integer name="defaultValue">1</integer>
+</resources>
