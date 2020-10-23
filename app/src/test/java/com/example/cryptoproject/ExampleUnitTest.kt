@@ -6,8 +6,6 @@ import org.junit.Test
 import java.security.InvalidKeyException
 import java.security.MessageDigest
 import javax.crypto.Cipher
-import javax.crypto.KeyGenerator
-import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 import kotlin.random.Random
 
@@ -293,14 +291,17 @@ class ExampleUnitTest {
         setalg.forEach { t ->
             cbc.forEach { k ->
                 padding.forEach {
-                    if ((k == "CCM" || k == "EAX" || k == "GCM" || k == "OCB") && t !in setStream) {val cipher = Cipher.getInstance(
-                        "$t/$k/NoPadding",
-                        BouncyCastleProvider()
-                    )}
-                    else if (t !in setStream) { val cipher = Cipher.getInstance(
-                        "$t/$k/$it",
-                        BouncyCastleProvider()
-                    ) }
+                    if ((k == "CCM" || k == "EAX" || k == "GCM" || k == "OCB") && t !in setStream) {
+                        val cipher = Cipher.getInstance(
+                            "$t/$k/NoPadding",
+                            BouncyCastleProvider()
+                        )
+                    } else if (t !in setStream) {
+                        val cipher = Cipher.getInstance(
+                            "$t/$k/$it",
+                            BouncyCastleProvider()
+                        )
+                    }
                 }
             }
         }
@@ -384,18 +385,86 @@ class ExampleUnitTest {
 
     @Test
     fun RND() {
-        for (i in 1..32) {
-            try {
-                val password = "12345"
-                val hash = MessageDigest.getInstance("SHA-512")
-                val k = hash.digest(password.toByteArray())
-                val key = SecretKeySpec(k, 0, i, "DES")
-                val cipher = Cipher.getInstance("DES")
-                cipher.init(Cipher.ENCRYPT_MODE, key)
-                print(key.encoded.size)
-            } catch (e: InvalidKeyException) {
+        //val setalg = listOf("AES", "Blowfish", "DES", "DESede", "RC4")
+        val cipher_alg_bc = listOf(/*"AES",
+            "Blowfish",
+            "DES",
+            "DESede",
+            "RC4",*/
+            "Camellia",
+            "CAST5",
+            "CAST6",
+            "GOST28147",
+            "IDEA",
+            "Grain128",
+            "Noekeon",
+            "Rijndael",
+            "SEED",
+            "Shacal2",
+            "Serpent",
+            "Skipjack",
+            "SM4",
+            "TEA",
+            "XTEA",
+            "Twofish",
+            "RC2",
+            "RC5",
+            "RC6",
+            "HC128",
+            "HC256",
+            "ChaCha",
+            "Salsa20",
+            "XSalsa20",
+            "VMPC",
+            "Grainv1",
+            "ARIA",
+            "DSTU7624",
+            "GCM",
+            "Threefish-256",
+            "Threefish-512",
+            "Threefish-1024"
+        )
+        cipher_alg_bc.forEach {
+            val k = '"'
+            var str = "Pair($k$it$k, listOf("
+            var t = 0
+            var t1 = 0
+            var t2 = 0
+            var t3 = 1
+            var flag = true
+            for (i in 1..128) {
+                try {
+                    val password = "12345"
+                    val rnd = Random
+                    val hash = MessageDigest.getInstance("SHA-512")
+                    val k = rnd.nextBytes(128)
+                    val key = SecretKeySpec(k, 0, i, it)
+                    val cipher = Cipher.getInstance(it, BouncyCastleProvider())
+                    cipher.init(Cipher.ENCRYPT_MODE, key)
+                    if (flag) {
+                        t = i
+                        flag = false
+                    }
+                    t1 = i
+                    t2 = i - t3
+                    t3 = i
+                } catch (e: InvalidKeyException) {
+                } catch (e: IllegalArgumentException) {
+
+                }
             }
+            str = if (t == t1) str.plus("$t, 0, $t1)),")
+            else str.plus("$t, $t2, $t1)),")
+            println(str)
         }
     }
 
+    @Test
+    fun RC5() {
+        val rnd = Random
+        val k = rnd.nextBytes(1000)
+        val key = SecretKeySpec(k, 1, 32, "RC5-64")
+        val cipher = Cipher.getInstance("RC5-64", BouncyCastleProvider())
+        //cipher.init(Cipher.ENCRYPT_MODE, key, RC5ParameterSpec)
+    }
 }

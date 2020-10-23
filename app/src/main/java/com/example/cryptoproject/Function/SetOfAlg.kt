@@ -4,7 +4,46 @@ class SetOfAlg {
     val hash_alg_default = listOf<String>("MD5", "SHA-1", "SHA-256", "SHA-512")
     val hash_alg_bc = listOf<String>("MD2", "MD4", "MD5", "SHA-1", "SHA-256", "SHA-512")
 
-    val keySize = mapOf<String, Set<Int>>()
+    val keySize = mapOf(
+        Pair("AES", listOf(16, 8, 32)),
+        Pair("Blowfish", listOf(1, 1, 56)),
+        Pair("DES", listOf(8, 1, 8)),
+        Pair("DESede", listOf(24, 1, 24)),
+        Pair("RC4", listOf(5, 1, 63)),
+        Pair("Camellia", listOf(16, 8, 32)),
+        Pair("CAST5", listOf(1, 1, 16)),
+        Pair("CAST6", listOf(1, 1, 64)),
+        Pair("GOST28147", listOf(32, 0, 32)),
+        Pair("IDEA", listOf(1, 1, 128)),
+        Pair("Grain128", listOf(16, 1, 128)),
+        Pair("Noekeon", listOf(16, 1, 128)),
+        Pair("Rijndael", listOf(16, 4, 32)),
+        Pair("SEED", listOf(16, 1, 128)),
+        Pair("Shacal2", listOf(16, 8, 64)),
+        Pair("Serpent", listOf(4, 4, 64)),
+        Pair("Skipjack", listOf(10, 1, 128)),
+        Pair("SM4", listOf(16, 0, 16)),
+        Pair("TEA", listOf(16, 0, 16)),
+        Pair("XTEA", listOf(16, 0, 16)),
+        Pair("Twofish", listOf(8, 1, 39)),
+        Pair("RC2", listOf(1, 1, 128)),
+        Pair("RC5", listOf(1, 1, 128)),
+        Pair("RC6", listOf(1, 1, 128)),
+        Pair("HC128", listOf(16, 0, 16)),
+        Pair("HC256", listOf(16, 16, 32)),
+        Pair("ChaCha", listOf(16, 16, 32)),
+        Pair("Salsa20", listOf(16, 16, 32)),
+        Pair("XSalsa20", listOf(32, 0, 32)),
+        Pair("VMPC", listOf(1, 1, 128)),
+        Pair("Grainv1", listOf(10, 1, 128)),
+        Pair("ARIA", listOf(16, 8, 32)),
+        Pair("DSTU7624", listOf(16, 16, 32)),
+        Pair("GCM", listOf(16, 8, 32)),
+        Pair("Threefish-256", listOf(32, 0, 32)),
+        Pair("Threefish-512", listOf(64, 0, 64)),
+        Pair("Threefish-1024", listOf(128, 0, 128)),
+
+        )
 
     val cipher_alg_default = listOf("AES", "Blowfish", "DES", "DESede", "RC4")
     val cipher_alg_bc = listOf("AES",
@@ -38,18 +77,12 @@ class SetOfAlg {
     "XSalsa20",
     "VMPC",
     "Grainv1",
-    "AESWrap",
     "ARIA",
-    "ARIAWrap",
-    "CamelliaWrap",
-    "DESedeWrap",
     "DSTU7624",
     "GCM",
-    "SEEDWrap",
     "Threefish-256",
     "Threefish-512",
-    "Threefish-1024",
-    "RC5-64")
+    "Threefish-1024")
 
     val cipher_bcm_default = listOf(
         "ECB", "CBC", "OFB", "CFB", "CTR",
@@ -88,12 +121,6 @@ class SetOfAlg {
     )
 
      val cipherStream = setOf(
-        "AESWrap",
-        "ARIAWrap",
-        "CamelliaWrap",
-        "DESedeWrap",
-        "DSTU7624Wrap",
-        "SEEDWrap",
         "HC128",
         "RC4",
         "HC256",

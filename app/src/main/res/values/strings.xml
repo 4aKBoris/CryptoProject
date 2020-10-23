@@ -34,6 +34,7 @@
     <string name="padding_title">Режим наполнения</string>
     <string name="cipher_count">Количество итераций</string>
     <string name="max_127">Max = 127</string>
+    <string name="key_size">Длина ключа шифрования</string>
 
     <!-- Other Preference-->
     <string name="salt_title">Использовать соль</string>
@@ -57,5 +58,6 @@
     <string name="bouncy_castle">Использовать провайдер BС?</string>
     <string name="DeleteFile">deleteFile</string>
     <string name="deletefile_title">Удалять файл после шифрования</string>
+    <string name="keySize">keysize</string>
 
 </resources>

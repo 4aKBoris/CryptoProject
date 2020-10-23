@@ -90,6 +90,10 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.DeleteFile),
             false
         )
+        if (!sp.contains(getString(R.string.keySize))) editor.putInt(
+            getString(R.string.keySize),
+            32
+        )
         editor.apply()
     }
 
