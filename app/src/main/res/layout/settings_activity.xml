@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
                     android:layout_marginTop="20sp"
-                    android:text="Алгоритм хэширования"
+                    android:text="@string/hash_title"
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
@@ -59,7 +59,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
-                    android:hint="Не задано"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -75,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
                     android:layout_marginTop="20sp"
-                    android:text="Количество итераций"
+                    android:text="@string/hash_count"
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
@@ -99,14 +98,16 @@
                         android:layout_gravity="left"
                         android:inputType="numberSigned"
                         android:layout_marginStart="40sp"
-                        android:layout_marginEnd="20sp" />
+                        android:layout_marginEnd="20sp"
+                        tools:ignore="Autofill,LabelFor,RtlHardcoded" />
 
                     <Button
                         android:id="@+id/hash_set_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:text="Установить значение" />
+                        android:text="@string/set_count"
+                        tools:ignore="RtlHardcoded" />
                 </LinearLayout>
 
                 <SeekBar
@@ -127,14 +128,15 @@
                         android:layout_gravity="left"
                         android:layout_marginStart="70sp"
                         android:layout_marginEnd="20sp"
-                        android:text="Min = 1" />
+                        android:text="@string/min_1"
+                        tools:ignore="RtlHardcoded" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="60sp"
                         android:layout_marginEnd="70sp"
-                        android:text="Max = 16383" />
+                        android:text="@string/max_16383" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -175,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
                     android:layout_marginTop="20sp"
-                    android:text="Алгоритм хэширования"
+                    android:text="@string/cipher_title"
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
@@ -184,7 +186,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
-                    android:hint="Не задано"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -198,7 +199,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
                     android:layout_marginTop="20sp"
-                    android:text="Количество итераций"
+                    android:text="@string/cipher_count"
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
@@ -225,14 +226,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Min = 1"
+                        android:text="@string/min_1"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginVertical="20sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Max = 127"
+                        android:text="@string/max_127"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginVertical="20sp"/>
 
@@ -254,7 +255,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
                     android:layout_marginTop="20sp"
-                    android:text="Режим сцепления блоков"
+                    android:text="@string/ebc_title"
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
@@ -263,7 +264,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
-                    android:hint="Не задано"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -279,7 +279,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
                     android:layout_marginTop="20sp"
-                    android:text="Режим наполнения"
+                    android:text="@string/padding_title"
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
@@ -288,7 +288,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
-                    android:hint="Не задано"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -328,16 +327,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
                     android:layout_marginTop="20sp"
-                    android:text="Использовать соль"
+                    android:text="@string/salt_title"
                     android:textColor="@color/colorBlack"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
 
                 <TextView
                     android:id="@+id/salt_flag_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
-                    android:hint="Не задано"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -354,16 +353,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
                     android:layout_marginTop="20sp"
-                    android:text="Спрашивать подтверждение пароля"
+                    android:text="@string/secondpassword_title"
                     android:textColor="@color/colorBlack"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
 
                 <TextView
                     android:id="@+id/second_password_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
-                    android:hint="Не задано"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -380,16 +379,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
                     android:layout_marginTop="20sp"
-                    android:text="Удалять файл после шифрования"
+                    android:text="@string/deletefile_title"
                     android:textColor="@color/colorBlack"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
 
                 <TextView
                     android:id="@+id/delete_file_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="70sp"
-                    android:hint="Не задано"
                     android:textSize="15sp" />
             </LinearLayout>
 
