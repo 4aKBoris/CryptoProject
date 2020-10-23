@@ -85,7 +85,7 @@ class SetOfAlg {
     "Threefish-1024")
 
     val cipher_bcm_default = listOf(
-        "ECB", "CBC", "OFB", "CFB", "CTR",
+        "ECB", "CBC", "OFB", "CFB", "CTR", "CTS"
     )
     val cipher_bcm_bc = listOf(
         "ECB",
@@ -102,6 +102,8 @@ class SetOfAlg {
         "GCM",
         "OCB"
     )
+
+    val AEAD = setOf("CCM", "EAX", "GCM", "OCB")
 
     val cipher_padding_default = listOf("NoPadding", "PKCS5Padding", "ISO10126Padding")
 

@@ -10,12 +10,6 @@ import javax.crypto.spec.SecretKeySpec
 open class Algoritms {
 
     protected val cipherStream = setOf(
-        "AESWrap",
-        "ARIAWrap",
-        "CamelliaWrap",
-        "DESedeWrap",
-        "DSTU7624Wrap",
-        "SEEDWrap",
         "HC128",
         "RC4",
         "HC256",
@@ -29,77 +23,7 @@ open class Algoritms {
         "Zuc256"
     )
 
-    protected val cbc128 = setOf("CCM", "GCM", "OCB")
 
-    protected val cipher64 = setOf(
-        "Blowfish",
-        "CAST5",
-        "DES",
-        "DESede",
-        "GOST28147",
-        "IDEA",
-        "RC2",
-        "RC5",
-        "Skipjack",
-        "TEA",
-        "XTEA"
-    )
-
-    protected val cipher128 = setOf(
-        "AES",
-        "ARIA",
-        "Camellia",
-        "CAST6",
-        "DSTU7624",
-        "Noekeon",
-        "RC5-64",
-        "RC-6",
-        "Rijndael",
-        "SEED",
-        "Serpent",
-        "SM4",
-        "Twofish"
-    )
-
-    private val set64bit = setOf("DES")
-    private val set80bit = setOf("Grainv1")
-    private val set128bit =
-        setOf(
-            "CAST5",
-            "IDEA",
-            "Noekeon",
-            "SEED",
-            "Skipjack",
-            "SM4",
-            "TEA",
-            "XTEA",
-            "HC128",
-            "Grain128",
-            "SEEDWrap"
-        )
-    private val set192bit = setOf("DESede", "DESedeWrap")
-    private val set256bit = setOf(
-        "AES",
-        "AESWrap",
-        "ARIAWrap",
-        "CamelliaWrap",
-        "GOST28147",
-        "Blowfish",
-        "Camellia",
-        "CAST6",
-        "Rijndael",
-        "Serpent",
-        "Twofish",
-        "HC256",
-        "ChaCha",
-        "Salsa20",
-        "XSalsa20",
-        "DSTU7624",
-        "DSTU7624Wrap",
-        "GCM",
-        "RC5-64",
-        "Threefish-256"
-    )
     private val setIV_8 = setOf("ChaCha", "Salsa20", "Grainv1", "DES", "DESede", "Blowfish", "XTEA", "GOST28147")
     private val setIV_12 = setOf("Grain128")
     private val setIV_16 = setOf(
@@ -120,20 +44,14 @@ open class Algoritms {
         "CAST6",
         "VMPC",
     )
+
     private val setIV_24 = setOf("XSalsa20")
 
-    protected fun keyGenerator(hash: ByteArray, algoritm: String): SecretKeySpec {
+    protected fun keyGenerator(hash: ByteArray, algoritm: String, keysize : Int): SecretKeySpec {
         val digest = MessageDigest.getInstance("SHA-512")
         var hs = digest.digest(hash)
-        hs = when (algoritm) {
-            in set256bit -> hs.copyOf(32)
-            in set128bit -> hs.copyOf(16)
-            in set192bit -> hs.copyOf(24)
-            in set64bit -> hs.copyOf(8)
-            in set80bit -> hs.copyOf(10)
-            else -> hs
-        }
-        return SecretKeySpec(hs, algoritm)
+        hs = hs.plus(digest.digest(hs))
+        return SecretKeySpec(hs, 0, keysize, algoritm)
     }
 
     protected fun cipherInit(
@@ -185,5 +103,9 @@ open class Algoritms {
 
     protected fun spPadding(sp: SharedPreferences): String {
         return sp.getString("padding", "NoPadding")!!
+    }
+
+    protected fun spKeySize(sp : SharedPreferences) : Int {
+        return sp.getInt("keysize", 32)
     }
 }

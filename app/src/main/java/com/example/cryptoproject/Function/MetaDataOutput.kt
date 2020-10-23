@@ -1,7 +1,7 @@
 package com.example.cryptoproject.Function
 
 import kotlin.experimental.xor
-import kotlin.random.Random
+import kotlin.math.abs
 
 class MetaDataOutput(arr: ByteArray, password: String) :
     MetaData(password) {
@@ -17,6 +17,8 @@ class MetaDataOutput(arr: ByteArray, password: String) :
     private var provider = false
     private var cbc = ""
     private var padding = ""
+    private var keysize = 32
+    private var zeroByte = 0
 
 
     init {
@@ -64,6 +66,14 @@ class MetaDataOutput(arr: ByteArray, password: String) :
         return padding
     }
 
+    fun getKeySize() : Int {
+        return keysize
+    }
+
+    fun getZeroByte() : Int {
+        return zeroByte
+    }
+
     fun metaData(): ByteArray {
         val mas = arr.toMutableList()
         provider = mas.removeAt(0) % 2 != 0
@@ -88,6 +98,8 @@ class MetaDataOutput(arr: ByteArray, password: String) :
             padding = cryptoPaddingOutput[mas.removeAt(0) xor rndSeek.nextInt().toByte()]!!
             for (i in 0 until 24) iv[i] = mas.removeAt(0)
         }
+        keysize = abs((mas.removeAt(0) xor rndSeek.nextInt().toByte()).toInt())
+        zeroByte = (mas.removeAt(0) xor rndSeek.nextInt().toByte()).toInt()
         return mas.toByteArray()
     }
 }

@@ -202,11 +202,12 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<View>(R.id.cipher_padding).setOnClickListener {
             list = if (provider) set.cipher_padding_bc else set.cipher_padding_default
             if (BCM == "CTR") list = listOf("ECB", "CBC")
-            if (BCM != "ECB" || BCM != "CBC") {
+            if (BCM != "ECB" && BCM != "CBC") {
                 val l = list.toMutableList()
                 l.remove("withCTS")
                 list = l.toList()
             }
+            if (BCM in set.AEAD) list = listOf("NoPadding")
             AlertDialog.Builder(this).setTitle("Режим наполнения")
                 .setCancelable(false)
                 .setAdapter(

@@ -9,11 +9,12 @@ class MetaDataInput(
     hash_alggoritm: String,
     hash_count: Int,
     cipher_algoritm: String,
-    cipher_cbc : String,
-    cipher_padding : String,
+    cipher_cbc: String,
+    cipher_padding: String,
     cipher_count: Int,
     iv: ByteArray,
-    provider: Boolean
+    provider: Boolean,
+    keysize: Int
 ) :
     MetaData(password) {
 
@@ -27,7 +28,9 @@ class MetaDataInput(
     private val cipher_count: Int
     private var salt: ByteArray? = null
     private val iv: ByteArray
-    private val provider : Boolean
+    private val provider: Boolean
+    private val keysize: Int
+    private var zeroByte = 0
 
     init {
         this.arr = arr
@@ -40,6 +43,11 @@ class MetaDataInput(
         this.cipher_count = cipher_count
         this.iv = iv
         this.provider = provider
+        this.keysize = keysize
+    }
+
+    fun setZeroByte(zeroByte : Int) {
+        this.zeroByte = zeroByte
     }
 
     fun setSalt(salt: ByteArray) {
@@ -73,6 +81,8 @@ class MetaDataInput(
             meta.add(cryptoPaddingInput[cipher_padding]!! xor rndSeek.nextInt().toByte())
             iv.forEach { meta.add(it) }
         }
+        meta.add(keysize.toByte() xor rndSeek.nextInt().toByte())
+        meta.add(zeroByte.toByte() xor rndSeek.nextInt().toByte())
         return meta.toByteArray().plus(arr)
     }
 
