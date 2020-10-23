@@ -3,7 +3,12 @@ package com.example.cryptoproject
 import org.bouncycastle.jcajce.provider.symmetric.GOST3412_2015
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
+import java.security.InvalidKeyException
+import java.security.MessageDigest
 import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
+import javax.crypto.spec.SecretKeySpec
 import kotlin.random.Random
 
 
@@ -267,7 +272,7 @@ class ExampleUnitTest {
             "GCFB",
             "CCM",
             "EAX",
-             "GCM",
+            "GCM",
             "OCB"
         )
 
@@ -288,8 +293,14 @@ class ExampleUnitTest {
         setalg.forEach { t ->
             cbc.forEach { k ->
                 padding.forEach {
-                    if ((k == "CCM" || k == "EAX" || k == "GCM" || k == "OCB") && t !in setStream) {val cipher = Cipher.getInstance("$t/$k/NoPadding", BouncyCastleProvider())}
-                    else if (t !in setStream) { val cipher = Cipher.getInstance("$t/$k/$it", BouncyCastleProvider()) }
+                    if ((k == "CCM" || k == "EAX" || k == "GCM" || k == "OCB") && t !in setStream) {val cipher = Cipher.getInstance(
+                        "$t/$k/NoPadding",
+                        BouncyCastleProvider()
+                    )}
+                    else if (t !in setStream) { val cipher = Cipher.getInstance(
+                        "$t/$k/$it",
+                        BouncyCastleProvider()
+                    ) }
                 }
             }
         }
@@ -373,16 +384,18 @@ class ExampleUnitTest {
 
     @Test
     fun RND() {
-        /*val password = "123456aA"
-        val alg = "SHA-256"
-        val rnd = Random
-        val hs1 = Hash(password, alg, 1024, saltflag = true, inOut = true)
-        val hash1 = hs1.Hash()
-        val arr = rnd.nextBytes(1024)
-        val en = Encrypt()
-        hash1.forEachIndexed { index, byte -> assertEquals(byte, hash2[index]) }*/
-        val r = mutableListOf<Byte>(1, 2, 3, 4, 5)
-        print(r.removeAt(2))
+        for (i in 1..32) {
+            try {
+                val password = "12345"
+                val hash = MessageDigest.getInstance("SHA-512")
+                val k = hash.digest(password.toByteArray())
+                val key = SecretKeySpec(k, 0, i, "DES")
+                val cipher = Cipher.getInstance("DES")
+                cipher.init(Cipher.ENCRYPT_MODE, key)
+                print(key.encoded.size)
+            } catch (e: InvalidKeyException) {
+            }
+        }
     }
 
 }

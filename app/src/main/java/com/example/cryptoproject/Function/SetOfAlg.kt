@@ -4,6 +4,8 @@ class SetOfAlg {
     val hash_alg_default = listOf<String>("MD5", "SHA-1", "SHA-256", "SHA-512")
     val hash_alg_bc = listOf<String>("MD2", "MD4", "MD5", "SHA-1", "SHA-256", "SHA-512")
 
+    val keySize = mapOf<String, Set<Int>>()
+
     val cipher_alg_default = listOf("AES", "Blowfish", "DES", "DESede", "RC4")
     val cipher_alg_bc = listOf("AES",
     "Blowfish",
