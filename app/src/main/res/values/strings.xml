@@ -8,6 +8,13 @@
     <string name="previous">Previous</string>
     <string name="password1">Пароль</string>
     <string name="password2">Повторите пароль</string>
+    <string name="OpenFile">Открыть файл</string>
+    <string name="HideShowPassword">Скрыть/Показать пароль</string>
+    <string name="Decrypt">Расшифровать</string>
+    <string name="EnterPassword">Введите пароль</string>
+    <string name="DecryptFile">Расшифрование файла</string>
+    <string name="Encrypt">Зашифровать</string>
+    <string name="EncryptFile">Шифрование файла</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
