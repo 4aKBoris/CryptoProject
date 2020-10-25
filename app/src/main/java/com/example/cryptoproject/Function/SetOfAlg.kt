@@ -41,8 +41,7 @@ class SetOfAlg {
         Pair("GCM", listOf(16, 8, 32)),
         Pair("Threefish-256", listOf(32, 1, 32)),
         Pair("Threefish-512", listOf(64, 1, 64)),
-        Pair("Threefish-1024", listOf(128, 1, 128)),
-
+        Pair("Threefish-1024", listOf(128, 1, 128))
         )
 
     val cipher_alg_default = listOf("AES", "Blowfish", "DES", "DESede", "RC4")
@@ -157,7 +156,6 @@ class SetOfAlg {
         "ARIA",
         "Camellia",
         "CAST6",
-        "DSTU7624",
         "Noekeon",
         "RC5-64",
         "RC-6",

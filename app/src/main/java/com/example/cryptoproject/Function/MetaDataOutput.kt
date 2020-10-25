@@ -5,6 +5,8 @@ import kotlin.math.abs
 
 class MetaDataOutput(arr: ByteArray, password: String) :
     MetaData(password) {
+
+    private val BlockSize = 128
     private val password: String
     private var arr: ByteArray
     private lateinit var hash_alg: String
@@ -12,7 +14,7 @@ class MetaDataOutput(arr: ByteArray, password: String) :
     private var salt: ByteArray? = null
     private lateinit var cipher_alg: String
     private var cipher_count = 0
-    private var iv = ByteArray(24)
+    private var iv = ByteArray(BlockSize)
     private var flagSalt: Boolean = false
     private var provider = false
     private var cbc = ""
@@ -96,10 +98,10 @@ class MetaDataOutput(arr: ByteArray, password: String) :
         if (cipher_alg !in cipherStream) {
             cbc = cryptoCBCOutput[mas.removeAt(0) xor rndSeek.nextInt().toByte()]!!
             padding = cryptoPaddingOutput[mas.removeAt(0) xor rndSeek.nextInt().toByte()]!!
-            for (i in 0 until 24) iv[i] = mas.removeAt(0)
         }
+        for (i in 0 until BlockSize) iv[i] = mas.removeAt(0)
         keysize = abs((mas.removeAt(0) xor rndSeek.nextInt().toByte()).toInt())
-        zeroByte = (mas.removeAt(0) xor rndSeek.nextInt().toByte()).toInt()
+        zeroByte = abs((mas.removeAt(0) xor rndSeek.nextInt().toByte()).toInt())
         return mas.toByteArray()
     }
 }

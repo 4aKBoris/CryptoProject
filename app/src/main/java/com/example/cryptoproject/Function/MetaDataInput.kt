@@ -46,12 +46,12 @@ class MetaDataInput(
         this.keysize = keysize
     }
 
-    fun setZeroByte(zeroByte : Int) {
-        this.zeroByte = zeroByte
-    }
-
     fun setSalt(salt: ByteArray) {
         this.salt = salt
+    }
+
+    fun setZeroByte(zeroByte : Int) {
+        this.zeroByte = zeroByte
     }
 
     private var meta = ArrayList<Byte>()
@@ -79,8 +79,8 @@ class MetaDataInput(
         if (cipher_algoritm !in cipherStream) {
             meta.add(cryptoCBCInput[cipher_cbc]!! xor rndSeek.nextInt().toByte())
             meta.add(cryptoPaddingInput[cipher_padding]!! xor rndSeek.nextInt().toByte())
-            iv.forEach { meta.add(it) }
         }
+        iv.forEach { meta.add(it) }
         meta.add(keysize.toByte() xor rndSeek.nextInt().toByte())
         meta.add(zeroByte.toByte() xor rndSeek.nextInt().toByte())
         return meta.toByteArray().plus(arr)

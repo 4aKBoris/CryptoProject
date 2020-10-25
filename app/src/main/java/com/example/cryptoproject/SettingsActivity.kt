@@ -18,7 +18,8 @@ import com.example.cryptoproject.Expeptions.MyException
 import com.example.cryptoproject.Function.SetOfAlg
 
 
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
+@Suppress(
+    "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
     "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING"
 )
 class SettingsActivity : AppCompatActivity() {
@@ -171,7 +172,7 @@ class SettingsActivity : AppCompatActivity() {
         KeySize.setOnValueChangedListener { _, _, newVal ->
             val step = set.keySize[cipher_alg]
             val values = mutableListOf<Int>()
-            for (i in step!![0]..step[2] step(step[1])) values.add(i)
+            for (i in step!![0]..step[2] step (step[1])) values.add(i)
             keysize = values[newVal]
         }
 
@@ -276,7 +277,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val step = set.keySize[cipher_alg]
         val values = mutableListOf<String>()
-        for (i in step!![0]..step[2] step(step[1])) values.add(i.toString())
+        for (i in step!![0]..step[2] step (step[1])) values.add(i.toString())
         KeySize.minValue = 0
         KeySize.maxValue = values.size - 1
         KeySize.displayedValues = values.toTypedArray()
@@ -314,12 +315,11 @@ class SettingsActivity : AppCompatActivity() {
 
         val step = set.keySize[cipher_alg]
         val values = mutableListOf<String>()
-        for (i in step!![0]..step[2] step(step[1])) values.add(i.toString())
+        for (i in step!![0]..step[2] step (step[1])) values.add(i.toString())
         if (KeySize.maxValue < values.size) {
             KeySize.displayedValues = values.toTypedArray()
             KeySize.maxValue = values.size - 1
-        }
-        else {
+        } else {
             KeySize.maxValue = values.size - 1
             KeySize.displayedValues = values.toTypedArray()
         }
@@ -330,9 +330,18 @@ class SettingsActivity : AppCompatActivity() {
         KeySizeMin.text = "Min = ${(set.keySize[cipher_alg]!![0].toString())} Байт"
     }
 
+    @SuppressLint("SetTextI18n")
     private val CipherBCM = DialogInterface.OnClickListener { _, which ->
         TextBCM.text = list[which]
         BCM = list[which]
+        if (BCM in set.AEAD) {
+            TextPadding.text = "NoPadding"
+            Padding = "NoPadding"
+        }
+        if (BCM != "ECB" && BCM != "CBC" && Padding == "withCTS") {
+            TextPadding.text = getString(R.string.CBC)
+            Padding = getString(R.string.CBC)
+        }
     }
 
     private val CipherPadding = DialogInterface.OnClickListener { _, which ->
@@ -353,8 +362,7 @@ class SettingsActivity : AppCompatActivity() {
         if (KeySize.maxValue > 2) {
             KeySize.maxValue = 2
             KeySize.displayedValues = arrayOf("16", "24", "32")
-        }
-        else {
+        } else {
             KeySize.displayedValues = arrayOf("16", "24", "32")
             KeySize.maxValue = 2
         }

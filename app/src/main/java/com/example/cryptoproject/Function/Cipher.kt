@@ -24,6 +24,7 @@ class Cipher(
     private var salt = ByteArray(16)
     private var keysize = 0
     private var zeroByte = 0
+    private val SizeBlock = 128
 
     init {
         this.arr = arr
@@ -68,12 +69,13 @@ class Cipher(
 
     private val rnd = SecureRandom()
 
-    private var iv = ByteArray(24)
+    private var iv = ByteArray(SizeBlock)
 
     fun Encrypt(): ByteArray {
-        if (arr.size < 16) {
-            zeroByte = 16 - arr.size
-            arr = arr.plus(rnd.generateSeed(16 - arr.size))
+        val ost = arr.size % SizeBlock
+        if (ost != 0) {
+            zeroByte = SizeBlock - ost
+            arr = arr.plus(rnd.generateSeed(zeroByte))
         }
         val hashFun = Hash(password, hash_alg, hash_count, saltflag, provider)
         val hash = hashFun.Hash()
@@ -93,7 +95,7 @@ class Cipher(
             provider,
             keysize
         )
-        meta.setZeroByte(zeroByte)
+        if (zeroByte != 0) meta.setZeroByte(zeroByte)
         if (saltflag) meta.setSalt(hashFun.getSalt())
         return meta.metaData()
     }
@@ -122,7 +124,7 @@ class Cipher(
         if (saltflag) hashFun.setSalt(salt)
         val hash = hashFun.Hash()
         for (k in 1..cipher_count) cipher_text = SingleCrypt(hash, cipher_text, Cipher.DECRYPT_MODE)
-        if (zeroByte != 0) cipher_text = cipher_text.copyOf(16 - zeroByte)
+        if (zeroByte != 0) cipher_text = cipher_text.copyOf(cipher_text.size - zeroByte)
         return cipher_text
     }
 

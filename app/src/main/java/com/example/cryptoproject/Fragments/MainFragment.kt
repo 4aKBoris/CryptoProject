@@ -1,10 +1,9 @@
 package com.example.cryptoproject.Fragments
 
 import android.annotation.SuppressLint
-import android.app.ActivityManager
-import android.content.Context
 import android.os.Bundle
 import android.os.Environment
+import android.os.FileUtils
 import android.os.StatFs
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +13,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import com.example.cryptoproject.Function.FileReadWrite
 import com.example.cryptoproject.R
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import java.net.URL
 
 
 class MainFragment : Fragment() {
@@ -43,7 +47,14 @@ class MainFragment : Fragment() {
 
         val ButtonTest = view.findViewById<Button>(R.id.test)
         ButtonTest.setOnClickListener {
-
+            val runnable = Runnable {
+                /*val url = URL("")
+                val input: InputStream = url.openStream()
+                val buffer: ByteArray = input.readBytes()
+                FileReadWrite().writeFile("", buffer)*/
+            }
+            val thread = Thread(runnable)
+            thread.start()
         }
 
         val Memory = view.findViewById<TextView>(R.id.memory)
@@ -53,4 +64,5 @@ class MainFragment : Fragment() {
         Memory.text = "Свободно $freeSpace / $fullSpace ГБ"
         return view
     }
+
 }

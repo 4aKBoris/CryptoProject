@@ -124,14 +124,17 @@ class EncryptFragment : Fragment() {
                     "Слишклм мало памяти!",
                     0
                 )
+                var pass = ByteArray(128)
+                for (i in 0..127) pass[i] = i.toByte()
                 FileReadWrite().writeFile(
-                    "/storage/emulated/0/RWork/Cipher/" + File(FILENAME).name + "Crypto",
+                    "/storage/emulated/0/RWork/Cipher/${File(FILENAME).name}",
                     Cipher(
-                        (byteArrayOf(1, 2, 3, 4, 5).plus(FileReadWrite().readFile(FILENAME))),
+                        (pass.plus(FileReadWrite().readFile(FILENAME))),
                         password1,
                         sp
                     ).Encrypt()
                 )
+                if (sp.getBoolean(getString(R.string.DeleteFile), false)) File(FILENAME).delete()
                 MessageExeption("Файл зашифрован!")
             } catch (e: MyException) {
                 MessageExeption(e.message!!)
