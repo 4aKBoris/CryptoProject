@@ -8,6 +8,13 @@
     <string name="previous">Previous</string>
     <string name="password1">Пароль</string>
     <string name="password2">Повторите пароль</string>
+    <string name="OpenFile">Открыть файл</string>
+    <string name="HideShowPassword">Скрыть/Показать пароль</string>
+    <string name="Decrypt">Расшифровать</string>
+    <string name="EnterPassword">Введите пароль</string>
+    <string name="DecryptFile">Расшифрование файла</string>
+    <string name="Encrypt">Зашифровать</string>
+    <string name="EncryptFile">Шифрование файла</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
@@ -34,6 +41,7 @@
     <string name="padding_title">Режим наполнения</string>
     <string name="cipher_count">Количество итераций</string>
     <string name="max_127">Max = 127</string>
+    <string name="key_size">Длина ключа шифрования</string>
 
     <!-- Other Preference-->
     <string name="salt_title">Использовать соль</string>
@@ -57,5 +65,6 @@
     <string name="bouncy_castle">Использовать провайдер BС?</string>
     <string name="DeleteFile">deleteFile</string>
     <string name="deletefile_title">Удалять файл после шифрования</string>
+    <string name="keySize">keysize</string>
 
 </resources>

@@ -18,6 +18,10 @@ import com.example.cryptoproject.Expeptions.MyException
 import com.example.cryptoproject.Function.SetOfAlg
 
 
+@Suppress(
+    "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
+    "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING"
+)
 class SettingsActivity : AppCompatActivity() {
 
     private val set = SetOfAlg()
@@ -49,6 +53,9 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var HashCountEdit: EditText
     private lateinit var HashButton: Button
     private lateinit var CipherCount: NumberPicker
+    private lateinit var KeySize: NumberPicker
+    private lateinit var KeySizeMin: TextView
+    private lateinit var KeySizeMax: TextView
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -75,7 +82,10 @@ class SettingsActivity : AppCompatActivity() {
         HashCountValue = findViewById(R.id.hash_count_value)
         HashCountEdit = findViewById(R.id.hash_count_edit)
         HashButton = findViewById(R.id.hash_set_count)
-        CipherCount = findViewById<NumberPicker>(R.id.cipher_count)
+        CipherCount = findViewById(R.id.cipher_count)
+        KeySize = findViewById(R.id.key_size)
+        KeySizeMin = findViewById(R.id.min_key_size)
+        KeySizeMax = findViewById(R.id.max_key_size)
 
         findViewById<View>(R.id.hash_alg).setOnClickListener {
             list = if (provider) set.hash_alg_bc else set.hash_alg_default
@@ -124,8 +134,7 @@ class SettingsActivity : AppCompatActivity() {
                     HashCountValue.text = k.toString()
                     HashCount.progress = k
                 }
-            }
-            catch (e: MyException) {
+            } catch (e: MyException) {
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
                 HashCountEdit.text.clear()
             }
@@ -160,6 +169,13 @@ class SettingsActivity : AppCompatActivity() {
             cipher_count = newVal
         }
 
+        KeySize.setOnValueChangedListener { _, _, newVal ->
+            val step = set.keySize[cipher_alg]
+            val values = mutableListOf<Int>()
+            for (i in step!![0]..step[2] step (step[1])) values.add(i)
+            keysize = values[newVal]
+        }
+
         findViewById<View>(R.id.cipher_bcm).setOnClickListener {
             list = if (provider) set.cipher_bcm_bc else set.cipher_bcm_default
             if (cipher_alg !in set.cipher64) {
@@ -187,11 +203,12 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<View>(R.id.cipher_padding).setOnClickListener {
             list = if (provider) set.cipher_padding_bc else set.cipher_padding_default
             if (BCM == "CTR") list = listOf("ECB", "CBC")
-            if (BCM != "ECB" || BCM != "CBC") {
+            if (BCM != "ECB" && BCM != "CBC") {
                 val l = list.toMutableList()
                 l.remove("withCTS")
                 list = l.toList()
             }
+            if (BCM in set.AEAD) list = listOf("NoPadding")
             AlertDialog.Builder(this).setTitle("Режим наполнения")
                 .setCancelable(false)
                 .setAdapter(
@@ -220,12 +237,14 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         setSettings()
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return super.onOptionsItemSelected(item)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setSettings() {
         hash_alg = sp.getString(getString(R.string.HashAlgorithm), getString(R.string.SHA))!!
         hash_count = sp.getInt(getString(R.string.HashCount), 1)
@@ -237,6 +256,7 @@ class SettingsActivity : AppCompatActivity() {
         secondPassword = sp.getBoolean(getString(R.string.SecordPassword), false)
         deleteFile = sp.getBoolean(getString(R.string.DeleteFile), false)
         provider = sp.getBoolean(getString(R.string.Provider), false)
+        keysize = sp.getInt(getString(R.string.keySize), set.keySize[cipher_alg]!![2])
 
         FlagSalt.isChecked = Salt
         TextFlagSalt.text = yesNo[Salt]
@@ -255,6 +275,16 @@ class SettingsActivity : AppCompatActivity() {
         CipherCount.value = cipher_count
         Provider.isChecked = provider
 
+        val step = set.keySize[cipher_alg]
+        val values = mutableListOf<String>()
+        for (i in step!![0]..step[2] step (step[1])) values.add(i.toString())
+        KeySize.minValue = 0
+        KeySize.maxValue = values.size - 1
+        KeySize.displayedValues = values.toTypedArray()
+        KeySize.value = values.indexOf(keysize.toString())
+        KeySizeMax.text = "Max = ${(set.keySize[cipher_alg]!![2].toString())} Байт"
+        KeySizeMin.text = "Min = ${(set.keySize[cipher_alg]!![0].toString())} Байт"
+
         if (cipher_alg in set.cipherStream) {
             LinearLayoutCBC.visibility = View.GONE
             LinearLayoutPadding.visibility = View.GONE
@@ -267,6 +297,7 @@ class SettingsActivity : AppCompatActivity() {
         hash_alg = list[which]
     }
 
+    @SuppressLint("SetTextI18n")
     private val CipherAlg = DialogInterface.OnClickListener { _, which ->
         TextCipher.text = list[which]
         cipher_alg = list[which]
@@ -281,11 +312,36 @@ class SettingsActivity : AppCompatActivity() {
             BCM = getString(R.string.CBC)
             TextBCM.text = getString(R.string.CBC)
         }
+
+        val step = set.keySize[cipher_alg]
+        val values = mutableListOf<String>()
+        for (i in step!![0]..step[2] step (step[1])) values.add(i.toString())
+        if (KeySize.maxValue < values.size) {
+            KeySize.displayedValues = values.toTypedArray()
+            KeySize.maxValue = values.size - 1
+        } else {
+            KeySize.maxValue = values.size - 1
+            KeySize.displayedValues = values.toTypedArray()
+        }
+        KeySize.minValue = 0
+        KeySize.value = values.size - 1
+        keysize = step[2]
+        KeySizeMax.text = "Max = ${(set.keySize[cipher_alg]!![2].toString())} Байт"
+        KeySizeMin.text = "Min = ${(set.keySize[cipher_alg]!![0].toString())} Байт"
     }
 
+    @SuppressLint("SetTextI18n")
     private val CipherBCM = DialogInterface.OnClickListener { _, which ->
         TextBCM.text = list[which]
         BCM = list[which]
+        if (BCM in set.AEAD) {
+            TextPadding.text = "NoPadding"
+            Padding = "NoPadding"
+        }
+        if (BCM != "ECB" && BCM != "CBC" && Padding == "withCTS") {
+            TextPadding.text = getString(R.string.CBC)
+            Padding = getString(R.string.CBC)
+        }
     }
 
     private val CipherPadding = DialogInterface.OnClickListener { _, which ->
@@ -293,16 +349,29 @@ class SettingsActivity : AppCompatActivity() {
         Padding = list[which]
     }
 
+    @SuppressLint("SetTextI18n")
     private fun DefaultSettings() {
         val editor: Editor = sp.edit()
-        editor.putBoolean(getString(R.string.Provider), false)
-        editor.putString(getString(R.string.HashAlgorithm), "SHA-256")
-        editor.putString(getString(R.string.CipherAlgorithm), "AES")
-        editor.putString(getString(R.string.BCM), "CBC")
-        editor.putString(getString(R.string.Padding), "PKCS5Padding")
+        provider = false
+        cipher_alg = getString(R.string.AES)
+        hash_alg = getString(R.string.SHA)
+        BCM = getString(R.string.CBC)
+        Padding = getString(R.string.PKCS5Padding)
+        keysize = 32
+        KeySize.minValue = 0
+        if (KeySize.maxValue > 2) {
+            KeySize.maxValue = 2
+            KeySize.displayedValues = arrayOf("16", "24", "32")
+        } else {
+            KeySize.displayedValues = arrayOf("16", "24", "32")
+            KeySize.maxValue = 2
+        }
+        KeySize.value = 2
+        KeySizeMin.text = "Min = ${16} Байт"
+        KeySizeMax.text = "Max = ${32} Байт"
         TextHash.text = getString(R.string.SHA)
         TextCipher.text = getString(R.string.AES)
-        TextBCM.text = getString(R.string.BCM)
+        TextBCM.text = getString(R.string.CBC)
         TextPadding.text = getString(R.string.PKCS5Padding)
         editor.apply()
     }
@@ -323,6 +392,7 @@ class SettingsActivity : AppCompatActivity() {
         editor.putBoolean(getString(R.string.SecordPassword), secondPassword)
         editor.putBoolean(getString(R.string.DeleteFile), deleteFile)
         editor.putBoolean(getString(R.string.Provider), provider)
+        editor.putInt(getString(R.string.keySize), keysize)
         editor.apply()
     }
 
@@ -337,6 +407,7 @@ class SettingsActivity : AppCompatActivity() {
         private var secondPassword = false
         private var deleteFile = false
         private var provider = false
+        private var keysize = 32
 
         private val yesNo = mapOf(Pair(true, "Да"), Pair(false, "Нет"))
     }

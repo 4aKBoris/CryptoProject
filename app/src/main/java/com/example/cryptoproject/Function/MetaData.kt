@@ -59,18 +59,12 @@ open class MetaData(password: String) {
         Pair("XSalsa20", 28),
         Pair("VMPC", 29),
         Pair("Grainv1", 30),
-        Pair("AESWrap", 31),
         Pair("ARIA", 32),
-        Pair("ARIAWrap", 33),
-        Pair("CamelliaWrap", 34),
-        Pair("DESedeWrap", 35),
         Pair("DSTU7624", 36),
         Pair("GCM", 37),
-        Pair("SEEDWrap", 38),
         Pair("Threefish-256", 39),
         Pair("Threefish-512", 40),
-        Pair("Threefish-1024", 41),
-        Pair("RC5-64", 42)
+        Pair("Threefish-1024", 41)
     )
 
     protected val cryptoCBCInput = mapOf<String, Byte>(
@@ -179,28 +173,16 @@ open class MetaData(password: String) {
         Pair(28, "XSalsa20"),
         Pair(29, "VMPC"),
         Pair(30, "Grainv1"),
-        Pair(31, "AESWrap"),
         Pair(32, "ARIA"),
-        Pair(33, "ARIAWrap"),
-        Pair(34, "CamelliaWrap"),
-        Pair(35, "DESedeWrap"),
         Pair(36, "DSTU7624"),
         Pair(37, "GCM"),
-        Pair(38, "SEEDWrap"),
         Pair(39, "Threefish-256"),
         Pair(40, "Threefish-512"),
-        Pair(41, "Threefish-1024"),
-        Pair(42, "RC5-64")
+        Pair(41, "Threefish-1024")
     )
 
     protected
     val cipherStream = setOf(
-        "AESWrap",
-        "ARIAWrap",
-        "CamelliaWrap",
-        "DESedeWrap",
-        "DSTU7624Wrap",
-        "SEEDWrap",
         "HC128",
         "RC4",
         "HC256",

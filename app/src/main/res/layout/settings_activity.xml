@@ -14,8 +14,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:text="@string/bouncy_castle"
-            android:layout_marginBottom="20sp"/>
+            android:layout_marginBottom="20sp"
+            android:text="@string/bouncy_castle" />
 
         <View
             android:layout_width="match_parent"
@@ -81,24 +81,24 @@
                 <TextView
                     android:id="@+id/hash_count_value"
                     android:layout_width="50sp"
-                    android:layout_marginStart="70sp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="70sp"
                     tools:ignore="TextViewEdits" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="20sp">
+                    android:layout_marginTop="20sp"
+                    android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/hash_count_edit"
                         android:layout_width="60sp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
-                        android:inputType="numberSigned"
                         android:layout_marginStart="40sp"
                         android:layout_marginEnd="20sp"
+                        android:inputType="numberSigned"
                         tools:ignore="Autofill,LabelFor,RtlHardcoded" />
 
                     <Button
@@ -203,48 +203,96 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="30sp"
-                android:layout_marginVertical="20sp">
-
-                <NumberPicker
-                    android:id="@+id/cipher_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="70sp"
-                    android:orientation="vertical" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center">
+                    android:layout_marginVertical="20sp"
+                    android:layout_marginTop="30sp"
+                    android:orientation="horizontal">
 
-                    <TextView
+                    <NumberPicker
+                        android:id="@+id/cipher_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/min_1"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginVertical="20sp"/>
+                        android:layout_marginStart="70sp"
+                        android:orientation="vertical" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/max_127"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginVertical="20sp"/>
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginVertical="20sp"
+                            android:text="@string/min_1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginVertical="20sp"
+                            android:text="@string/max_127" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20sp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="70sp"
+                    android:layout_marginTop="20sp"
+                    android:layout_marginBottom="20sp"
+                    android:text="@string/key_size"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <NumberPicker
+                        android:id="@+id/key_size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="70sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginStart="80sp">
+
+                        <TextView
+                            android:id="@+id/min_key_size"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30sp"/>
+
+                        <TextView
+                            android:id="@+id/max_key_size"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="50sp"/>>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
 
 
-        <LinearLayout
+            <LinearLayout
                 android:id="@+id/cipher_bcm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -271,8 +319,8 @@
                 android:id="@+id/cipher_padding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginVertical="20sp">
+                android:layout_marginVertical="20sp"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -344,8 +392,8 @@
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginVertical="20sp">
+                android:layout_marginVertical="20sp"
+                android:orientation="vertical">
 
                 <Switch
                     android:id="@+id/second_password"
@@ -370,8 +418,8 @@
                 android:id="@+id/delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="40sp">
+                android:layout_marginBottom="40sp"
+                android:orientation="vertical">
 
                 <Switch
                     android:id="@+id/delete_file"
