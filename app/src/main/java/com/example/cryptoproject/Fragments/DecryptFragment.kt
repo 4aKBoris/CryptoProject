@@ -83,7 +83,7 @@ class DecryptFragment : Fragment() {
                 try {
                     if (FILENAME == "") throw MyException("Откройте файл!", 0)
                     if (password1 == "") throw MyException("Введите пароль!", 0)
-                    if (!PasswordCorrect(PasswordEdit1.text.toString()).PassCorrekt()) throw MyException(
+                    if (!PasswordCorrect(password1).PassCorrekt() && spPasswordFlag(sp)) throw MyException(
                         "Пароль не соответствует требованиям!",
                         0
                     )
@@ -118,6 +118,10 @@ class DecryptFragment : Fragment() {
 
     private fun spSecond(sp: SharedPreferences): Boolean {
         return sp.getBoolean(getString(R.string.SecordPassword), false)
+    }
+
+    private fun spPasswordFlag(sp: SharedPreferences): Boolean {
+        return sp.getBoolean(getString(R.string.PasswordFlag), false)
     }
 
     @SuppressLint("UsableSpace")

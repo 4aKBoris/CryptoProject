@@ -1,15 +1,82 @@
 package com.example.cryptoproject.Function
 
 class SetOfAlg {
-    val hash_alg_default = listOf<String>("MD5", "SHA-1", "SHA-256", "SHA-512")
-    val hash_alg_bc = listOf<String>("MD2", "MD4", "MD5", "SHA-1", "SHA-256", "SHA-512")
+    val hash_alg_default = listOf("MD5", "SHA-1", "SHA-256", "SHA-512")
+    val hash_alg_bc = listOf("GOST3411",
+        "GOST3411-2012-256",
+        "GOST3411-2012-512",
+        "KECCAK-224",
+        "KECCAK-288",
+        "KECCAK-256",
+        "KECCAK-384",
+        "KECCAK-512",
+        "MD2",
+        "MD4",
+        "MD5",
+        "SHA-1",
+        "RIPEMD128",
+        "RIPEMD160",
+        "RIPEMD256",
+        "RIPEMD320",
+        "SHA-224",
+        "SHA-256",
+        "SHA-384",
+        "SHA-512",
+        "SHA-512/224",
+        "SHA-512/256",
+        "SHA3-224",
+        "SHA3-256",
+        "SHA3-384",
+        "SHA3-512",
+        "2.16.840.1.101.3.4.2.7",
+        "OID.2.16.840.1.101.3.4.2.7",
+        "2.16.840.1.101.3.4.2.8",
+        "OID.2.16.840.1.101.3.4.2.8",
+        "2.16.840.1.101.3.4.2.9",
+        "OID.2.16.840.1.101.3.4.2.9",
+        "2.16.840.1.101.3.4.2.10",
+        "OID.2.16.840.1.101.3.4.2.10",
+        "Skein-256-128",
+        "Skein-256-160",
+        "Skein-256-224",
+        "Skein-256-256",
+        "Skein-512-128",
+        "Skein-512-160",
+        "Skein-512-224",
+        "Skein-512-256",
+        "Skein-512-384",
+        "Skein-512-512",
+        "Skein-1024-384",
+        "Skein-1024-512",
+        "Skein-1024-1024",
+        "SM3",
+        "TIGER",
+        "WHIRLPOOL",
+        "BLAKE2B-512",
+        "BLAKE2B-384",
+        "BLAKE2B-256",
+        "BLAKE2B-160",
+        "BLAKE2S-256",
+        "BLAKE2S-224",
+        "BLAKE2S-160",
+        "BLAKE2S-128",
+        "DSTU7564-256",
+        "DSTU7564-384",
+        "DSTU7564-512",
+        "1.2.804.2.1.1.1.1.2.2.1",
+        "OID.1.2.804.2.1.1.1.1.2.2.1",
+        "1.2.804.2.1.1.1.1.2.2.2",
+        "OID.1.2.804.2.1.1.1.1.2.2.2",
+        "1.2.804.2.1.1.1.1.2.2.3",
+        "OID.1.2.804.2.1.1.1.1.2.2.3",
+    )
 
     val keySize = mapOf(
         Pair("AES", listOf(16, 8, 32)),
         Pair("Blowfish", listOf(1, 1, 56)),
         Pair("DES", listOf(8, 1, 8)),
         Pair("DESede", listOf(24, 1, 24)),
-        Pair("RC4", listOf(5, 1, 63)),
+        Pair("RC4", listOf(5, 1, 128)),
         Pair("Camellia", listOf(16, 8, 32)),
         Pair("CAST5", listOf(1, 1, 16)),
         Pair("CAST6", listOf(1, 1, 64)),
@@ -41,7 +108,8 @@ class SetOfAlg {
         Pair("GCM", listOf(16, 8, 32)),
         Pair("Threefish-256", listOf(32, 1, 32)),
         Pair("Threefish-512", listOf(64, 1, 64)),
-        Pair("Threefish-1024", listOf(128, 1, 128))
+        Pair("Threefish-1024", listOf(128, 1, 128)),
+        Pair("GOST3412-2015", listOf(32, 1, 32))
         )
 
     val cipher_alg_default = listOf("AES", "Blowfish", "DES", "DESede", "RC4")
@@ -81,7 +149,8 @@ class SetOfAlg {
     "GCM",
     "Threefish-256",
     "Threefish-512",
-    "Threefish-1024")
+    "Threefish-1024",
+    "GOST3412-2015")
 
     val cipher_bcm_default = listOf(
         "ECB", "CBC", "OFB", "CFB", "CTR", "CTS"

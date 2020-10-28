@@ -58,7 +58,8 @@ open class Algoritms {
         "ARIA",
         "GCM",
         "RC6",
-        "DSTU7624"
+        "DSTU7624",
+        "GOST3412-2015"
     )
 
     private val setIV_24 = setOf("XSalsa20")

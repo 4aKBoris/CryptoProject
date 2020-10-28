@@ -94,6 +94,14 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.keySize),
             32
         )
+        if (!sp.contains(getString(R.string.keySize))) editor.putInt(
+            getString(R.string.keySize),
+            32
+        )
+        if (!sp.contains(getString(R.string.PasswordFlag))) editor.putBoolean(
+            getString(R.string.PasswordFlag),
+            false
+        )
         editor.apply()
     }
 

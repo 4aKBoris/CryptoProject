@@ -26,6 +26,7 @@
     <string name="cipher_header">Настройки шифрования</string>
     <string name="other_header">Другие настройки</string>
     <string name="provider_header">Выбор провайдера</string>
+    <string name="bouncy_castle">Использовать провайдер BС?</string>
 
     <!-- Hash Preferences -->
     <string name="hash_title">Алгоритм хэширования</string>
@@ -46,6 +47,8 @@
     <!-- Other Preference-->
     <string name="salt_title">Использовать соль</string>
     <string name="secondpassword_title">Спрашивать подтверждение пароля</string>
+    <string name="password_flag">Проверка на сложность парольной фразы</string>
+    <string name="deletefile_title">Удалять файл после шифрования</string>
 
     <!-- Const String-->
     <string name="AES">AES</string>
@@ -62,9 +65,8 @@
     <string name="PKCS5Padding">PKCS5Padding</string>
     <string name="Padding">padding</string>
     <string name="title_activity_settings2">SettingsActivity2</string>
-    <string name="bouncy_castle">Использовать провайдер BС?</string>
     <string name="DeleteFile">deleteFile</string>
-    <string name="deletefile_title">Удалять файл после шифрования</string>
     <string name="keySize">keysize</string>
+    <string name="PasswordFlag">passwordFlag</string>
 
 </resources>

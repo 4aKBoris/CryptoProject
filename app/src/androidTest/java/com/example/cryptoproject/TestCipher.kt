@@ -195,12 +195,13 @@ class TestCipher {
     @Test
     fun BlockCipherTest() {
         set.hash_alg_bc.forEach { t ->
-            val t1 = "GOST28147"
+            val t1 = "GOST3412-2015"
             if (t1 !in set.cipherStream) {
                 set.cipher_bcm_bc.forEach { k1 ->
                     var t2 = k1
                     if (t1 !in set.cipher128 && t2 in set.cbc128) t2 = "CBC"
                     if (t1 !in set.cipher64 && t2 == "GOFB") t2 = "CBC"
+                    if (t1 == "GOST3412-2015" && t2 == "CTR") t2 = "CBC"
                     set.cipher_padding_bc.forEach { k2 ->
                         var t3 = k2
                         if ((t2 != "ECB" && t2 != "CBC") && t3 == "withCTS") t3 = "NoPadding"
