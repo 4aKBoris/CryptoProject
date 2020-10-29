@@ -1,6 +1,8 @@
 package com.example.cryptoproject.Fragments
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.os.FileUtils
@@ -24,6 +26,8 @@ import java.net.URL
 class MainFragment : Fragment() {
 
     private val LOG_TAG = "LOG"
+    private val FILE_OPEN_CODE = 0
+    private lateinit var FILENAME : String
 
     @SuppressLint("SetTextI18n", "UseRequireInsteadOfGet")
     override fun onCreateView(
@@ -52,6 +56,9 @@ class MainFragment : Fragment() {
                 val input: InputStream = url.openStream()
                 val buffer: ByteArray = input.readBytes()
                 FileReadWrite().writeFile("", buffer)*/
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "file/*"
+                startActivityForResult(intent, FILE_OPEN_CODE)
             }
             val thread = Thread(runnable)
             thread.start()
@@ -63,6 +70,21 @@ class MainFragment : Fragment() {
         val fullSpace = String.format("%.3f", statFs.totalBytes.toDouble() / 1000000000)
         Memory.text = "Свободно $freeSpace / $fullSpace ГБ"
         return view
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            FILE_OPEN_CODE -> {
+                if (resultCode == Activity.RESULT_OK)  {
+                    FILENAME =
+                        data?.data?.path!!
+                    println(FILENAME)
+                }//.replace("/external_files", "/storage/emulated/0")
+            }
+
+        }
     }
 
 }

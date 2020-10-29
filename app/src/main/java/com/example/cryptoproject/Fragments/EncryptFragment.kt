@@ -74,7 +74,7 @@ class EncryptFragment : Fragment() {
             try {
                 if (FILENAME == "") throw MyException("Откройте файл!", 0)
                 if (password1 == "") throw MyException("Введите пароль!", 0)
-                if (!PasswordCorrect(PasswordEdit1.text.toString()).PassCorrekt()) throw MyException(
+                if (!PasswordCorrect(password1).PassCorrekt() && spPasswordFlag(sp)) throw MyException(
                     "Пароль не соответствует требованиям!",
                     0
                 )
@@ -112,6 +112,10 @@ class EncryptFragment : Fragment() {
 
     private fun spSecond(sp: SharedPreferences): Boolean {
         return sp.getBoolean(getString(R.string.SecordPassword), false)
+    }
+
+    private fun spPasswordFlag(sp: SharedPreferences): Boolean {
+        return sp.getBoolean(getString(R.string.PasswordFlag), false)
     }
 
     @SuppressLint("UsableSpace")
@@ -158,7 +162,7 @@ class EncryptFragment : Fragment() {
         when (requestCode) {
             FILE_OPEN_CODE -> {
                 if (resultCode == RESULT_OK) FILENAME =
-                    data?.data?.path!!.replace("/external_files", "/storage/emulated/0")
+                    data?.data?.path!!.replace("/external_files", "/storage/emulated/0").replace("/root", "")
                 FileSize.text = "Размер файла ${FileSize()}"
             }
 

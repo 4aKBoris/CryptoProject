@@ -79,7 +79,7 @@ class MetaDataOutput(arr: ByteArray, password: String) :
     fun metaData(): ByteArray {
         val mas = arr.toMutableList()
         provider = mas.removeAt(0) % 2 != 0
-        hash_alg=  hashfunOutput[mas.removeAt(0) xor rndSeek.nextInt().toByte()]!!
+        hash_alg = hashfunOutput[mas.removeAt(0) xor rndSeek.nextInt().toByte()]!!
         if (mas.removeAt(0) % 2 == 0) {
             hash_count = mas.removeAt(0).toInt()
             mas.removeAt(0)

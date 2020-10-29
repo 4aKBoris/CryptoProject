@@ -56,6 +56,8 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var KeySize: NumberPicker
     private lateinit var KeySizeMin: TextView
     private lateinit var KeySizeMax: TextView
+    private lateinit var PasswordFlag: Switch
+    private lateinit var TextPasswordFlag: TextView
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -86,6 +88,8 @@ class SettingsActivity : AppCompatActivity() {
         KeySize = findViewById(R.id.key_size)
         KeySizeMin = findViewById(R.id.min_key_size)
         KeySizeMax = findViewById(R.id.max_key_size)
+        PasswordFlag = findViewById(R.id.password_flag)
+        TextPasswordFlag = findViewById(R.id.password_flag_text)
 
         findViewById<View>(R.id.hash_alg).setOnClickListener {
             list = if (provider) set.hash_alg_bc else set.hash_alg_default
@@ -188,6 +192,11 @@ class SettingsActivity : AppCompatActivity() {
                 l.removeAll(set.cbc128)
                 list = l.toList()
             }
+            if (cipher_alg == "GOST3412-2015") {
+                val l = list.toMutableList()
+                l.remove("CTR")
+                list = l.toList()
+            }
             AlertDialog.Builder(this).setTitle("Режим сцепления блоков")
                 .setCancelable(false)
                 .setAdapter(
@@ -202,7 +211,7 @@ class SettingsActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.cipher_padding).setOnClickListener {
             list = if (provider) set.cipher_padding_bc else set.cipher_padding_default
-            if (BCM == "CTR") list = listOf("ECB", "CBC")
+            //if (BCM == "CTR") list = listOf("ECB", "CBC")
             if (BCM != "ECB" && BCM != "CBC") {
                 val l = list.toMutableList()
                 l.remove("withCTS")
@@ -228,12 +237,17 @@ class SettingsActivity : AppCompatActivity() {
 
         SecondPassword.setOnCheckedChangeListener { _, isChecked ->
             secondPassword = isChecked
-            TextFlagSalt.text = yesNo[Salt]
+            TextFlagSalt.text = yesNo[secondPassword]
         }
 
         DeleteFile.setOnCheckedChangeListener { _, isChecked ->
             deleteFile = isChecked
-            TextFlagSalt.text = yesNo[Salt]
+            TextFlagSalt.text = yesNo[deleteFile]
+        }
+
+        PasswordFlag.setOnCheckedChangeListener { _, isChecked ->
+            passwordFlag = isChecked
+            TextPasswordFlag.text = yesNo[passwordFlag]
         }
 
         setSettings()
@@ -257,6 +271,7 @@ class SettingsActivity : AppCompatActivity() {
         deleteFile = sp.getBoolean(getString(R.string.DeleteFile), false)
         provider = sp.getBoolean(getString(R.string.Provider), false)
         keysize = sp.getInt(getString(R.string.keySize), set.keySize[cipher_alg]!![2])
+        passwordFlag = sp.getBoolean(getString(R.string.PasswordFlag), false)
 
         FlagSalt.isChecked = Salt
         TextFlagSalt.text = yesNo[Salt]
@@ -264,6 +279,8 @@ class SettingsActivity : AppCompatActivity() {
         TextSecondPassword.text = yesNo[secondPassword]
         DeleteFile.isChecked = deleteFile
         TextDeleteFile.text = yesNo[deleteFile]
+        TextPasswordFlag.text = yesNo[passwordFlag]
+        PasswordFlag.isChecked = passwordFlag
 
         TextHash.text = hash_alg
         HashCountValue.text = hash_count.toString()
@@ -308,7 +325,7 @@ class SettingsActivity : AppCompatActivity() {
             LinearLayoutCBC.visibility = View.VISIBLE
             LinearLayoutPadding.visibility = View.VISIBLE
         }
-        if ((cipher_alg !in set.cipher64 && BCM == "GOFB") || (cipher_alg !in set.cipher128 && BCM in set.cbc128)) {
+        if ((cipher_alg !in set.cipher64 && BCM == "GOFB") || (cipher_alg !in set.cipher128 && BCM in set.cbc128) || cipher_alg == "GOST3412-2015" && BCM == "CTR") {
             BCM = getString(R.string.CBC)
             TextBCM.text = getString(R.string.CBC)
         }
@@ -393,6 +410,7 @@ class SettingsActivity : AppCompatActivity() {
         editor.putBoolean(getString(R.string.DeleteFile), deleteFile)
         editor.putBoolean(getString(R.string.Provider), provider)
         editor.putInt(getString(R.string.keySize), keysize)
+        editor.putBoolean(getString(R.string.PasswordFlag), passwordFlag)
         editor.apply()
     }
 
@@ -408,6 +426,7 @@ class SettingsActivity : AppCompatActivity() {
         private var deleteFile = false
         private var provider = false
         private var keysize = 32
+        private var passwordFlag = false
 
         private val yesNo = mapOf(Pair(true, "Да"), Pair(false, "Нет"))
     }
