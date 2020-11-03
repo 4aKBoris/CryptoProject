@@ -1,10 +1,8 @@
+@file:Suppress("PackageName")
+
 package com.example.cryptoproject.Function
 
-class PasswordCorrect(password : String) {
-    private val password : String
-    init {
-        this.password = password
-    }
+class PasswordCorrect(private val password: String) {
     fun PassCorrekt(): Boolean {
         val Reg1 = Regex("[a-z]+")
         val Reg2 = Regex("[A-Z]+")

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.cryptoproject
 
 import android.content.Intent
@@ -13,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     private val PERMISSION_REQUEST_CODE = 0
@@ -29,9 +32,9 @@ class MainActivity : AppCompatActivity() {
 
         val p = Permissions()
         p.requestMultiplePermissions(this, PERMISSION_REQUEST_CODE)
-        val fl = create("RWork")!!
-        val fl1 = create("RWork/Cipher")!!
-        val fl2 = create("RWork/Clear_files")!!
+        create("RWork")!!
+        create("RWork/Cipher")!!
+        create("RWork/Clear_files")!!
         CreateSP()
     }
 

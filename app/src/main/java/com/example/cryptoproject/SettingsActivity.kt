@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.cryptoproject
 
 import android.annotation.SuppressLint
@@ -6,8 +8,7 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.view.MenuItem
+import android.preference.PreferenceManager.getDefaultSharedPreferences
 import android.view.View
 import android.widget.*
 import android.widget.SeekBar.OnSeekBarChangeListener
@@ -25,7 +26,7 @@ import com.example.cryptoproject.Function.SetOfAlg
 class SettingsActivity : AppCompatActivity() {
 
     private val set = SetOfAlg()
-    private val LOG_TAG = "LOG"
+    //private val LOG_TAG = "LOG"
     private lateinit var sp: SharedPreferences
     private lateinit var list: List<String>
 
@@ -44,7 +45,9 @@ class SettingsActivity : AppCompatActivity() {
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private lateinit var SecondPassword: Switch
-
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private lateinit var PasswordFlag: Switch
+    private lateinit var TextPasswordFlag: TextView
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private lateinit var DeleteFile: Switch
     private lateinit var Provider: CheckBox
@@ -56,15 +59,13 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var KeySize: NumberPicker
     private lateinit var KeySizeMin: TextView
     private lateinit var KeySizeMax: TextView
-    private lateinit var PasswordFlag: Switch
-    private lateinit var TextPasswordFlag: TextView
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
-        sp = PreferenceManager.getDefaultSharedPreferences(this)
+        sp = getDefaultSharedPreferences(this)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         TextHash = findViewById(R.id.hash_alg_text)
@@ -125,13 +126,11 @@ class SettingsActivity : AppCompatActivity() {
         HashButton.setOnClickListener {
             try {
                 if (HashCountEdit.text.toString() == "") throw MyException(
-                    "Введённое значение не соответствует требованиям!",
-                    0
+                    "Введённое значение не соответствует требованиям!"
                 )
                 val k = HashCountEdit.text.toString().toInt()
                 if (k <= 0 || k > 16256) throw MyException(
-                    "Введённое значение не соответствует требованиям!",
-                    0
+                    "Введённое значение не соответствует требованиям!"
                 )
                 else {
                     hash_count = k
@@ -254,10 +253,6 @@ class SettingsActivity : AppCompatActivity() {
 
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return super.onOptionsItemSelected(item)
-    }
-
     @SuppressLint("SetTextI18n")
     private fun setSettings() {
         hash_alg = sp.getString(getString(R.string.HashAlgorithm), getString(R.string.SHA))!!
@@ -270,7 +265,7 @@ class SettingsActivity : AppCompatActivity() {
         secondPassword = sp.getBoolean(getString(R.string.SecordPassword), false)
         deleteFile = sp.getBoolean(getString(R.string.DeleteFile), false)
         provider = sp.getBoolean(getString(R.string.Provider), false)
-        keysize = sp.getInt(getString(R.string.keySize), set.keySize[cipher_alg]!![2])
+        keysize = sp.getInt(getString(R.string.keySize), set.keySize.getValue(cipher_alg)[2])
         passwordFlag = sp.getBoolean(getString(R.string.PasswordFlag), false)
 
         FlagSalt.isChecked = Salt
@@ -299,8 +294,8 @@ class SettingsActivity : AppCompatActivity() {
         KeySize.maxValue = values.size - 1
         KeySize.displayedValues = values.toTypedArray()
         KeySize.value = values.indexOf(keysize.toString())
-        KeySizeMax.text = "Max = ${(set.keySize[cipher_alg]!![2].toString())} Байт"
-        KeySizeMin.text = "Min = ${(set.keySize[cipher_alg]!![0].toString())} Байт"
+        KeySizeMax.text = "Max = ${(set.keySize.getValue(cipher_alg)[2].toString())} Байт"
+        KeySizeMin.text = "Min = ${(set.keySize.getValue(cipher_alg)[0].toString())} Байт"
 
         if (cipher_alg in set.cipherStream) {
             LinearLayoutCBC.visibility = View.GONE
@@ -343,8 +338,8 @@ class SettingsActivity : AppCompatActivity() {
         KeySize.minValue = 0
         KeySize.value = values.size - 1
         keysize = step[2]
-        KeySizeMax.text = "Max = ${(set.keySize[cipher_alg]!![2].toString())} Байт"
-        KeySizeMin.text = "Min = ${(set.keySize[cipher_alg]!![0].toString())} Байт"
+        KeySizeMax.text = "Max = ${(set.keySize.getValue(cipher_alg)[2].toString())} Байт"
+        KeySizeMin.text = "Min = ${(set.keySize.getValue(cipher_alg)[0].toString())} Байт"
     }
 
     @SuppressLint("SetTextI18n")

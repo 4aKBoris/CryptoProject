@@ -1,6 +1,8 @@
+@file:Suppress("PackageName", "PropertyName")
+
 package com.example.cryptoproject.Function
 
-class SetOfAlg {
+internal class SetOfAlg {
     val hash_alg_default = listOf("MD5", "SHA-1", "SHA-256", "SHA-512")
     val hash_alg_bc = listOf("GOST3411",
         "GOST3411-2012-256",

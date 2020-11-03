@@ -1,7 +1,8 @@
+@file:Suppress("PackageName")
+
 package com.example.cryptoproject.Function
 
 import java.io.*
-import java.util.*
 
 class FileReadWrite {
     fun writeFile(FileName: String, arr: ByteArray) {

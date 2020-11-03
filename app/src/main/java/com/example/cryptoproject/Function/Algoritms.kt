@@ -1,3 +1,5 @@
+@file:Suppress("PackageName")
+
 package com.example.cryptoproject.Function
 
 import android.content.SharedPreferences

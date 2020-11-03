@@ -1,3 +1,5 @@
+@file:Suppress("PackageName", "DEPRECATION")
+
 package com.example.cryptoproject.Fragments
 
 import android.annotation.SuppressLint
@@ -7,7 +9,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.preference.PreferenceManager
+import android.preference.PreferenceManager.*
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
@@ -50,7 +52,7 @@ class EncryptFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_encrypt, container, false)
         val SecondPassword = view.findViewById<View>(R.id.secondpassword) as LinearLayout
-        val sp = PreferenceManager.getDefaultSharedPreferences(context)
+        val sp = getDefaultSharedPreferences(context)
         flag = sp.getBoolean(getString(R.string.Provider), false)
         if (spSecond(sp)) SecondPassword.visibility = View.VISIBLE
         else SecondPassword.visibility = View.GONE
@@ -61,7 +63,7 @@ class EncryptFragment : Fragment() {
             intent.type = "file/*"
             startActivityForResult(intent, FILE_OPEN_CODE)
         }
-        ProgresBar = view.findViewById<ProgressBar>(R.id.progresbar)
+        ProgresBar = view.findViewById(R.id.progresbar)
         val PasswordEdit1 =
             view.findViewById<EditText>(R.id.password1)
         val PasswordEdit2 =
@@ -72,15 +74,13 @@ class EncryptFragment : Fragment() {
             val password1 = PasswordEdit1.text.toString()
             val password2 = PasswordEdit2.text.toString()
             try {
-                if (FILENAME == "") throw MyException("Откройте файл!", 0)
-                if (password1 == "") throw MyException("Введите пароль!", 0)
+                if (FILENAME == "") throw MyException("Откройте файл!")
+                if (password1 == "") throw MyException("Введите пароль!")
                 if (!PasswordCorrect(password1).PassCorrekt() && spPasswordFlag(sp)) throw MyException(
-                    "Пароль не соответствует требованиям!",
-                    0
+                    "Пароль не соответствует требованиям!"
                 )
                 if (spSecond(sp) && password1 != password2) throw MyException(
-                    "Введённые пароли не совпадают!",
-                    0
+                    "Введённые пароли не совпадают!"
                 )
                 ProgresBar.visibility = View.VISIBLE
                 Body(sp, password1)
@@ -122,13 +122,12 @@ class EncryptFragment : Fragment() {
     private fun Body(sp: SharedPreferences, password1: String) {
         val runnable = Runnable {
             try {
-                if (!File(FILENAME).exists()) throw MyException("Файла не существует!", 0)
-                if (!File(FILENAME).isFile) throw MyException("Вы выбрали не файл!", 0)
+                if (!File(FILENAME).exists()) throw MyException("Файла не существует!")
+                if (!File(FILENAME).isFile) throw MyException("Вы выбрали не файл!")
                 if (File(FILENAME).usableSpace <= 1024 + File(FILENAME).length()) throw MyException(
-                    "Слишклм мало памяти!",
-                    0
+                    "Слишклм мало памяти!"
                 )
-                var pass = ByteArray(128)
+                val pass = ByteArray(128)
                 for (i in 0..127) pass[i] = i.toByte()
                 FileReadWrite().writeFile(
                     "/storage/emulated/0/RWork/Cipher/${File(FILENAME).name}",

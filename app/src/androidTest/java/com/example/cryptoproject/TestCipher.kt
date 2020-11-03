@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.cryptoproject
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -8,13 +10,14 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import kotlin.random.Random
 
+@Suppress("TestFunctionName")
 @RunWith(AndroidJUnit4::class)
 class TestCipher {
 
-    val password = "123456789qwertyQWERTY"
-    val rnd = Random
-    val set = SetOfAlg()
-    val mas = rnd.nextBytes(523)
+    private val password = "123456789qwertyQWERTY"
+    private val rnd = Random
+    internal val set = SetOfAlg()
+    private val mas = rnd.nextBytes(523)
 
     @Test
     fun BCStreamCipher() {

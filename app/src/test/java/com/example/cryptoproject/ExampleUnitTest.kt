@@ -2,7 +2,6 @@ package com.example.cryptoproject
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
-import java.security.MessageDigest
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import kotlin.random.Random
@@ -13,12 +12,13 @@ import kotlin.random.Random
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+@Suppress("TestFunctionName")
 class ExampleUnitTest {
 
     @Test
     fun TestFun() {
-        val rnd = Random
-        val k = MessageDigest.getInstance("1.2.804.2.1.1.1.1.2.2.1", BouncyCastleProvider())
+        //val rnd = Random
+        //val k = MessageDigest.getInstance("1.2.804.2.1.1.1.1.2.2.1", BouncyCastleProvider())
         //val t = BCrypt.generate(byteArrayOf(1, 2, 3, 4, 5), byteArrayOf(1, 2, 3), 1)
         var i = 1
         BouncyCastleProvider().services.forEach{

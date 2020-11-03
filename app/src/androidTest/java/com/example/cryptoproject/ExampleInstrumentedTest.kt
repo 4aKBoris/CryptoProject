@@ -14,6 +14,7 @@ import kotlin.random.Random
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+@Suppress("TestFunctionName")
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
 

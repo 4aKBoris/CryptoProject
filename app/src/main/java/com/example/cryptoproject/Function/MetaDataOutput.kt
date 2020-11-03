@@ -1,14 +1,14 @@
+@file:Suppress("PackageName")
+
 package com.example.cryptoproject.Function
 
 import kotlin.experimental.xor
 import kotlin.math.abs
 
-class MetaDataOutput(arr: ByteArray, password: String) :
+class MetaDataOutput(private var arr: ByteArray, password: String) :
     MetaData(password) {
 
     private val BlockSize = 128
-    private val password: String
-    private var arr: ByteArray
     private lateinit var hash_alg: String
     private var hash_count: Int = 0
     private var salt: ByteArray? = null
@@ -22,11 +22,6 @@ class MetaDataOutput(arr: ByteArray, password: String) :
     private var keysize = 32
     private var zeroByte = 0
 
-
-    init {
-        this.arr = arr
-        this.password = password
-    }
 
     fun getCipherAlg(): String {
         return cipher_alg
@@ -79,7 +74,7 @@ class MetaDataOutput(arr: ByteArray, password: String) :
     fun metaData(): ByteArray {
         val mas = arr.toMutableList()
         provider = mas.removeAt(0) % 2 != 0
-        hash_alg = hashfunOutput[mas.removeAt(0) xor rndSeek.nextInt().toByte()]!!
+        hash_alg = hashfunOutput.getValue(mas.removeAt(0) xor rndSeek.nextInt().toByte())
         if (mas.removeAt(0) % 2 == 0) {
             hash_count = mas.removeAt(0).toInt()
             mas.removeAt(0)
@@ -93,11 +88,11 @@ class MetaDataOutput(arr: ByteArray, password: String) :
             salt = ByteArray(16)
             for (i in 0 until 16) salt!![i] = mas.removeAt(0)
         }
-        cipher_alg = cryptofunOutput[mas.removeAt(0) xor rndSeek.nextInt().toByte()]!!
+        cipher_alg = cryptofunOutput.getValue(mas.removeAt(0) xor rndSeek.nextInt().toByte())
         cipher_count = (mas.removeAt(0) xor rndSeek.nextInt().toByte()).toInt()
         if (cipher_alg !in cipherStream) {
-            cbc = cryptoCBCOutput[mas.removeAt(0) xor rndSeek.nextInt().toByte()]!!
-            padding = cryptoPaddingOutput[mas.removeAt(0) xor rndSeek.nextInt().toByte()]!!
+            cbc = cryptoCBCOutput.getValue(mas.removeAt(0) xor rndSeek.nextInt().toByte())
+            padding = cryptoPaddingOutput.getValue(mas.removeAt(0) xor rndSeek.nextInt().toByte())
         }
         for (i in 0 until BlockSize) iv[i] = mas.removeAt(0)
         keysize = abs((mas.removeAt(0) xor rndSeek.nextInt().toByte()).toInt())

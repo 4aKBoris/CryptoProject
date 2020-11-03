@@ -1,3 +1,5 @@
+@file:Suppress("PackageName")
+
 package com.example.cryptoproject.Function
 
 import android.content.SharedPreferences
@@ -101,7 +103,7 @@ class Cipher(
     }
 
     private fun SingleCrypt(hash: ByteArray, arr: ByteArray, mode: Int): ByteArray {
-        var cipher = if (cipher_alg in cipherStream) {
+        val cipher = if (cipher_alg in cipherStream) {
             if (provider) Cipher.getInstance(cipher_alg, BouncyCastleProvider())
             else Cipher.getInstance(cipher_alg)
         } else {

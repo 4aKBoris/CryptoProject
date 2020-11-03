@@ -1,14 +1,10 @@
+@file:Suppress("PackageName")
+
 package com.example.cryptoproject.Function
 
 import kotlin.random.Random
 
-open class MetaData(password: String) {
-
-    private val password: String
-
-    init {
-        this.password = password
-    }
+open class MetaData(private val password: String) {
 
     val rndSeek = Random(IntSeek())
 

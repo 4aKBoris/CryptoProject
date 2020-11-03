@@ -1,3 +1,5 @@
+@file:Suppress("PackageName")
+
 package com.example.cryptoproject.Fragments
 
 import android.annotation.SuppressLint
@@ -5,9 +7,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
-import android.os.FileUtils
 import android.os.StatFs
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,17 +15,13 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import com.example.cryptoproject.Function.FileReadWrite
 import com.example.cryptoproject.R
-import java.io.File
-import java.io.IOException
-import java.io.InputStream
-import java.net.URL
 
 
+@Suppress("DEPRECATION")
 class MainFragment : Fragment() {
 
-    private val LOG_TAG = "LOG"
+    //private val LOG_TAG = "LOG"
     private val FILE_OPEN_CODE = 0
     private lateinit var FILENAME : String
 

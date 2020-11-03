@@ -1,3 +1,5 @@
+@file:Suppress("PackageName")
+
 package com.example.cryptoproject.Function
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -5,34 +7,21 @@ import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.SecureRandom
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 open class Hash(
-    password: String,
-    hash_alg: String,
-    hash_count: Int,
-    saltflag: Boolean,
-    provider: Boolean
+    private val password: String,
+    private val hash_alg: String,
+    private val hash_count: Int,
+    private val saltflag: Boolean,
+    private var provider: Boolean
 ) {
 
-    private val password: String
-    private val hash_alg: String
-    private val hash_count: Int
-    private val saltflag: Boolean
-    private var provider: Boolean
-
     private var salt: ByteArray? = null
-
-    init {
-        this.password = password
-        this.hash_alg = hash_alg
-        this.hash_count = hash_count
-        this.saltflag = saltflag
-        this.provider = provider
-    }
 
     private val rnd = SecureRandom()
 
     fun Hash(): ByteArray {
-        var hash = password.toByteArray(StandardCharsets.UTF_8)
+        val hash = password.toByteArray(StandardCharsets.UTF_8)
         if (saltflag && salt == null) {
             salt = ByteArray(16)
             rnd.nextBytes(salt)
