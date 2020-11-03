@@ -68,5 +68,9 @@
     <string name="DeleteFile">deleteFile</string>
     <string name="keySize">keysize</string>
     <string name="PasswordFlag">passwordFlag</string>
+    <string name="encrypt_file">Зашифровать файл</string>
+    <string name="decrypt_file">Расшифровать файл</string>
+    <string name="test">Тест</string>
+    <string name="Settings">Настройки</string>
 
 </resources>

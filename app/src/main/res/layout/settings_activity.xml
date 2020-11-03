@@ -286,7 +286,7 @@
                             android:id="@+id/max_key_size"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="50sp"/>>
+                            android:layout_marginTop="50sp"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
