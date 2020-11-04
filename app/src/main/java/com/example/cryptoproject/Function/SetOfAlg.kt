@@ -209,20 +209,20 @@ internal class SetOfAlg {
      val cbc128 = setOf("CCM", "GCM", "OCB")
 
      val cipher64 = setOf(
-        "Blowfish",
-        "CAST5",
-        "DES",
-        "DESede",
-        "GOST28147",
-        "IDEA",
-        "RC2",
-        "RC5",
-        "Skipjack",
-        "TEA",
-        "XTEA"
-    )
+         "Blowfish",
+         "CAST5",
+         "DES",
+         "DESede",
+         "GOST28147",
+         "IDEA",
+         "RC2",
+         "RC5",
+         "Skipjack",
+         "TEA",
+         "XTEA"
+     )
 
-     val cipher128 = setOf(
+    val cipher128 = setOf(
         "AES",
         "ARIA",
         "Camellia",
@@ -235,5 +235,88 @@ internal class SetOfAlg {
         "Serpent",
         "SM4",
         "Twofish"
+    )
+
+    /*val sign = setOf(
+        "MD2withRSA",
+        "MD5withRSA",
+        "SHA1withRSA",
+        "SHA224withDSA",
+        "SHA256withDSA",
+        "NONEwithDSA",
+        "SHA1withECDSA",
+        "NONEwithECDSA",
+        "SHA224withECDSA",
+        "SHA256withECDSA",
+        "SHA384withECDSA",
+        "SHA512withECDSA",
+        "SHA224withRSA",
+        "SHA256withRSA",
+        "SHA384withRSA",
+        "SHA512withRSA"
+    )*/
+
+    val sign = setOf(
+        Pair("GOST3411withGOST3410", 0),
+        Pair("MD2withRSA", 1),
+        Pair("MD5withRSA", 2),
+        Pair("SHA1withRSA", 3),
+        Pair("RIPEMD128withRSA", 4),
+        Pair("RIPEMD160withRSA", 5),
+        Pair("RIPEMD160withECDSA", 6),
+        Pair("RIPEMD256withRSA", 7),
+        Pair("SHA256withDSA", 8),
+        Pair("SHA384withDSA", 9),
+        Pair("SHA512withDSA", 10),
+        Pair("SHA3-224withDSA", 11),
+        Pair("SHA3-256withDSA", 12),
+        Pair("SHA3-384withDSA", 13),
+        Pair("SHA3-512withDSA", 14),
+        Pair("NONEwithDSA", 15),
+        Pair("SHA1withDetECDSA", 16),
+        Pair("SHA224withECDDSA", 17),
+        Pair("SHA256withECDDSA", 18),
+        Pair("SHA384withECDDSA", 19),
+        Pair("SHA512withECDDSA", 20),
+        Pair("SHA1withECDSA", 21),
+        Pair("NONEwithECDSA", 22),
+        Pair("SHA224withECDSA", 23),
+        Pair("SHA256withECDSA", 24),
+        Pair("SHA384withECDSA", 25),
+        Pair("SHA512withECDSA", 26),
+        Pair("SHA3-224withECDSA", 27),
+        Pair("SHA3-256withECDSA", 28),
+        Pair("SHA3-384withECDSA", 29),
+        Pair("SHA3-512withECDSA", 30),
+        Pair("SHA1withECNR", 31),
+        Pair("SHA224withECNR", 32),
+        Pair("SHA256withECNR", 33),
+        Pair("SHA384withECNR", 34),
+        Pair("SHA512withECNR", 35),
+        Pair("SHA224withRSA", 36),
+        Pair("SHA256withRSA", 37),
+        Pair("SHA384withRSA", 38),
+        Pair("SHA512withRSA", 39),
+        Pair("SHA512(224)withRSA", 40),
+        Pair("SHA512(256)withRSA", 41),
+        Pair("SHA3-224withRSA", 42),
+        Pair("SHA3-256withRSA", 43),
+        Pair("SHA3-384withRSA", 44),
+        Pair("SHA3-512withRSA", 45)
+    )
+
+    val cerf = setOf(
+        "MD5withRSA",
+        "SHA1withRSA",
+        "SHA256withDSA",
+        "SHA1withECDSA",
+        "SHA224withECDSA",
+        "SHA256withECDSA",
+        "SHA384withECDSA",
+        "SHA512withECDSA",
+        "SHA224withRSA",
+        "SHA256withRSA",
+        "SHA384withRSA",
+        "SHA512withRSA"
     )
 }

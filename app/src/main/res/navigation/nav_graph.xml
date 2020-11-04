@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_mainFragment_to_decryptFragment"
             app:destination="@id/decryptFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_certificateFragment"
+            app:destination="@id/certificateFragment" />
     </fragment>
     <fragment
         android:id="@+id/decryptFragment"
@@ -38,6 +41,15 @@
             app:destination="@id/decryptFragment" />
         <action
             android:id="@+id/action_encryptFragment_to_mainFragment2"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/certificateFragment"
+        android:name="com.example.cryptoproject.Fragments.CertificateFragment"
+        android:label="fragment_certificate"
+        tools:layout="@layout/fragment_certificate" >
+        <action
+            android:id="@+id/action_certificateFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
 </navigation>

@@ -1,9 +1,12 @@
 package com.example.cryptoproject
 
+import com.example.cryptoproject.Function.SetOfAlg
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.junit.Test
+import java.security.*
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+import kotlin.math.sign
 import kotlin.random.Random
 
 
@@ -37,8 +40,7 @@ class ExampleUnitTest {
                         if (t.toLowerCase() == it.algorithm.toLowerCase()) flag = false
                     }*/
                     /*if (flag) */println("${i++}. ${it.algorithm}")
-                }
-                catch (e : Exception) {
+                } catch (e: Exception) {
                     //println(e.message)
                 }
             }
@@ -70,4 +72,5 @@ class ExampleUnitTest {
             println(i)
         }
     }
+
 }

@@ -72,5 +72,10 @@
     <string name="decrypt_file">Расшифровать файл</string>
     <string name="test">Тест</string>
     <string name="Settings">Настройки</string>
+    <string name="Certificate">Создать сертификат</string>
+    <string name="CreateCertificate">Создание самоподписанного сертификата</string>
+    <string name="EnterData">Введите данные</string>
+    <string name="OrganizationName">Название организации</string>
+    <string name="Password">Пароль</string>
 
 </resources>

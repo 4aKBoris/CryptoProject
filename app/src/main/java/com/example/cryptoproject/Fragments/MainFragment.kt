@@ -25,7 +25,7 @@ class MainFragment : Fragment() {
     private val FILE_OPEN_CODE = 0
     private lateinit var FILENAME : String
 
-    @SuppressLint("SetTextI18n", "UseRequireInsteadOfGet")
+    @SuppressLint("SetTextI18n", "UseRequireInsteadOfGet", "SdCardPath")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -60,6 +60,12 @@ class MainFragment : Fragment() {
             thread.start()
         }
 
+        val ButtonCertificate = view.findViewById<Button>(R.id.Certificate)
+        ButtonCertificate.setOnClickListener {
+            NavHostFragment.findNavController(this)
+                .navigate(R.id.action_mainFragment_to_certificateFragment)
+        }
+
         val Memory = view.findViewById<TextView>(R.id.memory)
         val statFs = StatFs(Environment.getExternalStorageDirectory().absolutePath)
         val freeSpace = String.format("%.3f", statFs.freeBytes.toDouble() / 1000000000)
@@ -73,7 +79,7 @@ class MainFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             FILE_OPEN_CODE -> {
-                if (resultCode == Activity.RESULT_OK)  {
+                if (resultCode == Activity.RESULT_OK) {
                     FILENAME =
                         data?.data?.path!!
                     println(FILENAME)
