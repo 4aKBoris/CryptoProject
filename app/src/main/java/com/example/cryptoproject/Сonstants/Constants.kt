@@ -36,4 +36,5 @@ const val NoPadding = "NoPadding"
 const val KeySize = "keySize"
 const val Signature = "signature"
 const val CipherPassword = "cipherPassword"
+const val EnterPassword = "Введите пароль от хранилища ключей!"
 

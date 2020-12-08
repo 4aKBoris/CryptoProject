@@ -12,10 +12,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import com.example.cryptoproject.Expeptions.MyException
 import com.example.cryptoproject.R
+import com.example.cryptoproject.Сonstants.*
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.security.KeyStore
 
 
 @Suppress("DEPRECATION")
@@ -64,6 +71,27 @@ class MainFragment : Fragment() {
         ButtonCertificate.setOnClickListener {
             NavHostFragment.findNavController(this)
                 .navigate(R.id.action_mainFragment_to_certificateFragment)
+        }
+
+        val PasswordCertificateExport =
+            view.findViewById<EditText>(R.id.password_certificate_export)
+        val ButtonCertificateExport = view.findViewById<Button>(R.id.certificate_export)
+        ButtonCertificateExport.setOnClickListener {
+            try {
+                val password = PasswordCertificateExport.text.toString()
+                if (password == "") throw MyException(EnterPassword)
+                val certificateOutputStream =
+                    FileOutputStream(CertificatesPath + "my_certificate.cer")
+                val keyStoreData =
+                    FileInputStream(PATH_KEY_STORE)
+                val keyStore = KeyStore.getInstance(KEY_STORE_ALGORITHM)
+                keyStore.load(keyStoreData, password.toCharArray())
+                val certificate = keyStore.getCertificate(ALGORITHM)
+                certificateOutputStream.write(certificate.encoded)
+                certificateOutputStream.close()
+            } catch (e: MyException) {
+                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+            }
         }
 
         val Memory = view.findViewById<TextView>(R.id.memory)
