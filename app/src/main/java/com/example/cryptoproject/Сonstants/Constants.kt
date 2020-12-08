@@ -3,11 +3,10 @@
 package com.example.cryptoproject.Сonstants
 
 import android.annotation.SuppressLint
-import android.os.Environment
 import android.os.Environment.getExternalStorageDirectory
-import javax.crypto.Cipher
 
 const val NotUse = "Не использовать"
+const val LOG_TAG = "LOG"
 @SuppressLint("SdCardPath")
 const val PATH_KEY_STORE = "/data/data/com.example.cryptoproject/my_keystore.ks"
 const val KEY_STORE_ALGORITHM = "PKCS12"
@@ -72,3 +71,11 @@ const val SelectNotFile = "Вы выбрали не файл!"
 const val LowMemory = "Слишком мало памяти!"
 val CipherPath = getExternalStorageDirectory().path + "/RWork/Cipher/"
 const val FileEncrypted = "Файл зашифрован!"
+const val ChooseFile = "Выберите файл"
+const val NotSignature = "Цифровая подпись не прошла проверку!"
+const val WrongPassword = "Неверный пароль!"
+val ClearPath = getExternalStorageDirectory().path + "/RWork/Clear_files/"
+const val NotEncryptFile = "Выбран не зашифрованный файл!"
+const val EnterWrongPassword = "Введён неверный пароль!"
+const val FILESIZE = "Размер файла"
+const val Rule = "%.2f"

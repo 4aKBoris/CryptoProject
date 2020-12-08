@@ -48,7 +48,6 @@ class EncryptFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_encrypt, container, false)
         val SecondPassword = view.findViewById<View>(R.id.secondpassword) as LinearLayout
         val sp = getDefaultSharedPreferences(context)
-        flag = sp.getBoolean(getString(R.string.Provider), false)
         if (spSecond(sp)) SecondPassword.visibility = View.VISIBLE
         else SecondPassword.visibility = View.GONE
         val ButtonOpenFile =
@@ -173,7 +172,7 @@ class EncryptFragment : Fragment() {
                     data?.data?.path!!.replace("/external_files", Environment.getExternalStorageDirectory().path)
                         .replace("/root",
                             "")
-                FileSize.text = "Размер файла ${FileSize()}"
+                FileSize.text = FILESIZE + FileSize()
             }
 
         }
@@ -182,11 +181,11 @@ class EncryptFragment : Fragment() {
     private fun FileSize(): String {
         return when (val size = File(FILENAME).length()) {
             in 0..999 -> "$size Байт"
-            in 1000..999999 -> String.format("%.2f", size.toDouble() / 1000).plus(" КБ")
-            in 1000000..999999999 -> String.format("%.2f", size.toDouble() / 1000000).plus(" МБ")
-            in 1000000000..999999999999 -> String.format("%.2f", size.toDouble() / 1000000000).plus(
+            in 1000..999999 -> String.format(Rule, size.toDouble() / 1000).plus(" КБ")
+            in 1000000..999999999 -> String.format(Rule, size.toDouble() / 1000000).plus(" МБ")
+            in 1000000000..999999999999 -> String.format(Rule, size.toDouble() / 1000000000).plus(
                 " ГБ")
-            else -> String.format("%.2f", size.toDouble() / 1000000000000).plus(" ТБ")
+            else -> String.format(Rule, size.toDouble() / 1000000000000).plus(" ТБ")
         }
     }
 
@@ -195,8 +194,6 @@ class EncryptFragment : Fragment() {
         private var FILENAME: String = ""
         private var passwordFlag = false
         private lateinit var ProgresBar: ProgressBar
-        private var flag = false
-        private const val LOG_TAG = "LOG"
         private lateinit var FileSize: TextView
         private lateinit var PasswordSelect: View
         private lateinit var PasswordSelectText: TextView
