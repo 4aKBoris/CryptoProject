@@ -64,20 +64,18 @@ class DecryptFragment : Fragment() {
 
         ProgresBar = view.findViewById<View>(R.id.progresbar) as ProgressBar
         PasswordEdit1 = view.findViewById(R.id.password1)
-        PasswordEdit2 = view.findViewById(R.id.password2)
+        PasswordView = view.findViewById(R.id.firstpassword)
         val ButtonDecript =
             view.findViewById<View>(R.id.buttondecrypt) as Button
         ButtonDecript.setOnClickListener {
             val sp = PreferenceManager.getDefaultSharedPreferences(context)
             val password1 = PasswordEdit1.text.toString()
-            val password2 = PasswordEdit2.text.toString()
             password_key_store = PasswordKeyStore.text.toString()
             try {
                 if (FILENAME == "") throw MyException(OpenFile)
-                if (password1 == "") throw MyException(EnterPassword)
-                if (!PasswordCorrect(password1).PassCorrekt() && spPasswordFlag(sp)) throw MyException(
+                if (password1 == "" && !flag_cipher_password) throw MyException(EnterPassword)
+                if (!PasswordCorrect(password1).PassCorrekt() && spPasswordFlag(sp) && !flag_cipher_password) throw MyException(
                     RequirementsPassword)
-                if (spSecond(sp)) if (password1 != password2) throw MyException(CoincidePassword)
                 if (PasswordKeyStore.visibility == View.VISIBLE && password_key_store == "") throw MyException(
                     EnterPasswordKeyStore)
                 ProgresBar.visibility = View.VISIBLE
@@ -95,11 +93,11 @@ class DecryptFragment : Fragment() {
         ButtonPassword.setOnClickListener {
             if (passwordFlag) {
                 PasswordEdit1.transformationMethod = PasswordTransformationMethod.getInstance()
-                PasswordEdit2.transformationMethod = PasswordTransformationMethod.getInstance()
+                PasswordKeyStore.transformationMethod = PasswordTransformationMethod.getInstance()
                 passwordFlag = !passwordFlag
             } else {
                 PasswordEdit1.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                PasswordEdit2.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                PasswordKeyStore.transformationMethod = HideReturnsTransformationMethod.getInstance()
                 passwordFlag = !passwordFlag
             }
         }
@@ -120,7 +118,7 @@ class DecryptFragment : Fragment() {
                             SetOfAlg().sign[arr[0].toInt()],
                             password_key_store).SignDecrypt()
                     ) throw MyException(NotSignature)
-                    else arr = arr.copyOfRange(257, arr.size)
+                    else arr = arr.copyOfRange(arr[1].toInt() + 130, arr.size)
                 }
                 val cipher = Cipher(arr)
                 if (flag_cipher_password) cipher.setPasswordKeyStore(password_key_store)
@@ -131,7 +129,7 @@ class DecryptFragment : Fragment() {
                 FileReadWrite().writeFile(ClearPath + File(FILENAME).name,
                     list.toByteArray()
                 )
-                MessageExeption(FileEncrypted)
+                MessageExeption(FileDecrypted)
             } catch (e: NullPointerException) {
                 MessageExeption(NotEncryptFile)
             } catch (e: MyException) {
@@ -162,14 +160,12 @@ class DecryptFragment : Fragment() {
         if (arr[0] != zero || arr[0] == zero && arr[1] % 2 != 0) {
             PasswordKeyStore.visibility = View.VISIBLE
             flag_cipher_password = true
-            PasswordEdit1.visibility = View.GONE
-            PasswordEdit2.visibility = View.GONE
+            PasswordView.visibility = View.GONE
         }
         else {
             PasswordKeyStore.visibility = View.GONE
             flag_cipher_password = false
-            PasswordEdit1.visibility = View.VISIBLE
-            PasswordEdit2.visibility = View.VISIBLE
+            PasswordView.visibility = View.VISIBLE
         }
     }
 
@@ -205,7 +201,7 @@ class DecryptFragment : Fragment() {
 
         private lateinit var PasswordKeyStore: EditText
         private lateinit var PasswordEdit1: EditText
-        private lateinit var PasswordEdit2: EditText
+        private lateinit var PasswordView: View
         private lateinit var ProgresBar: ProgressBar
         private lateinit var FileSize: TextView
     }

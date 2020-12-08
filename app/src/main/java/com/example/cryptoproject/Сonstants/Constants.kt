@@ -79,3 +79,4 @@ const val NotEncryptFile = "Выбран не зашифрованный фай�
 const val EnterWrongPassword = "Введён неверный пароль!"
 const val FILESIZE = "Размер файла"
 const val Rule = "%.2f"
+const val FileDecrypted = "Файл расшифрован!"

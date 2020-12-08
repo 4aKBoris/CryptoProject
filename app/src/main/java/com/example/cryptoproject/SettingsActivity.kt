@@ -201,7 +201,7 @@ class SettingsActivity : AppCompatActivity() {
 
         SecondPassword.setOnCheckedChangeListener { _, isChecked ->
             second_password = isChecked
-            TextFlagSalt.text = yesNo[second_password]
+            TextSecondPassword.text = yesNo[second_password]
         }
 
         DeleteFileSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -294,8 +294,8 @@ class SettingsActivity : AppCompatActivity() {
             LinearLayoutPadding.visibility = View.VISIBLE
         }
         if ((cipher_alg !in set.cipher64 && bcm == GOFB) || (cipher_alg !in set.cipher128 && bcm in set.cbc128) || cipher_alg == GOST34122015 && bcm == CTR) {
-            bcm = getString(R.string.CBC)
-            TextBCM.text = getString(R.string.CBC)
+            bcm = CBC
+            TextBCM.text = CBC
         }
 
         val step = set.keySize[cipher_alg]
@@ -324,8 +324,8 @@ class SettingsActivity : AppCompatActivity() {
             padding = NoPadding
         }
         if (bcm != ECB && bcm != CBC && padding == WithCTS) {
-            TextPadding.text = getString(R.string.CBC)
-            padding = getString(R.string.CBC)
+            TextPadding.text = CBC
+            padding = CBC
         }
     }
 

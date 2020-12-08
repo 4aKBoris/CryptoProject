@@ -24,7 +24,8 @@ class Signature(
         val entryPassword = KeyStore.PasswordProtection(password)
         val privateKeyEntry =
             keyStore.getEntry(signature_algorithm, entryPassword) as KeyStore.PrivateKeyEntry
-        return SignEnc(privateKeyEntry.privateKey).plus(arr)
+        val sign = SignEnc(privateKeyEntry.privateKey)
+        return byteArrayOf((sign.size - 128).toByte()).plus(sign.plus(arr))
     }
 
     private fun SignEnc(private_key: PrivateKey): ByteArray {
@@ -44,8 +45,8 @@ class Signature(
         val keyStore = KeyStore.getInstance(KEY_STORE_ALGORITHM)
         keyStore.load(keyStoreData, password)
         val certificate = keyStore.getCertificate(signature_algorithm)
-        return SignDec(arr.copyOfRange(c257, arr.size),
-            arr.copyOfRange(c1, c257),
+        return SignDec(arr.copyOfRange(arr[1].toInt() + c130, arr.size),
+            arr.copyOfRange(c2, arr[1].toInt() + c130),
             certificate.publicKey)
     }
 
@@ -64,8 +65,8 @@ class Signature(
         @SuppressLint("SdCardPath")
         private const val PATH_KEY_STORE = "/data/data/com.example.cryptoproject/my_keystore.ks"
         private const val KEY_STORE_ALGORITHM = "PKCS12"
-        private const val c257 = 257
-        private const val c1 = 1
+        private const val c130 = 130
+        private const val c2 = 2
         private val secureRandom = SecureRandom()
     }
 }
