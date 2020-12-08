@@ -2,71 +2,91 @@
 
 package com.example.cryptoproject.Function
 
-import kotlin.experimental.xor
+import android.annotation.SuppressLint
+import com.example.cryptoproject.Сonstants.*
+import java.security.*
+import javax.crypto.Cipher.getInstance
 import kotlin.random.Random
 
 class MetaDataInput(
     private var arr: ByteArray,
-    password: String,
-    private val hash_alggoritm: String,
+    private val password: String,
+    private val hash_algorithm: String,
     private val hash_count: Int,
-    private val cipher_algoritm: String,
-    private val cipher_cbc: String,
+    private val cipher_algorithm: String,
+    private val cipher_bcm: String,
     private val cipher_padding: String,
     private val cipher_count: Int,
     private val iv: ByteArray,
-    private val provider: Boolean,
-    private val keysize: Int
-) :
-    MetaData(password) {
+    private val keysize: Int,
+    private val signature: String,
+    private val cipherPassword: Boolean,
+) {
 
     private var salt: ByteArray? = null
     private var zeroByte = 0
+
+    private lateinit var publicKey: PublicKey
+    private lateinit var password_key_store: String
 
     fun setSalt(salt: ByteArray) {
         this.salt = salt
     }
 
-    fun setZeroByte(zeroByte : Int) {
+    fun setZeroByte(zeroByte: Int) {
         this.zeroByte = zeroByte
     }
 
-    private var meta = ArrayList<Byte>()
+    fun setPublicKey(publicKey: PublicKey) {
+        this.publicKey = publicKey
+    }
 
-    private val rnd = Random
+    fun setPasswordKeyStore(password_key_store: String) {
+        this.password_key_store = password_key_store
+    }
 
+    @SuppressLint("SdCardPath")
     fun metaData(): ByteArray {
-        meta.add(if (provider) random(true) else random(false))
-        meta.add(hashfunInput.getValue(hash_alggoritm) xor rndSeek.nextInt().toByte())
-        if (hash_count > 127) {
-            meta.add(random(true))
-            meta.add((hash_count / 128).toByte())
-            meta.add((hash_count % 128).toByte())
-        } else {
-            meta.add(random(false))
-            meta.add(hash_count.toByte())
-            meta.add(rnd.nextInt().toByte())
-        }
-        if (salt != null) {
-            meta.add(random(true))
-            salt!!.forEach { meta.add(it) }
-        } else meta.add(random(false))
         meta.run {
-            add(cryptofunInput.getValue(cipher_algoritm) xor rndSeek.nextInt().toByte())
-            add(cipher_count.toByte() xor rndSeek.nextInt().toByte())
-        }
-        if (cipher_algoritm !in cipherStream) {
-            meta.run {
-                add(cryptoCBCInput.getValue(cipher_cbc) xor rndSeek.nextInt().toByte())
-                add(cryptoPaddingInput.getValue(cipher_padding) xor rndSeek.nextInt().toByte())
+            if (cipherPassword) Encrypt()
+            else add(random(false))
+            add(hashAlg.indexOf(hash_algorithm).toByte())
+            if (hash_count > 127) {
+                add(random(true))
+                add((hash_count / 128).toByte())
+                add((hash_count % 128).toByte())
+            } else {
+                add(random(false))
+                add(hash_count.toByte())
+                add(rnd.nextInt().toByte())
             }
+            if (salt != null) {
+                add(random(true))
+                addAll(salt!!.toList())
+            } else add(random(false))
+            add(cipherAlg.indexOf(cipher_algorithm).toByte())
+            add(cipher_count.toByte())
+            if (cipher_algorithm !in cipherStream) {
+                add(cipherBcm.indexOf(cipher_bcm).toByte())
+                add(cipherPadding.indexOf(cipher_padding).toByte())
+            }
+            addAll(iv.toList())
+            add(keysize.toByte())
+            add(zeroByte.toByte())
         }
-        iv.forEach { meta.add(it) }
-        meta.run {
-            add(keysize.toByte() xor rndSeek.nextInt().toByte())
-            add(zeroByte.toByte() xor rndSeek.nextInt().toByte())
+        arr = meta.toByteArray().plus(arr)
+        if (signature != "Не использовать") {
+            val sign = Signature(arr, signature, password_key_store)
+            arr = sign.SignEncrypt()
         }
-        return meta.toByteArray().plus(arr)
+        return byteArrayOf(sign.indexOf(signature).toByte()).plus(arr)
+    }
+
+    private fun Encrypt() {
+        meta.add(random(true))
+        val cipher = getInstance("RSA")
+        cipher.init(javax.crypto.Cipher.ENCRYPT_MODE, publicKey)
+        meta.addAll(cipher.doFinal(password.toByteArray()).toList())
     }
 
     private fun random(flag: Boolean): Byte {
@@ -75,5 +95,10 @@ class MetaDataInput(
             fl = rnd.nextInt()
         }
         return fl.toByte()
+    }
+
+    companion object {
+        private val rnd = Random
+        private var meta = ArrayList<Byte>()
     }
 }
