@@ -98,6 +98,49 @@ val keySize = mapOf(
     Pair("GOST3412-2015", listOf(32, 1, 32))
 )
 
+val setIV_8 =
+    setOf(
+        "ChaCha",
+        "Salsa20",
+        "Grainv1",
+        "DES",
+        "DESede",
+        "Blowfish",
+        "XTEA",
+        "GOST28147",
+        "CAST5",
+        "IDEA",
+        "Skipjack",
+        "TEA",
+        "RC2",
+        "RC5"
+    )
+val setIV_12 = setOf("Grain128")
+val setIV_16 = setOf(
+    "AES",
+    "Rijndael",
+    "HC128",
+    "HC256",
+    "Serpent",
+    "SM4",
+    "Twofish",
+    "Camellia",
+    "Noekeon",
+    "SEED",
+    "CAST6",
+    "VMPC",
+    "ARIA",
+    "GCM",
+    "RC6",
+    "DSTU7624",
+    "GOST3412-2015"
+)
+
+val setIV_24 = setOf("XSalsa20")
+val setIV_32 = setOf("Shacal2", "Threefish-256")
+val setIV_64 = setOf("Threefish-512")
+val setIV_128 = setOf("Threefish-1024")
+
 val cipherAlg = listOf("AES",
     "Blowfish",
     "DES",

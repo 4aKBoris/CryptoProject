@@ -2,101 +2,74 @@
 
 package com.example.cryptoproject.Function
 
-import kotlin.experimental.xor
+import com.example.cryptoproject.DataObject.MetaData
+import com.example.cryptoproject.Сonstants.*
+import java.io.FileInputStream
+import java.security.KeyStore
+import javax.crypto.Cipher
 import kotlin.math.abs
 
-class MetaDataOutput(private var arr: ByteArray, password: String) :
-    MetaData(password) {
+class MetaDataOutput(private var arr: ByteArray) {
 
-    private val BlockSize = 128
-    private lateinit var hash_alg: String
-    private var hash_count: Int = 0
-    private var salt: ByteArray? = null
-    private lateinit var cipher_alg: String
-    private var cipher_count = 0
-    private var iv = ByteArray(BlockSize)
-    private var flagSalt: Boolean = false
-    private var provider = false
-    private var cbc = ""
-    private var padding = ""
-    private var keysize = 32
-    private var zeroByte = 0
+    private lateinit var password_key_store: CharArray
 
+    private val meta = MetaData
 
-    fun getCipherAlg(): String {
-        return cipher_alg
+    fun setPasswordKeyStore(password_key_store: String) {
+        this.password_key_store = password_key_store.toCharArray()
     }
 
-    fun getHashAlg(): String {
-        return hash_alg
+    fun setPassword(password: String) {
+        meta.password = password
     }
 
-    fun getHashCount(): Int {
-        return hash_count
-    }
-
-    fun getCipherCount(): Int {
-        return cipher_count
-    }
-
-    fun getIV(): ByteArray {
-        return iv
-    }
-
-    fun getFlagSalt(): Boolean {
-        return flagSalt
-    }
-
-    fun getSalt(): ByteArray? {
-        return salt
-    }
-
-    fun getProvader() : Boolean {
-        return provider
-    }
-
-    fun getCBC() : String {
-        return cbc
-    }
-
-    fun getPadding() : String {
-        return padding
-    }
-
-    fun getKeySize() : Int {
-        return keysize
-    }
-
-    fun getZeroByte() : Int {
-        return zeroByte
-    }
-
-    fun metaData(): ByteArray {
-        val mas = arr.toMutableList()
-        provider = mas.removeAt(0) % 2 != 0
-        hash_alg = hashfunOutput.getValue(mas.removeAt(0) xor rndSeek.nextInt().toByte())
-        if (mas.removeAt(0) % 2 == 0) {
-            hash_count = mas.removeAt(0).toInt()
-            mas.removeAt(0)
-        } else {
-            val hLeft = mas.removeAt(0)
-            val hRight = mas.removeAt(0)
-            hash_count = hRight + hLeft * 128
+    fun metaData(): MetaData {
+        meta.run {
+            var mas = arr.toMutableList()
+            mas.run {
+                if (removeFirst() % 2 != 0) mas = Decrypt(mas)
+                hash_alg = hashAlg[removeFirst().toInt()]
+                if (removeFirst() % 2 == 0) {
+                    hash_count = removeFirst().toInt()
+                    removeFirst()
+                } else {
+                    val hLeft = removeFirst()
+                    val hRight = removeFirst()
+                    hash_count = hRight + hLeft * 128
+                }
+                if (removeFirst() % 2 != 0) {
+                    flag_salt = true
+                    salt = ByteArray(16)
+                    for (i in 0 until 16) salt[i] = removeFirst()
+                }
+                cipher_alg = cipherAlg[removeFirst().toInt()]
+                cipher_count = removeFirst().toInt()
+                if (cipher_alg !in cipherStream) {
+                    ebc = cipherBcm[removeFirst().toInt()]
+                    padding = cipherPadding[removeFirst().toInt()]
+                }
+                for (i in 0 until BlockSize) iv[i] = removeFirst()
+                keysize = abs(removeFirst().toInt())
+                zeroByte = abs(removeFirst().toInt())
+            }
+            array = mas.toByteArray()
+            return meta
         }
-        if (mas.removeAt(0) % 2 != 0) {
-            flagSalt = true
-            salt = ByteArray(16)
-            for (i in 0 until 16) salt!![i] = mas.removeAt(0)
-        }
-        cipher_alg = cryptofunOutput.getValue(mas.removeAt(0) xor rndSeek.nextInt().toByte())
-        cipher_count = (mas.removeAt(0) xor rndSeek.nextInt().toByte()).toInt()
-        if (cipher_alg !in cipherStream) {
-            cbc = cryptoCBCOutput.getValue(mas.removeAt(0) xor rndSeek.nextInt().toByte())
-            padding = cryptoPaddingOutput.getValue(mas.removeAt(0) xor rndSeek.nextInt().toByte())
-        }
-        for (i in 0 until BlockSize) iv[i] = mas.removeAt(0)
-        keysize = abs((mas.removeAt(0) xor rndSeek.nextInt().toByte()).toInt())
-        zeroByte = abs((mas.removeAt(0) xor rndSeek.nextInt().toByte()).toInt())
-        return mas.toByteArray()
+    }
+
+    private fun Decrypt(mas: MutableList<Byte>): MutableList<Byte> {
+        meta.cipher_password = true
+        val pass = mutableListOf<Byte>()
+        for (i in 1..256) pass.add(mas.removeFirst())
+        val cipher = Cipher.getInstance(RSA)
+        val keyStoreData = FileInputStream(PATH_KEY_STORE)
+        val keyStore = KeyStore.getInstance(KEY_STORE_ALGORITHM)
+        keyStore.load(keyStoreData, password_key_store)
+        val entryPassword = KeyStore.PasswordProtection(password_key_store)
+        val privateKeyEntry =
+            keyStore.getEntry(ALGORITHM, entryPassword) as KeyStore.PrivateKeyEntry
+        cipher.init(Cipher.DECRYPT_MODE, privateKeyEntry.privateKey)
+        meta.password = cipher.doFinal(pass.toByteArray()).toString(Charsets.UTF_8)
+        return mas
     }
 }
