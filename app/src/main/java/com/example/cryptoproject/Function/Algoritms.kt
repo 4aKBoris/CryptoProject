@@ -45,44 +45,4 @@ open class Algoritms {
         }
         return cipher
     }
-
-    protected fun spCipherAlg(sp: SharedPreferences): String {
-        return sp.getString(CipherAlgorithm, AES)!!
-    }
-
-    protected fun spCipherCount(sp: SharedPreferences): Int {
-        return sp.getInt(CipherCount, ONE)
-    }
-
-    protected fun spHashAlg(sp: SharedPreferences): String {
-        return sp.getString(HashAlgorithm, SHA256)!!
-    }
-
-    protected fun spHashCount(sp: SharedPreferences): Int {
-        return sp.getInt(HashCount, ONE)
-    }
-
-    protected fun spSalt(sp: SharedPreferences): Boolean {
-        return sp.getBoolean(Salt, NOT)
-    }
-
-    protected fun spCBC(sp: SharedPreferences): String {
-        return sp.getString(BCM, CBC)!!
-    }
-
-    protected fun spPadding(sp: SharedPreferences): String {
-        return sp.getString(Padding, NoPadding)!!
-    }
-
-    protected fun spKeySize(sp: SharedPreferences): Int {
-        return sp.getInt(KeySize, KEYSIZE)
-    }
-
-    protected fun spSignature(sp: SharedPreferences): String {
-        return sp.getString(com.example.cryptoproject.Сonstants.Signature, NotUse)!!
-    }
-
-    protected fun spCipherPassword(sp: SharedPreferences): Boolean {
-        return sp.getBoolean(CipherPassword, NOT)
-    }
 }

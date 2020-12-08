@@ -79,7 +79,7 @@ class MainFragment : Fragment() {
         ButtonCertificateExport.setOnClickListener {
             try {
                 val password = PasswordCertificateExport.text.toString()
-                if (password == "") throw MyException(EnterPassword)
+                if (password == "") throw MyException(EnterPasswordKeyStore)
                 val certificateOutputStream =
                     FileOutputStream(CertificatesPath + "my_certificate.cer")
                 val keyStoreData =

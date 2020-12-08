@@ -5,6 +5,7 @@ package com.example.cryptoproject.Сonstants
 import android.annotation.SuppressLint
 import android.os.Environment
 import android.os.Environment.getExternalStorageDirectory
+import javax.crypto.Cipher
 
 const val NotUse = "Не использовать"
 @SuppressLint("SdCardPath")
@@ -41,7 +42,7 @@ const val NoPadding = "NoPadding"
 const val KeySize = "keySize"
 const val Signature = "signature"
 const val CipherPassword = "cipherPassword"
-const val EnterPassword = "Введите пароль от хранилища ключей!"
+const val EnterPasswordKeyStore = "Введите пароль от хранилища ключей!"
 const val TEN = 1000000000
 const val RWork = "RWork"
 const val RCipher = "RWork/Cipher"
@@ -58,4 +59,16 @@ const val WithCTS = "withCTS"
 const val PaddingMode = "Режим сцепления блоков"
 const val FillingMode = "Режим наполнения"
 const val Sign = "Цифровая подпись"
-
+const val Mistake = "Ошибка!"
+const val Exc = "Exception"
+const val CertSelect = "Выбор сертификата"
+const val OpenFile = "Откройте файл!"
+const val EnterPassword = "Введите пароль!"
+const val RequirementsPassword = "Пароль не соответствует требованиям!"
+const val CoincidePassword = "Введённые пароли не совпадают!"
+const val CertificSelect = "Выберите сертификат для шифрования пароля!"
+const val NotExist = "Файла не существует!"
+const val SelectNotFile = "Вы выбрали не файл!"
+const val LowMemory = "Слишком мало памяти!"
+val CipherPath = getExternalStorageDirectory().path + "/RWork/Cipher/"
+const val FileEncrypted = "Файл зашифрован!"
