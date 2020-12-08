@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,14 +28,65 @@
             android:text="@string/EnterData"/>
 
         <EditText
-            android:id="@+id/organization"
+            android:id="@+id/common_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/OrganizationName"
+            android:hint="@string/common_name"
             android:layout_gravity="center"
             android:layout_marginTop="20sp"
             android:textSize="20sp"
             tools:ignore="Autofill,TextFields" />
+
+        <EditText
+            android:id="@+id/organizational_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/organizational_unit"
+            android:layout_gravity="center"
+            android:layout_marginTop="20sp"
+            android:textSize="20sp"
+            tools:ignore="Autofill,TextFields" />
+
+        <EditText
+            android:id="@+id/organization_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/organization_name"
+            android:layout_gravity="center"
+            android:layout_marginTop="20sp"
+            android:textSize="20sp"
+            tools:ignore="Autofill,TextFields" />
+
+        <EditText
+            android:id="@+id/locality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/locality"
+            android:layout_gravity="center"
+            android:layout_marginTop="20sp"
+            android:textSize="20sp"
+            tools:ignore="Autofill,TextFields" />
+
+        <EditText
+            android:id="@+id/state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/state"
+            android:layout_gravity="center"
+            android:layout_marginTop="20sp"
+            android:textSize="20sp"
+            tools:ignore="Autofill,TextFields" />
+
+        <EditText
+            android:id="@+id/country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/country"
+            android:layout_gravity="center"
+            android:layout_marginTop="20sp"
+            android:textSize="20sp"
+            tools:ignore="Autofill,TextFields" />
+
 
         <EditText
             android:id="@+id/cerfpassword"
@@ -59,4 +110,4 @@
 
     </LinearLayout>
 
-</FrameLayout>
+</ScrollView>

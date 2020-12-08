@@ -5,7 +5,6 @@ package com.example.cryptoproject
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.SharedPreferences
-import android.content.SharedPreferences.Editor
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager.getDefaultSharedPreferences
@@ -17,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cryptoproject.Expeptions.MyException
 import com.example.cryptoproject.Function.SetOfAlg
+import com.example.cryptoproject.Сonstants.*
 
 
 @Suppress(
@@ -24,42 +24,6 @@ import com.example.cryptoproject.Function.SetOfAlg
     "TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING"
 )
 class SettingsActivity : AppCompatActivity() {
-
-    private val set = SetOfAlg()
-    //private val LOG_TAG = "LOG"
-    private lateinit var sp: SharedPreferences
-    private lateinit var list: List<String>
-
-    private lateinit var TextHash: TextView
-    private lateinit var TextCipher: TextView
-    private lateinit var TextBCM: TextView
-    private lateinit var TextPadding: TextView
-    private lateinit var LinearLayoutCBC: LinearLayout
-    private lateinit var LinearLayoutPadding: LinearLayout
-    private lateinit var TextFlagSalt: TextView
-    private lateinit var TextSecondPassword: TextView
-    private lateinit var TextDeleteFile: TextView
-
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private lateinit var FlagSalt: Switch
-
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private lateinit var SecondPassword: Switch
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private lateinit var PasswordFlag: Switch
-    private lateinit var TextPasswordFlag: TextView
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private lateinit var DeleteFile: Switch
-    private lateinit var Provider: CheckBox
-    private lateinit var HashCount: SeekBar
-    private lateinit var HashCountValue: TextView
-    private lateinit var HashCountEdit: EditText
-    private lateinit var HashButton: Button
-    private lateinit var CipherCount: NumberPicker
-    private lateinit var KeySize: NumberPicker
-    private lateinit var KeySizeMin: TextView
-    private lateinit var KeySizeMax: TextView
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,42 +43,42 @@ class SettingsActivity : AppCompatActivity() {
         TextDeleteFile = findViewById(R.id.delete_file_text)
         FlagSalt = findViewById(R.id.salt_flag)
         SecondPassword = findViewById(R.id.second_password)
-        DeleteFile = findViewById(R.id.delete_file)
-        Provider = findViewById(R.id.checkbox1)
-        HashCount = findViewById(R.id.hash_count)
+        DeleteFileSwitch = findViewById(R.id.delete_file)
+        HashCnt = findViewById(R.id.hash_count)
         HashCountValue = findViewById(R.id.hash_count_value)
         HashCountEdit = findViewById(R.id.hash_count_edit)
         HashButton = findViewById(R.id.hash_set_count)
-        CipherCount = findViewById(R.id.cipher_count)
-        KeySize = findViewById(R.id.key_size)
+        CipherCnt = findViewById(R.id.cipher_count)
+        KeySizePicker = findViewById(R.id.key_size)
         KeySizeMin = findViewById(R.id.min_key_size)
         KeySizeMax = findViewById(R.id.max_key_size)
-        PasswordFlag = findViewById(R.id.password_flag)
+        PasswordFlagSwitch = findViewById(R.id.password_flag)
         TextPasswordFlag = findViewById(R.id.password_flag_text)
+        SignatureAlgorithm = findViewById(R.id.sign_alg_text)
+        CipherPasswordSwitch = findViewById(R.id.cipherPassword)
+        TextCipherPassword = findViewById(R.id.cipherPassword_text)
 
         findViewById<View>(R.id.hash_alg).setOnClickListener {
-            list = if (provider) set.hash_alg_bc else set.hash_alg_default
-            AlertDialog.Builder(this).setTitle("Алгоритм хэширования")
+            list = set.hash_alg
+            AlertDialog.Builder(this).setTitle(AlgHash)
                 .setCancelable(false)
                 .setAdapter(
                     ArrayAdapter(this, android.R.layout.simple_list_item_1, list),
                     HashAlg
                 )
                 .setNegativeButton(
-                    "Отмена"
+                    Cansel
                 ) { dialog, _ -> dialog.cancel() }.create()
                 .show()
         }
 
-        HashCount.min = 1
-        HashCount.max = 16383
-        HashCount.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+        HashCnt.min = ONE
+        HashCnt.max = 16383
+        HashCnt.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                // TODO Auto-generated method stub
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
-                // TODO Auto-generated method stub
             }
 
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -125,17 +89,13 @@ class SettingsActivity : AppCompatActivity() {
 
         HashButton.setOnClickListener {
             try {
-                if (HashCountEdit.text.toString() == "") throw MyException(
-                    "Введённое значение не соответствует требованиям!"
-                )
+                if (HashCountEdit.text.toString() == "") throw MyException(NotRequirements)
                 val k = HashCountEdit.text.toString().toInt()
-                if (k <= 0 || k > 16256) throw MyException(
-                    "Введённое значение не соответствует требованиям!"
-                )
+                if (k <= 0 || k > 16256) throw MyException(NotRequirements)
                 else {
                     hash_count = k
                     HashCountValue.text = k.toString()
-                    HashCount.progress = k
+                    HashCnt.progress = k
                 }
             } catch (e: MyException) {
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
@@ -143,47 +103,39 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-
-        Provider.setOnCheckedChangeListener { _, isChecked ->
-            provider = isChecked
-            if (!provider) DefaultSettings()
-        }
-
-
-
         findViewById<View>(R.id.cipher_alg).setOnClickListener {
-            list = if (provider) set.cipher_alg_bc else set.cipher_alg_default
-            AlertDialog.Builder(this).setTitle("Алгоритм шифрования")
+            list = set.cipher_alg
+            AlertDialog.Builder(this).setTitle(AlgCipher)
                 .setCancelable(false)
                 .setAdapter(
                     ArrayAdapter(this, android.R.layout.simple_list_item_1, list),
                     CipherAlg
                 )
                 .setNegativeButton(
-                    "Отмена"
+                    Cansel
                 ) { dialog, _ -> dialog.cancel() }.create()
                 .show()
         }
 
-        CipherCount.minValue = 1
-        CipherCount.maxValue = 127
+        CipherCnt.minValue = ONE
+        CipherCnt.maxValue = 127
 
-        CipherCount.setOnValueChangedListener { _, _, newVal ->
+        CipherCnt.setOnValueChangedListener { _, _, newVal ->
             cipher_count = newVal
         }
 
-        KeySize.setOnValueChangedListener { _, _, newVal ->
+        KeySizePicker.setOnValueChangedListener { _, _, newVal ->
             val step = set.keySize[cipher_alg]
             val values = mutableListOf<Int>()
             for (i in step!![0]..step[2] step (step[1])) values.add(i)
-            keysize = values[newVal]
+            key_size = values[newVal]
         }
 
         findViewById<View>(R.id.cipher_bcm).setOnClickListener {
-            list = if (provider) set.cipher_bcm_bc else set.cipher_bcm_default
+            list = set.cipher_bcm
             if (cipher_alg !in set.cipher64) {
                 val l = list.toMutableList()
-                l.remove("GOFB")
+                l.remove(GOFB)
                 list = l.toList()
             }
             if (cipher_alg !in set.cipher128) {
@@ -191,62 +143,80 @@ class SettingsActivity : AppCompatActivity() {
                 l.removeAll(set.cbc128)
                 list = l.toList()
             }
-            if (cipher_alg == "GOST3412-2015") {
+            if (cipher_alg == GOST34122015) {
                 val l = list.toMutableList()
-                l.remove("CTR")
+                l.remove(CTR)
                 list = l.toList()
             }
-            AlertDialog.Builder(this).setTitle("Режим сцепления блоков")
+            AlertDialog.Builder(this).setTitle(PaddingMode)
                 .setCancelable(false)
                 .setAdapter(
                     ArrayAdapter(this, android.R.layout.simple_list_item_1, list),
                     CipherBCM
                 )
                 .setNegativeButton(
-                    "Отмена"
+                    Cansel
                 ) { dialog, _ -> dialog.cancel() }.create()
                 .show()
         }
 
         findViewById<View>(R.id.cipher_padding).setOnClickListener {
-            list = if (provider) set.cipher_padding_bc else set.cipher_padding_default
+            list = set.cipher_padding
             //if (BCM == "CTR") list = listOf("ECB", "CBC")
-            if (BCM != "ECB" && BCM != "CBC") {
+            if (bcm != ECB && bcm != CBC) {
                 val l = list.toMutableList()
-                l.remove("withCTS")
+                l.remove(WithCTS)
                 list = l.toList()
             }
-            if (BCM in set.AEAD) list = listOf("NoPadding")
-            AlertDialog.Builder(this).setTitle("Режим наполнения")
+            if (bcm in set.AEAD) list = listOf(NoPadding)
+            AlertDialog.Builder(this).setTitle(FillingMode)
                 .setCancelable(false)
                 .setAdapter(
                     ArrayAdapter(this, android.R.layout.simple_list_item_1, list),
                     CipherPadding
                 )
                 .setNegativeButton(
-                    "Отмена"
+                    Cansel
                 ) { dialog, _ -> dialog.cancel() }.create()
                 .show()
         }
 
+        findViewById<View>(R.id.signature).setOnClickListener {
+            list = set.sign
+            AlertDialog.Builder(this).setTitle(Sign).setCancelable(false).setAdapter(
+                ArrayAdapter(this, android.R.layout.simple_list_item_1, list),
+                SignatureAlg
+            )
+                .setNegativeButton(Cansel) { dialog, _ ->
+                    dialog.cancel()
+                }.create().show()
+        }
+
+
+
         FlagSalt.setOnCheckedChangeListener { _, isChecked ->
-            Salt = isChecked
-            TextFlagSalt.text = yesNo[Salt]
+            salt_flag = isChecked
+            TextFlagSalt.text = yesNo[salt_flag]
         }
 
         SecondPassword.setOnCheckedChangeListener { _, isChecked ->
-            secondPassword = isChecked
-            TextFlagSalt.text = yesNo[secondPassword]
+            second_password = isChecked
+            TextFlagSalt.text = yesNo[second_password]
         }
 
-        DeleteFile.setOnCheckedChangeListener { _, isChecked ->
-            deleteFile = isChecked
-            TextFlagSalt.text = yesNo[deleteFile]
+        DeleteFileSwitch.setOnCheckedChangeListener { _, isChecked ->
+            delete_file = isChecked
+            TextFlagSalt.text = yesNo[delete_file]
         }
 
-        PasswordFlag.setOnCheckedChangeListener { _, isChecked ->
-            passwordFlag = isChecked
-            TextPasswordFlag.text = yesNo[passwordFlag]
+        PasswordFlagSwitch.setOnCheckedChangeListener { _, isChecked ->
+            password_flag = isChecked
+            TextPasswordFlag.text = yesNo[password_flag]
+        }
+
+        CipherPasswordSwitch.setOnCheckedChangeListener { _, isChecked ->
+            cipher_password = isChecked
+            TextCipherPassword.text = yesNo[cipher_password]
         }
 
         setSettings()
@@ -255,45 +225,48 @@ class SettingsActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setSettings() {
-        hash_alg = sp.getString(getString(R.string.HashAlgorithm), getString(R.string.SHA))!!
-        hash_count = sp.getInt(getString(R.string.HashCount), 1)
-        cipher_alg = sp.getString(getString(R.string.CipherAlgorithm), getString(R.string.AES))!!
-        cipher_count = sp.getInt(getString(R.string.CipherCount), 1)
-        BCM = sp.getString(getString(R.string.BCM), getString(R.string.CBC))!!
-        Padding = sp.getString(getString(R.string.Padding), getString(R.string.PKCS5Padding))!!
-        Salt = sp.getBoolean(getString(R.string.Salt), false)
-        secondPassword = sp.getBoolean(getString(R.string.SecordPassword), false)
-        deleteFile = sp.getBoolean(getString(R.string.DeleteFile), false)
-        provider = sp.getBoolean(getString(R.string.Provider), false)
-        keysize = sp.getInt(getString(R.string.keySize), set.keySize.getValue(cipher_alg)[2])
-        passwordFlag = sp.getBoolean(getString(R.string.PasswordFlag), false)
+        hash_alg = sp.getString(HashAlgorithm, SHA256)!!
+        hash_count = sp.getInt(HashCount, ONE)
+        cipher_alg = sp.getString(CipherAlgorithm, AES)!!
+        cipher_count = sp.getInt(CipherCount, 1)
+        bcm = sp.getString(BCM, CBC)!!
+        padding = sp.getString(Padding, PKCS5Padding)!!
+        salt_flag = sp.getBoolean(Salt, NOT)
+        second_password = sp.getBoolean(SecordPassword, NOT)
+        delete_file = sp.getBoolean(DeleteFile, NOT)
+        key_size = sp.getInt(KeySize, set.keySize.getValue(cipher_alg)[2])
+        password_flag = sp.getBoolean(PasswordFlag, NOT)
+        signature = sp.getString(Signature, NotUse)!!
+        cipher_password = sp.getBoolean(CipherPassword, NOT)
 
-        FlagSalt.isChecked = Salt
-        TextFlagSalt.text = yesNo[Salt]
-        SecondPassword.isChecked = secondPassword
-        TextSecondPassword.text = yesNo[secondPassword]
-        DeleteFile.isChecked = deleteFile
-        TextDeleteFile.text = yesNo[deleteFile]
-        TextPasswordFlag.text = yesNo[passwordFlag]
-        PasswordFlag.isChecked = passwordFlag
+
+        CipherPasswordSwitch.isChecked = cipher_password
+        TextCipherPassword.text = yesNo[cipher_password]
+        SignatureAlgorithm.text = signature
+        FlagSalt.isChecked = salt_flag
+        TextFlagSalt.text = yesNo[salt_flag]
+        SecondPassword.isChecked = second_password
+        TextSecondPassword.text = yesNo[second_password]
+        DeleteFileSwitch.isChecked = delete_file
+        TextDeleteFile.text = yesNo[delete_file]
+        TextPasswordFlag.text = yesNo[password_flag]
+        PasswordFlagSwitch.isChecked = password_flag
 
         TextHash.text = hash_alg
         HashCountValue.text = hash_count.toString()
-        HashCount.progress = hash_count
+        HashCnt.progress = hash_count
 
         TextCipher.text = cipher_alg
-        TextBCM.text = BCM
-        TextPadding.text = Padding
-        CipherCount.value = cipher_count
-        Provider.isChecked = provider
-
+        TextBCM.text = bcm
+        TextPadding.text = padding
+        CipherCnt.value = cipher_count
         val step = set.keySize[cipher_alg]
         val values = mutableListOf<String>()
         for (i in step!![0]..step[2] step (step[1])) values.add(i.toString())
-        KeySize.minValue = 0
-        KeySize.maxValue = values.size - 1
-        KeySize.displayedValues = values.toTypedArray()
-        KeySize.value = values.indexOf(keysize.toString())
+        KeySizePicker.minValue = 0
+        KeySizePicker.maxValue = values.size - 1
+        KeySizePicker.displayedValues = values.toTypedArray()
+        KeySizePicker.value = values.indexOf(key_size.toString())
         KeySizeMax.text = "Max = ${(set.keySize.getValue(cipher_alg)[2].toString())} Байт"
         KeySizeMin.text = "Min = ${(set.keySize.getValue(cipher_alg)[0].toString())} Байт"
 
@@ -320,24 +293,24 @@ class SettingsActivity : AppCompatActivity() {
             LinearLayoutCBC.visibility = View.VISIBLE
             LinearLayoutPadding.visibility = View.VISIBLE
         }
-        if ((cipher_alg !in set.cipher64 && BCM == "GOFB") || (cipher_alg !in set.cipher128 && BCM in set.cbc128) || cipher_alg == "GOST3412-2015" && BCM == "CTR") {
-            BCM = getString(R.string.CBC)
+        if ((cipher_alg !in set.cipher64 && bcm == GOFB) || (cipher_alg !in set.cipher128 && bcm in set.cbc128) || cipher_alg == GOST34122015 && bcm == CTR) {
+            bcm = getString(R.string.CBC)
             TextBCM.text = getString(R.string.CBC)
         }
 
         val step = set.keySize[cipher_alg]
         val values = mutableListOf<String>()
         for (i in step!![0]..step[2] step (step[1])) values.add(i.toString())
-        if (KeySize.maxValue < values.size) {
-            KeySize.displayedValues = values.toTypedArray()
-            KeySize.maxValue = values.size - 1
+        if (KeySizePicker.maxValue < values.size) {
+            KeySizePicker.displayedValues = values.toTypedArray()
+            KeySizePicker.maxValue = values.size - 1
         } else {
-            KeySize.maxValue = values.size - 1
-            KeySize.displayedValues = values.toTypedArray()
+            KeySizePicker.maxValue = values.size - 1
+            KeySizePicker.displayedValues = values.toTypedArray()
         }
-        KeySize.minValue = 0
-        KeySize.value = values.size - 1
-        keysize = step[2]
+        KeySizePicker.minValue = 0
+        KeySizePicker.value = values.size - 1
+        key_size = step[2]
         KeySizeMax.text = "Max = ${(set.keySize.getValue(cipher_alg)[2].toString())} Байт"
         KeySizeMin.text = "Min = ${(set.keySize.getValue(cipher_alg)[0].toString())} Байт"
     }
@@ -345,84 +318,104 @@ class SettingsActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private val CipherBCM = DialogInterface.OnClickListener { _, which ->
         TextBCM.text = list[which]
-        BCM = list[which]
-        if (BCM in set.AEAD) {
-            TextPadding.text = "NoPadding"
-            Padding = "NoPadding"
+        bcm = list[which]
+        if (bcm in set.AEAD) {
+            TextPadding.text = NoPadding
+            padding = NoPadding
         }
-        if (BCM != "ECB" && BCM != "CBC" && Padding == "withCTS") {
+        if (bcm != ECB && bcm != CBC && padding == WithCTS) {
             TextPadding.text = getString(R.string.CBC)
-            Padding = getString(R.string.CBC)
+            padding = getString(R.string.CBC)
         }
     }
 
     private val CipherPadding = DialogInterface.OnClickListener { _, which ->
         TextPadding.text = list[which]
-        Padding = list[which]
+        padding = list[which]
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun DefaultSettings() {
-        val editor: Editor = sp.edit()
-        provider = false
-        cipher_alg = getString(R.string.AES)
-        hash_alg = getString(R.string.SHA)
-        BCM = getString(R.string.CBC)
-        Padding = getString(R.string.PKCS5Padding)
-        keysize = 32
-        KeySize.minValue = 0
-        if (KeySize.maxValue > 2) {
-            KeySize.maxValue = 2
-            KeySize.displayedValues = arrayOf("16", "24", "32")
-        } else {
-            KeySize.displayedValues = arrayOf("16", "24", "32")
-            KeySize.maxValue = 2
-        }
-        KeySize.value = 2
-        KeySizeMin.text = "Min = ${16} Байт"
-        KeySizeMax.text = "Max = ${32} Байт"
-        TextHash.text = getString(R.string.SHA)
-        TextCipher.text = getString(R.string.AES)
-        TextBCM.text = getString(R.string.CBC)
-        TextPadding.text = getString(R.string.PKCS5Padding)
-        editor.apply()
+    private val SignatureAlg = DialogInterface.OnClickListener { _, which ->
+        SignatureAlgorithm.text = list[which]
+        signature = list[which]
     }
 
     @SuppressLint("CommitPrefEdits")
     override fun onDestroy() {
         super.onDestroy()
         val editor = sp.edit()
-        editor.putString(getString(R.string.HashAlgorithm), hash_alg)
-        editor.putInt(getString(R.string.HashCount), hash_count)
-        editor.putString(getString(R.string.CipherAlgorithm), cipher_alg)
-        editor.putInt(getString(R.string.CipherCount), cipher_count)
-        editor.putString(getString(R.string.BCM), BCM)
-        editor.putString(getString(R.string.Padding), Padding)
-        editor.putString(getString(R.string.BCM), BCM)
-        editor.putString(getString(R.string.Padding), Padding)
-        editor.putBoolean(getString(R.string.Salt), Salt)
-        editor.putBoolean(getString(R.string.SecordPassword), secondPassword)
-        editor.putBoolean(getString(R.string.DeleteFile), deleteFile)
-        editor.putBoolean(getString(R.string.Provider), provider)
-        editor.putInt(getString(R.string.keySize), keysize)
-        editor.putBoolean(getString(R.string.PasswordFlag), passwordFlag)
+        editor.putString(HashAlgorithm, hash_alg)
+        editor.putInt(HashCount, hash_count)
+        editor.putString(CipherAlgorithm, cipher_alg)
+        editor.putInt(CipherCount, cipher_count)
+        editor.putString(bcm, bcm)
+        editor.putString(padding, padding)
+        editor.putBoolean(Salt, salt_flag)
+        editor.putBoolean(SecordPassword, second_password)
+        editor.putBoolean(DeleteFile, delete_file)
+        editor.putInt(KeySize, key_size)
+        editor.putBoolean(PasswordFlag, password_flag)
+        editor.putString(Signature, signature)
+        editor.putBoolean(CipherPassword, cipher_password)
         editor.apply()
     }
 
     companion object {
+        private lateinit var sp: SharedPreferences
         private lateinit var hash_alg: String
         private var hash_count = 1
         private lateinit var cipher_alg: String
         private var cipher_count = 1
-        private lateinit var BCM: String
-        private lateinit var Padding: String
-        private var Salt = false
-        private var secondPassword = false
-        private var deleteFile = false
-        private var provider = false
-        private var keysize = 32
-        private var passwordFlag = false
+        private lateinit var bcm: String
+        private lateinit var padding: String
+        private var salt_flag = false
+        private var second_password = false
+        private var delete_file = false
+        private var key_size = 32
+        private var password_flag = false
+        private lateinit var signature: String
+        private var cipher_password = false
 
         private val yesNo = mapOf(Pair(true, "Да"), Pair(false, "Нет"))
+
+        private val set = SetOfAlg()
+
+        //private val LOG_TAG = "LOG"
+        private lateinit var list: List<String>
+
+        private lateinit var TextHash: TextView
+        private lateinit var TextCipher: TextView
+        private lateinit var TextBCM: TextView
+        private lateinit var TextPadding: TextView
+        private lateinit var LinearLayoutCBC: LinearLayout
+        private lateinit var LinearLayoutPadding: LinearLayout
+        private lateinit var TextFlagSalt: TextView
+        private lateinit var TextSecondPassword: TextView
+        private lateinit var TextDeleteFile: TextView
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
+        private lateinit var FlagSalt: Switch
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
+        private lateinit var SecondPassword: Switch
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
+        private lateinit var PasswordFlagSwitch: Switch
+        private lateinit var TextPasswordFlag: TextView
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
+        private lateinit var DeleteFileSwitch: Switch
+        private lateinit var HashCnt: SeekBar
+        private lateinit var HashCountValue: TextView
+        private lateinit var HashCountEdit: EditText
+        private lateinit var HashButton: Button
+        private lateinit var CipherCnt: NumberPicker
+        private lateinit var KeySizePicker: NumberPicker
+        private lateinit var KeySizeMin: TextView
+        private lateinit var KeySizeMax: TextView
+        private lateinit var SignatureAlgorithm: TextView
+
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
+        private lateinit var CipherPasswordSwitch: Switch
+        private lateinit var TextCipherPassword: TextView
     }
 }
