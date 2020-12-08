@@ -51,7 +51,7 @@ open class Algoritms {
     }
 
     protected fun spCipherCount(sp: SharedPreferences): Int {
-        return sp.getInt(CipherCount, COUNT)
+        return sp.getInt(CipherCount, ONE)
     }
 
     protected fun spHashAlg(sp: SharedPreferences): String {
@@ -59,7 +59,7 @@ open class Algoritms {
     }
 
     protected fun spHashCount(sp: SharedPreferences): Int {
-        return sp.getInt(HashCount, COUNT)
+        return sp.getInt(HashCount, ONE)
     }
 
     protected fun spSalt(sp: SharedPreferences): Boolean {

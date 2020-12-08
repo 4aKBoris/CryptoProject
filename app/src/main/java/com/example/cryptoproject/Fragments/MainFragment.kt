@@ -96,8 +96,8 @@ class MainFragment : Fragment() {
 
         val Memory = view.findViewById<TextView>(R.id.memory)
         val statFs = StatFs(Environment.getExternalStorageDirectory().absolutePath)
-        val freeSpace = String.format("%.3f", statFs.freeBytes.toDouble() / 1000000000)
-        val fullSpace = String.format("%.3f", statFs.totalBytes.toDouble() / 1000000000)
+        val freeSpace = String.format("%.3f", statFs.freeBytes.toDouble() / TEN)
+        val fullSpace = String.format("%.3f", statFs.totalBytes.toDouble() / TEN)
         Memory.text = "Свободно $freeSpace / $fullSpace ГБ"
         return view
     }
