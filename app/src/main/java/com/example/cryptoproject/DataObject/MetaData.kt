@@ -7,12 +7,12 @@ import com.example.cryptoproject.Сonstants.BlockSize
 object MetaData {
     lateinit var hash_alg: String
     var hash_count = 0
-    lateinit var salt: ByteArray
+    var salt: ByteArray? = null
     lateinit var cipher_alg: String
     var cipher_count = 0
     var iv = ByteArray(BlockSize)
     var flag_salt = false
-    lateinit var ebc: String
+    lateinit var bcm: String
     lateinit var padding: String
     var keysize = 32
     var zeroByte = 0

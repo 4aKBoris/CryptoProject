@@ -2,6 +2,7 @@
 
 package com.example.cryptoproject.Function
 
+import com.example.cryptoproject.DataObject.MetaData
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
@@ -9,41 +10,42 @@ import java.security.SecureRandom
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 open class Hash(
-    private val password: String,
-    private val hash_alg: String,
-    private val hash_count: Int,
-    private val saltflag: Boolean,
-    private var provider: Boolean
+    private val meta: MetaData,
 ) {
-
-    private var salt: ByteArray? = null
 
     private val rnd = SecureRandom()
 
     fun Hash(): ByteArray {
-        val hash = password.toByteArray(StandardCharsets.UTF_8)
-        if (saltflag && salt == null) {
-            salt = ByteArray(16)
-            rnd.nextBytes(salt)
+        meta.run {
+            val hash = password.toByteArray(StandardCharsets.UTF_8)
+            if (flag_salt && salt == null) {
+                salt = ByteArray(16)
+                rnd.nextBytes(salt)
+            }
+            return HashFunction(hash)
         }
-        return HashFunction(hash)
     }
 
     fun getSalt(): ByteArray {
-        return salt!!
+        return meta.salt!!
     }
 
     fun setSalt(salt : ByteArray) {
-        this.salt = salt
+        meta.salt = salt
     }
 
     private fun HashFunction(hash: ByteArray): ByteArray {
         var hs = hash
-        for (i in 1 until hash_count) {
-            val digest = if (provider) MessageDigest.getInstance(hash_alg, BouncyCastleProvider())
-            else MessageDigest.getInstance(hash_alg)
-            if (saltflag) digest.update(salt)
-            hs = digest.digest(hs)
+        meta.run {
+            for (i in 1 until hash_count) {
+                val digest = try {
+                    MessageDigest.getInstance(hash_alg)
+                } catch (e: Exception) {
+                    MessageDigest.getInstance(hash_alg, BouncyCastleProvider())
+                }
+                if (flag_salt) digest.update(salt)
+                hs = digest.digest(hs)
+            }
         }
         return hs
     }

@@ -45,12 +45,12 @@ class MetaDataInput(
                 }
                 if (flag_salt) {
                     add(random(true))
-                    addAll(salt.toList())
+                    addAll(salt!!.toList())
                 } else add(random(false))
                 add(cipherAlg.indexOf(cipher_alg).toByte())
                 add(cipher_count.toByte())
                 if (cipher_alg !in cipherStream) {
-                    add(cipherBcm.indexOf(ebc).toByte())
+                    add(cipherBcm.indexOf(bcm).toByte())
                     add(cipherPadding.indexOf(padding).toByte())
                 }
                 addAll(iv.toList())

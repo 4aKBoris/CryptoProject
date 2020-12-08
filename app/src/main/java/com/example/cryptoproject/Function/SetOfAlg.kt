@@ -3,8 +3,7 @@
 package com.example.cryptoproject.Function
 
 internal class SetOfAlg {
-    val hash_alg_default = listOf("MD5", "SHA-1", "SHA-256", "SHA-512")
-    val hash_alg_bc = listOf("GOST3411",
+    val hash_alg = listOf("GOST3411",
         "GOST3411-2012-256",
         "GOST3411-2012-512",
         "KECCAK-224",
@@ -30,14 +29,6 @@ internal class SetOfAlg {
         "SHA3-256",
         "SHA3-384",
         "SHA3-512",
-        "2.16.840.1.101.3.4.2.7",
-        "OID.2.16.840.1.101.3.4.2.7",
-        "2.16.840.1.101.3.4.2.8",
-        "OID.2.16.840.1.101.3.4.2.8",
-        "2.16.840.1.101.3.4.2.9",
-        "OID.2.16.840.1.101.3.4.2.9",
-        "2.16.840.1.101.3.4.2.10",
-        "OID.2.16.840.1.101.3.4.2.10",
         "Skein-256-128",
         "Skein-256-160",
         "Skein-256-224",
@@ -64,13 +55,7 @@ internal class SetOfAlg {
         "BLAKE2S-128",
         "DSTU7564-256",
         "DSTU7564-384",
-        "DSTU7564-512",
-        "1.2.804.2.1.1.1.1.2.2.1",
-        "OID.1.2.804.2.1.1.1.1.2.2.1",
-        "1.2.804.2.1.1.1.1.2.2.2",
-        "OID.1.2.804.2.1.1.1.1.2.2.2",
-        "1.2.804.2.1.1.1.1.2.2.3",
-        "OID.1.2.804.2.1.1.1.1.2.2.3",
+        "DSTU7564-512"
     )
 
     val keySize = mapOf(
@@ -114,8 +99,7 @@ internal class SetOfAlg {
         Pair("GOST3412-2015", listOf(32, 1, 32))
         )
 
-    val cipher_alg_default = listOf("AES", "Blowfish", "DES", "DESede", "RC4")
-    val cipher_alg_bc = listOf("AES",
+    val cipher_alg = listOf("AES",
     "Blowfish",
     "DES",
     "DESede",
@@ -154,10 +138,7 @@ internal class SetOfAlg {
     "Threefish-1024",
     "GOST3412-2015")
 
-    val cipher_bcm_default = listOf(
-        "ECB", "CBC", "OFB", "CFB", "CTR", "CTS"
-    )
-    val cipher_bcm_bc = listOf(
+    val cipher_bcm = listOf(
         "ECB",
         "CBC",
         "OFB",
@@ -175,9 +156,7 @@ internal class SetOfAlg {
 
     val AEAD = setOf("CCM", "EAX", "GCM", "OCB")
 
-    val cipher_padding_default = listOf("NoPadding", "PKCS5Padding", "ISO10126Padding")
-
-    val cipher_padding_bc = listOf(
+    val cipher_padding = listOf(
         "NoPadding",
         "PKCS5Padding",
         "ISO10126Padding",
@@ -237,75 +216,8 @@ internal class SetOfAlg {
         "Twofish"
     )
 
-    /*val sign = setOf(
-        "MD2withRSA",
-        "MD5withRSA",
-        "SHA1withRSA",
-        "SHA224withDSA",
-        "SHA256withDSA",
-        "NONEwithDSA",
-        "SHA1withECDSA",
-        "NONEwithECDSA",
-        "SHA224withECDSA",
-        "SHA256withECDSA",
-        "SHA384withECDSA",
-        "SHA512withECDSA",
-        "SHA224withRSA",
-        "SHA256withRSA",
-        "SHA384withRSA",
-        "SHA512withRSA"
-    )*/
-
-    val sign = setOf(
-        Pair("GOST3411withGOST3410", 0),
-        Pair("MD2withRSA", 1),
-        Pair("MD5withRSA", 2),
-        Pair("SHA1withRSA", 3),
-        Pair("RIPEMD128withRSA", 4),
-        Pair("RIPEMD160withRSA", 5),
-        Pair("RIPEMD160withECDSA", 6),
-        Pair("RIPEMD256withRSA", 7),
-        Pair("SHA256withDSA", 8),
-        Pair("SHA384withDSA", 9),
-        Pair("SHA512withDSA", 10),
-        Pair("SHA3-224withDSA", 11),
-        Pair("SHA3-256withDSA", 12),
-        Pair("SHA3-384withDSA", 13),
-        Pair("SHA3-512withDSA", 14),
-        Pair("NONEwithDSA", 15),
-        Pair("SHA1withDetECDSA", 16),
-        Pair("SHA224withECDDSA", 17),
-        Pair("SHA256withECDDSA", 18),
-        Pair("SHA384withECDDSA", 19),
-        Pair("SHA512withECDDSA", 20),
-        Pair("SHA1withECDSA", 21),
-        Pair("NONEwithECDSA", 22),
-        Pair("SHA224withECDSA", 23),
-        Pair("SHA256withECDSA", 24),
-        Pair("SHA384withECDSA", 25),
-        Pair("SHA512withECDSA", 26),
-        Pair("SHA3-224withECDSA", 27),
-        Pair("SHA3-256withECDSA", 28),
-        Pair("SHA3-384withECDSA", 29),
-        Pair("SHA3-512withECDSA", 30),
-        Pair("SHA1withECNR", 31),
-        Pair("SHA224withECNR", 32),
-        Pair("SHA256withECNR", 33),
-        Pair("SHA384withECNR", 34),
-        Pair("SHA512withECNR", 35),
-        Pair("SHA224withRSA", 36),
-        Pair("SHA256withRSA", 37),
-        Pair("SHA384withRSA", 38),
-        Pair("SHA512withRSA", 39),
-        Pair("SHA512(224)withRSA", 40),
-        Pair("SHA512(256)withRSA", 41),
-        Pair("SHA3-224withRSA", 42),
-        Pair("SHA3-256withRSA", 43),
-        Pair("SHA3-384withRSA", 44),
-        Pair("SHA3-512withRSA", 45)
-    )
-
-    val cerf = setOf(
+    val sign = listOf(
+        "Не использовать",
         "MD5withRSA",
         "SHA1withRSA",
         "SHA256withDSA",

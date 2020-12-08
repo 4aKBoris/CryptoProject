@@ -40,12 +40,12 @@ class MetaDataOutput(private var arr: ByteArray) {
                 if (removeFirst() % 2 != 0) {
                     flag_salt = true
                     salt = ByteArray(16)
-                    for (i in 0 until 16) salt[i] = removeFirst()
+                    for (i in 0 until 16) salt!![i] = removeFirst()
                 }
                 cipher_alg = cipherAlg[removeFirst().toInt()]
                 cipher_count = removeFirst().toInt()
                 if (cipher_alg !in cipherStream) {
-                    ebc = cipherBcm[removeFirst().toInt()]
+                    bcm = cipherBcm[removeFirst().toInt()]
                     padding = cipherPadding[removeFirst().toInt()]
                 }
                 for (i in 0 until BlockSize) iv[i] = removeFirst()
