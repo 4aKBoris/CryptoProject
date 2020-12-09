@@ -3,18 +3,21 @@
 package com.example.cryptoproject.Function
 
 import android.annotation.SuppressLint
+import com.example.cryptoproject.Сonstants.CertificatesPath
+import com.example.cryptoproject.Сonstants.X509
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.io.FileInputStream
 import java.security.*
 import java.security.Signature
+import java.security.cert.CertificateFactory
 
 class Signature(
     private val arr: ByteArray,
     private val signature_algorithm: String,
-    password_key_store: String,
+    private val str: String,
 ) {
 
-    private val password = password_key_store.toCharArray()
+    private val password = str.toCharArray()
 
     @SuppressLint("SdCardPath")
     fun SignEncrypt(): ByteArray {
@@ -25,7 +28,7 @@ class Signature(
         val privateKeyEntry =
             keyStore.getEntry(signature_algorithm, entryPassword) as KeyStore.PrivateKeyEntry
         val sign = SignEnc(privateKeyEntry.privateKey)
-        return byteArrayOf((sign.size - 128).toByte()).plus(sign.plus(arr))
+        return byteArrayOf((sign.size - 129).toByte()).plus(sign.plus(arr))
     }
 
     private fun SignEnc(private_key: PrivateKey): ByteArray {
@@ -41,10 +44,9 @@ class Signature(
 
     @SuppressLint("SdCardPath")
     fun SignDecrypt(): Boolean {
-        val keyStoreData = FileInputStream(PATH_KEY_STORE)
-        val keyStore = KeyStore.getInstance(KEY_STORE_ALGORITHM)
-        keyStore.load(keyStoreData, password)
-        val certificate = keyStore.getCertificate(signature_algorithm)
+        val certificateFactory = CertificateFactory.getInstance(X509)
+        val certificateInputStream = FileInputStream(str)
+        val certificate = certificateFactory.generateCertificate(certificateInputStream)
         return SignDec(arr.copyOfRange(arr[1].toInt() + c130, arr.size),
             arr.copyOfRange(c2, arr[1].toInt() + c130),
             certificate.publicKey)
@@ -65,7 +67,7 @@ class Signature(
         @SuppressLint("SdCardPath")
         private const val PATH_KEY_STORE = "/data/data/com.example.cryptoproject/my_keystore.ks"
         private const val KEY_STORE_ALGORITHM = "PKCS12"
-        private const val c130 = 130
+        private const val c130 = 131
         private const val c2 = 2
         private val secureRandom = SecureRandom()
     }

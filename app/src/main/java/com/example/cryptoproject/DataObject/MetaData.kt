@@ -12,12 +12,12 @@ object MetaData {
     var cipher_count = 0
     var iv = ByteArray(BlockSize)
     var flag_salt = false
-    lateinit var bcm: String
-    lateinit var padding: String
+    var bcm = ""
+    var padding = ""
     var keysize = 32
     var zeroByte = 0
     var cipher_password = false
-    lateinit var password: String
+    var password = ""
     lateinit var array: ByteArray
     lateinit var signature: String
 }

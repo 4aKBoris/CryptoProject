@@ -61,15 +61,17 @@ class MetaDataOutput(private var arr: ByteArray) {
         meta.cipher_password = true
         val pass = mutableListOf<Byte>()
         for (i in 1..256) pass.add(mas.removeFirst())
-        val cipher = Cipher.getInstance(RSA)
-        val keyStoreData = FileInputStream(PATH_KEY_STORE)
-        val keyStore = KeyStore.getInstance(KEY_STORE_ALGORITHM)
-        keyStore.load(keyStoreData, password_key_store)
-        val entryPassword = KeyStore.PasswordProtection(password_key_store)
-        val privateKeyEntry =
-            keyStore.getEntry(ALGORITHM, entryPassword) as KeyStore.PrivateKeyEntry
-        cipher.init(Cipher.DECRYPT_MODE, privateKeyEntry.privateKey)
-        meta.password = cipher.doFinal(pass.toByteArray()).toString(Charsets.UTF_8)
+        if (meta.password == "") {
+            val cipher = Cipher.getInstance(RSA)
+            val keyStoreData = FileInputStream(PATH_KEY_STORE)
+            val keyStore = KeyStore.getInstance(KEY_STORE_ALGORITHM)
+            keyStore.load(keyStoreData, password_key_store)
+            val entryPassword = KeyStore.PasswordProtection(password_key_store)
+            val privateKeyEntry =
+                keyStore.getEntry(ALGORITHM, entryPassword) as KeyStore.PrivateKeyEntry
+            cipher.init(Cipher.DECRYPT_MODE, privateKeyEntry.privateKey)
+            meta.password = cipher.doFinal(pass.toByteArray()).toString(Charsets.UTF_8)
+        }
         return mas
     }
 }

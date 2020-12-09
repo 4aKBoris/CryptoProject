@@ -51,5 +51,17 @@
         <action
             android:id="@+id/action_certificateFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_certificateFragment_to_certificateCreateFragment"
+            app:destination="@id/certificateCreateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/certificateCreateFragment"
+        android:name="com.example.cryptoproject.Fragments.CertificateCreateFragment"
+        android:label="fragment_create_certificate"
+        tools:layout="@layout/fragment_create_certificate" >
+        <action
+            android:id="@+id/action_certificateCreateFragment_to_certificateFragment"
+            app:destination="@id/certificateFragment" />
     </fragment>
 </navigation>

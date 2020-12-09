@@ -113,13 +113,12 @@ class EncryptFragment : Fragment() {
                 PasswordEdit1.transformationMethod = PasswordTransformationMethod.getInstance()
                 PasswordEdit2.transformationMethod = PasswordTransformationMethod.getInstance()
                 PasswordKeyStore.transformationMethod = PasswordTransformationMethod.getInstance()
-                passwordFlag = !passwordFlag
             } else {
                 PasswordEdit1.transformationMethod = HideReturnsTransformationMethod.getInstance()
                 PasswordEdit2.transformationMethod = HideReturnsTransformationMethod.getInstance()
                 PasswordKeyStore.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                passwordFlag = !passwordFlag
             }
+            passwordFlag = !passwordFlag
         }
 
 
