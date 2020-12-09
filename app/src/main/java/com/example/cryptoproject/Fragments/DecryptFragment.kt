@@ -145,24 +145,26 @@ class DecryptFragment : Fragment() {
             try {
                 if (!File(FILENAME).exists()) throw MyException(NotExist)
                 if (!File(FILENAME).isFile) throw MyException(SelectNotFile)
-                if (File(FILENAME).usableSpace <= 1024 + File(FILENAME).length()) throw MyException(
+                if (File(FILENAME).usableSpace <= n1024 + File(FILENAME).length()) throw MyException(
                     LowMemory)
                 var flag = true
                 var arr = FileReadWrite().readFile(FILENAME)
                 if (arr[0] != zero) {
                     if (!Signature(arr, sign[arr[0].toInt()], cerf_path).SignDecrypt()
                     ) throw MyException(NotSignature)
-                    else arr = arr.copyOfRange(arr[1].toInt() + 131, arr.size)
+                    else arr = arr.copyOfRange(arr[1].toInt() + n131, arr.size)
                 }
                 val cipher = Cipher(arr)
                 if (!flag_cipher_password) cipher.setPassword(password)
                 else cipher.setPasswordKeyStore(password_key_store)
-                val list = cipher.Decrypt().toMutableList()
-                interval.forEach { if (list.removeFirst() != it.toByte()) flag = false }
+                val mas = cipher.Decrypt()
+                val start = System.currentTimeMillis()
+                mas.copyOfRange(0, 128).forEachIndexed { index, byte ->  if (byte.toInt() != index) flag = false}
                 if (!flag) throw MyException(WrongPassword)
-                FileReadWrite().writeFile(ClearPath + File(FILENAME).name,
-                    list.toByteArray()
-                )
+                FileReadWrite().writeFile(ClearPath + File(FILENAME).name, mas.copyOfRange(128, mas.size))
+                val finish = System.currentTimeMillis()
+                val elapsed = finish - start
+                println("Прошло времени, мс: $elapsed")
                 MessageExeption(FileDecrypted)
             } catch (e: NullPointerException) {
                 MessageExeption(NotEncryptFile)
@@ -190,7 +192,7 @@ class DecryptFragment : Fragment() {
     private val SelectFile = DialogInterface.OnClickListener { _, which ->
         FILENAME = CipherPath + listFile()[which]
         FileSize.text = FILESIZE + FileSize()
-        val arr = FileReadWrite().readFileN(FILENAME, 259)
+        val arr = FileReadWrite().readFileN(FILENAME, n259)
         if (((arr[0] == zero && arr[1] % 2 != 0) || (arr[0] != zero) && arr[arr[1].toInt() + 131] % 2 != 0) && spCipherPassword(
                 sp)
         ) {
@@ -242,6 +244,9 @@ class DecryptFragment : Fragment() {
     companion object {
 
         private const val zero = 0.toByte()
+        private const val n131 = 131
+        private const val n1024 = 1024
+        private const val n259 = 259
         private val interval = 0..127
 
         private lateinit var sp: SharedPreferences

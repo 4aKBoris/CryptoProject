@@ -9,11 +9,11 @@ import java.security.KeyStore
 import javax.crypto.Cipher
 import kotlin.math.abs
 
-class MetaDataOutput(private var arr: ByteArray) {
+class MetaDataOutput(private var meta: MetaData) {
+
+    private var i = 0
 
     private lateinit var password_key_store: CharArray
-
-    private val meta = MetaData
 
     fun setPasswordKeyStore(password_key_store: String) {
         this.password_key_store = password_key_store.toCharArray()
@@ -25,53 +25,57 @@ class MetaDataOutput(private var arr: ByteArray) {
 
     fun metaData(): MetaData {
         meta.run {
-            var mas = arr.toMutableList()
-            mas.run {
-                if (removeFirst() % 2 != 0) mas = Decrypt(mas)
-                hash_alg = hashAlg[removeFirst().toInt()]
-                if (removeFirst() % 2 == 0) {
-                    hash_count = removeFirst().toInt()
-                    removeFirst()
-                } else {
-                    val hLeft = removeFirst()
-                    val hRight = removeFirst()
-                    hash_count = hRight + hLeft * 128
-                }
-                if (removeFirst() % 2 != 0) {
-                    flag_salt = true
-                    salt = ByteArray(16)
-                    for (i in 0 until 16) salt!![i] = removeFirst()
-                }
-                cipher_alg = cipherAlg[removeFirst().toInt()]
-                cipher_count = removeFirst().toInt()
-                if (cipher_alg !in cipherStream) {
-                    bcm = cipherBcm[removeFirst().toInt()]
-                    padding = cipherPadding[removeFirst().toInt()]
-                }
-                for (i in 0 until BlockSize) iv[i] = removeFirst()
-                keysize = abs(removeFirst().toInt())
-                zeroByte = abs(removeFirst().toInt())
+            if (array[i++] % 2 != 0) Decrypt()
+            hash_alg = hashAlg[array[i++].toInt()]
+            if (array[i++] % 2 == 0) {
+                hash_count = array[i++].toInt()
+                array[i++]
+            } else {
+                val hLeft = array[i++]
+                val hRight = array[i++]
+                hash_count = hRight + hLeft * BlockSize
             }
-            array = mas.toByteArray()
-            return meta
+            if (array[i++] % 2 != 0) {
+                flag_salt = true
+                salt = array.copyOfRange(i, i + n16)
+                i += n16
+            }
+            cipher_alg = cipherAlg[array[i++].toInt()]
+            cipher_count = array[i++].toInt()
+            if (cipher_alg !in cipherStream) {
+                bcm = cipherBcm[array[i++].toInt()]
+                padding = cipherPadding[array[i++].toInt()]
+            }
+            iv = array.copyOfRange(i, i + BlockSize)
+            i += BlockSize
+            keysize = abs(array[i++].toInt())
+            zeroByte = abs(array[i++].toInt())
+            array = array.copyOfRange(i, array.size)
+        }
+        return meta
+    }
+
+    private fun Decrypt() {
+        meta.run {
+            cipher_password = true
+            i += n256
+            val pass = array.copyOfRange(i - n256, i)
+            if (password == "") {
+                val cipher = Cipher.getInstance(RSA)
+                val keyStoreData = FileInputStream(PATH_KEY_STORE)
+                val keyStore = KeyStore.getInstance(KEY_STORE_ALGORITHM)
+                keyStore.load(keyStoreData, password_key_store)
+                val entryPassword = KeyStore.PasswordProtection(password_key_store)
+                val privateKeyEntry =
+                    keyStore.getEntry(ALGORITHM, entryPassword) as KeyStore.PrivateKeyEntry
+                cipher.init(Cipher.DECRYPT_MODE, privateKeyEntry.privateKey)
+                password = cipher.doFinal(pass).toString(Charsets.UTF_8)
+            }
         }
     }
 
-    private fun Decrypt(mas: MutableList<Byte>): MutableList<Byte> {
-        meta.cipher_password = true
-        val pass = mutableListOf<Byte>()
-        for (i in 1..256) pass.add(mas.removeFirst())
-        if (meta.password == "") {
-            val cipher = Cipher.getInstance(RSA)
-            val keyStoreData = FileInputStream(PATH_KEY_STORE)
-            val keyStore = KeyStore.getInstance(KEY_STORE_ALGORITHM)
-            keyStore.load(keyStoreData, password_key_store)
-            val entryPassword = KeyStore.PasswordProtection(password_key_store)
-            val privateKeyEntry =
-                keyStore.getEntry(ALGORITHM, entryPassword) as KeyStore.PrivateKeyEntry
-            cipher.init(Cipher.DECRYPT_MODE, privateKeyEntry.privateKey)
-            meta.password = cipher.doFinal(pass.toByteArray()).toString(Charsets.UTF_8)
-        }
-        return mas
+    companion object {
+        private const val n16 = 16
+        private const val n256 = 256
     }
 }

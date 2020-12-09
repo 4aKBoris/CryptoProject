@@ -118,7 +118,7 @@ class Cipher(arr: ByteArray) : Algoritms() {
 
     private fun getData(): MetaData {
         meta.run {
-            val meta_data = MetaDataOutput(array)
+            val meta_data = MetaDataOutput(meta)
             if (password_key_store != "") meta_data.setPasswordKeyStore(password_key_store)
             if (password != "") meta_data.setPassword(password)
             return meta_data.metaData()
