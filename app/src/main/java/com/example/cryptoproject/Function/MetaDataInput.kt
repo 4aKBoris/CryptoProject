@@ -5,7 +5,7 @@ package com.example.cryptoproject.Function
 import android.annotation.SuppressLint
 import com.example.cryptoproject.DataObject.MetaData
 import com.example.cryptoproject.Сonstants.*
-import java.security.*
+import java.security.PublicKey
 import javax.crypto.Cipher.getInstance
 import kotlin.random.Random
 
@@ -17,7 +17,7 @@ class MetaDataInput(
     private lateinit var password_key_store: String
 
     private val rnd = Random
-    private var mas = arrayListOf<Byte>()
+    private var mas = byteArrayOf()
 
     fun setPublicKey(publicKey: PublicKey) {
         this.publicKey = publicKey
@@ -30,34 +30,32 @@ class MetaDataInput(
     @SuppressLint("SdCardPath")
     fun metaData(): ByteArray {
         meta.run {
-            mas.run {
-                if (cipher_password) Encrypt()
-                else add(random(false))
-                add(hashAlg.indexOf(hash_alg).toByte())
-                if (hash_count > 127) {
-                    add(random(true))
-                    add((hash_count / 128).toByte())
-                    add((hash_count % 128).toByte())
-                } else {
-                    add(random(false))
-                    add(hash_count.toByte())
-                    add(rnd.nextInt().toByte())
-                }
-                if (flag_salt) {
-                    add(random(true))
-                    addAll(salt!!.toList())
-                } else add(random(false))
-                add(cipherAlg.indexOf(cipher_alg).toByte())
-                add(cipher_count.toByte())
-                if (cipher_alg !in cipherStream) {
-                    add(cipherBcm.indexOf(bcm).toByte())
-                    add(cipherPadding.indexOf(padding).toByte())
-                }
-                addAll(iv.toList())
-                add(keysize.toByte())
-                add(zeroByte.toByte())
+            if (cipher_password) Encrypt()
+            else plus(random(false))
+            plus(hashAlg.indexOf(hash_alg).toByte())
+            if (hash_count > BlockSize - 1) {
+                plus(random(true))
+                plus((hash_count / BlockSize).toByte())
+                plus((hash_count % BlockSize).toByte())
+            } else {
+                plus(random(false))
+                plus(hash_count.toByte())
+                plus(rnd.nextInt().toByte())
             }
-            array = mas.toByteArray().plus(array)
+            if (flag_salt) {
+                plus(random(true))
+                plus(salt!!)
+            } else plus(random(false))
+            plus(cipherAlg.indexOf(cipher_alg).toByte())
+            plus(cipher_count.toByte())
+            if (cipher_alg !in cipherStream) {
+                plus(cipherBcm.indexOf(bcm).toByte())
+                plus(cipherPadding.indexOf(padding).toByte())
+            }
+            plus(iv)
+            plus(keysize.toByte())
+            plus(zeroByte.toByte())
+            array = mas.plus(array)
             if (signature != NotUse) {
                 val sign = Signature(array, signature, password_key_store)
                 array = sign.SignEncrypt()
@@ -67,10 +65,10 @@ class MetaDataInput(
     }
 
     private fun Encrypt() {
-        mas.add(random(true))
+        plus(random(true))
         val cipher = getInstance(RSA)
         cipher.init(javax.crypto.Cipher.ENCRYPT_MODE, publicKey)
-        mas.addAll(cipher.doFinal(meta.password.toByteArray()).toList())
+        plus(cipher.doFinal(meta.password.toByteArray()))
     }
 
     private fun random(flag: Boolean): Byte {
@@ -79,5 +77,13 @@ class MetaDataInput(
             fl = rnd.nextInt()
         }
         return fl.toByte()
+    }
+
+    private fun plus(a: ByteArray) {
+        mas = mas.plus(a)
+    }
+
+    private fun plus(a: Byte) {
+        mas = mas.plus(a)
     }
 }
