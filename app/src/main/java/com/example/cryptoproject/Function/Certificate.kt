@@ -3,6 +3,7 @@
 package com.example.cryptoproject.Function
 
 import android.annotation.SuppressLint
+import com.example.cryptoproject.Сonstants.sign
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.x509.X509V3CertificateGenerator
 import java.io.FileOutputStream
@@ -29,10 +30,9 @@ class Certificate(
     private val Path = "/data/data/com.example.cryptoproject/my_keystore.ks"
 
     fun CreateCertificate() {
-        val s = SetOfAlg()
         val keyStore = KeyStore.getInstance("PKCS12")
         keyStore.load(null, password.toCharArray())
-        s.sign.filter { it != "Не использовать" }.forEach {
+        sign.filter { it != "Не использовать" }.forEach {
             Security.addProvider(BouncyCastleProvider())
             val keyPairGenerator = KeyPairGenerator.getInstance(Alg(it))
             val keyPair = keyPairGenerator.generateKeyPair()

@@ -273,3 +273,5 @@ val sign = listOf(
     "SHA384withRSA",
     "SHA512withRSA"
 )
+
+var list = ByteArray(BlockSize).mapIndexed { index, byte ->  }

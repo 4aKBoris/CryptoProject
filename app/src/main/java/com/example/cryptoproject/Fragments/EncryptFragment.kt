@@ -137,14 +137,12 @@ class EncryptFragment : Fragment() {
                 if (!File(FILENAME).exists()) throw MyException(NotExist)
                 if (!File(FILENAME).isFile) throw MyException(SelectNotFile)
                 if (File(FILENAME).usableSpace <= 1024 + File(FILENAME).length()) throw MyException(LowMemory)
-                val pass = ByteArray(128)
-                for (i in 0..127) pass[i] = i.toByte()
-                val arr = pass.plus(FileReadWrite().readFile(FILENAME))
+                val arr = ByteArray(BlockSize).createIndex().plus(readFile(FILENAME))
                 val cipher = Cipher(arr, password1, sp)
                 if (spSignature(sp) != NotUse) cipher.setPasswordKeyStore(
                     PasswordKeyStore.text.toString())
                 if (spCipherPassword(sp)) cipher.setCertificatePath(certificate_path)
-                FileReadWrite().writeFile(CipherPath + File(FILENAME).name,
+                writeFile(CipherPath + File(FILENAME).name,
                     cipher.Encrypt())
                 if (spDeleteFile(sp)) File(FILENAME).delete()
                 MessageExeption(FileEncrypted)

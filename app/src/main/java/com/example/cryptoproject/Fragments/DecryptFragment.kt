@@ -126,7 +126,7 @@ class DecryptFragment : Fragment() {
 
     private val CertificateSelect = DialogInterface.OnClickListener { _, which ->
         cerf_path = CertificatesPath + list[which]
-        val k = FileReadWrite().readFileOne(FILENAME)
+        val k = readFileOne(FILENAME)
         val sign_alg = sign[k]
         val certificateFactory = CertificateFactory.getInstance(X509)
         val certificateInputStream = FileInputStream(cerf_path)
@@ -147,24 +147,18 @@ class DecryptFragment : Fragment() {
                 if (!File(FILENAME).isFile) throw MyException(SelectNotFile)
                 if (File(FILENAME).usableSpace <= n1024 + File(FILENAME).length()) throw MyException(
                     LowMemory)
-                var flag = true
-                var arr = FileReadWrite().readFile(FILENAME)
-                if (arr[0] != zero) {
+                var arr = readFile(FILENAME)
+                arr = if (arr[0] != zero) {
                     if (!Signature(arr, sign[arr[0].toInt()], cerf_path).SignDecrypt()
                     ) throw MyException(NotSignature)
-                    else arr = arr.copyOfRange(arr[1].toInt() + n131, arr.size)
-                }
+                    else arr.deleteFirst(arr[1].toInt() + n131)
+                } else arr.deleteFirst(1)
                 val cipher = Cipher(arr)
                 if (!flag_cipher_password) cipher.setPassword(password)
                 else cipher.setPasswordKeyStore(password_key_store)
                 val mas = cipher.Decrypt()
-                val start = System.currentTimeMillis()
-                mas.copyOfRange(0, 128).forEachIndexed { index, byte ->  if (byte.toInt() != index) flag = false}
-                if (!flag) throw MyException(WrongPassword)
-                FileReadWrite().writeFile(ClearPath + File(FILENAME).name, mas.copyOfRange(128, mas.size))
-                val finish = System.currentTimeMillis()
-                val elapsed = finish - start
-                println("Прошло времени, мс: $elapsed")
+                if (!mas.deleteLast(BlockSize).assertIndex()) throw MyException(WrongPassword)
+                writeFile(ClearPath + File(FILENAME).name, mas.deleteFirst(BlockSize))
                 MessageExeption(FileDecrypted)
             } catch (e: NullPointerException) {
                 MessageExeption(NotEncryptFile)
@@ -175,7 +169,6 @@ class DecryptFragment : Fragment() {
                 MessageExeption(EnterWrongPassword)
             }
         }
-
         val thread = Thread(runnable)
         thread.start()
     }
@@ -192,10 +185,8 @@ class DecryptFragment : Fragment() {
     private val SelectFile = DialogInterface.OnClickListener { _, which ->
         FILENAME = CipherPath + listFile()[which]
         FileSize.text = FILESIZE + FileSize()
-        val arr = FileReadWrite().readFileN(FILENAME, n259)
-        if (((arr[0] == zero && arr[1] % 2 != 0) || (arr[0] != zero) && arr[arr[1].toInt() + 131] % 2 != 0) && spCipherPassword(
-                sp)
-        ) {
+        val arr = readFileN(FILENAME, n259)
+        if (arr.flag() && spCipherPassword(sp)) {
             PasswordKeyStore.visibility = View.VISIBLE
             flag_cipher_password = true
             PasswordView.visibility = View.GONE
@@ -226,8 +217,7 @@ class DecryptFragment : Fragment() {
     }
 
     private fun listFile(): List<String> {
-        val files =
-            File(CipherPath).listFiles()
+        val files = File(CipherPath).listFiles()
         val names = mutableListOf<String>()
         for (file in files) names.add(file.name)
         return names
@@ -247,7 +237,6 @@ class DecryptFragment : Fragment() {
         private const val n131 = 131
         private const val n1024 = 1024
         private const val n259 = 259
-        private val interval = 0..127
 
         private lateinit var sp: SharedPreferences
         private var FILENAME: String = ""

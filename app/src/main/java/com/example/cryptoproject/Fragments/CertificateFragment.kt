@@ -87,6 +87,7 @@ class CertificateFragment : Fragment() {
 
     private val CertificateExport = DialogInterface.OnClickListener { _, which ->
         sign_alg = list[which]
+        CertExportText.text = list[which]
     }
 
     companion object {

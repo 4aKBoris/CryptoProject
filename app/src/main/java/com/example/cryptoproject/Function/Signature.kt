@@ -32,11 +32,7 @@ class Signature(
     }
 
     private fun SignEnc(private_key: PrivateKey): ByteArray {
-        val signature = try {
-            Signature.getInstance(signature_algorithm)
-        } catch (e: Exception) {
-            Signature.getInstance(signature_algorithm, BouncyCastleProvider())
-        }
+        val signature = Signature.getInstance(signature_algorithm)
         signature.initSign(private_key, secureRandom)
         signature.update(arr)
         return signature.sign()
@@ -53,11 +49,7 @@ class Signature(
     }
 
     private fun SignDec(mas: ByteArray, sign: ByteArray, public_key: PublicKey): Boolean {
-        val signature = try {
-            Signature.getInstance(signature_algorithm)
-        } catch (e: Exception) {
-            Signature.getInstance(signature_algorithm, BouncyCastleProvider())
-        }
+        val signature = Signature.getInstance(signature_algorithm)
         signature.initVerify(public_key)
         signature.update(mas)
         return signature.verify(sign)
