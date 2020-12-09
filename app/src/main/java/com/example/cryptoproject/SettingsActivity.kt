@@ -15,7 +15,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cryptoproject.Expeptions.MyException
-import com.example.cryptoproject.Function.SetOfAlg
 import com.example.cryptoproject.Сonstants.*
 
 
@@ -59,7 +58,7 @@ class SettingsActivity : AppCompatActivity() {
         TextCipherPassword = findViewById(R.id.cipherPassword_text)
 
         findViewById<View>(R.id.hash_alg).setOnClickListener {
-            list = set.hash_alg
+            list = hashAlg
             AlertDialog.Builder(this).setTitle(AlgHash)
                 .setCancelable(false)
                 .setAdapter(
@@ -104,7 +103,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.cipher_alg).setOnClickListener {
-            list = set.cipher_alg
+            list = cipherAlg
             AlertDialog.Builder(this).setTitle(AlgCipher)
                 .setCancelable(false)
                 .setAdapter(
@@ -125,22 +124,22 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         KeySizePicker.setOnValueChangedListener { _, _, newVal ->
-            val step = set.keySize[cipher_alg]
+            val step = keySize[cipher_alg]
             val values = mutableListOf<Int>()
             for (i in step!![0]..step[2] step (step[1])) values.add(i)
             key_size = values[newVal]
         }
 
         findViewById<View>(R.id.cipher_bcm).setOnClickListener {
-            list = set.cipher_bcm
-            if (cipher_alg !in set.cipher64) {
+            list = cipherBcm
+            if (cipher_alg !in cipher64) {
                 val l = list.toMutableList()
                 l.remove(GOFB)
                 list = l.toList()
             }
-            if (cipher_alg !in set.cipher128) {
+            if (cipher_alg !in cipher128) {
                 val l = list.toMutableList()
-                l.removeAll(set.cbc128)
+                l.removeAll(cbc128)
                 list = l.toList()
             }
             if (cipher_alg == GOST34122015) {
@@ -161,14 +160,14 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.cipher_padding).setOnClickListener {
-            list = set.cipher_padding
+            list = cipherPadding
             //if (BCM == "CTR") list = listOf("ECB", "CBC")
             if (bcm != ECB && bcm != CBC) {
                 val l = list.toMutableList()
                 l.remove(WithCTS)
                 list = l.toList()
             }
-            if (bcm in set.AEAD) list = listOf(NoPadding)
+            if (bcm in AEAD) list = listOf(NoPadding)
             AlertDialog.Builder(this).setTitle(FillingMode)
                 .setCancelable(false)
                 .setAdapter(
@@ -182,7 +181,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.signature).setOnClickListener {
-            list = set.sign
+            list = sign
             AlertDialog.Builder(this).setTitle(Sign).setCancelable(false).setAdapter(
                 ArrayAdapter(this, android.R.layout.simple_list_item_1, list),
                 SignatureAlg
@@ -234,7 +233,7 @@ class SettingsActivity : AppCompatActivity() {
         salt_flag = sp.getBoolean(Salt, NOT)
         second_password = sp.getBoolean(SecordPassword, NOT)
         delete_file = sp.getBoolean(DeleteFile, NOT)
-        key_size = sp.getInt(KeySize, set.keySize.getValue(cipher_alg)[2])
+        key_size = sp.getInt(KeySize, keySize.getValue(cipher_alg)[2])
         password_flag = sp.getBoolean(PasswordFlag, NOT)
         signature = sp.getString(Signature, NotUse)!!
         cipher_password = sp.getBoolean(CipherPassword, NOT)
@@ -260,17 +259,17 @@ class SettingsActivity : AppCompatActivity() {
         TextBCM.text = bcm
         TextPadding.text = padding
         CipherCnt.value = cipher_count
-        val step = set.keySize[cipher_alg]
+        val step = keySize[cipher_alg]
         val values = mutableListOf<String>()
         for (i in step!![0]..step[2] step (step[1])) values.add(i.toString())
         KeySizePicker.minValue = 0
         KeySizePicker.maxValue = values.size - 1
         KeySizePicker.displayedValues = values.toTypedArray()
         KeySizePicker.value = values.indexOf(key_size.toString())
-        KeySizeMax.text = "Max = ${(set.keySize.getValue(cipher_alg)[2].toString())} Байт"
-        KeySizeMin.text = "Min = ${(set.keySize.getValue(cipher_alg)[0].toString())} Байт"
+        KeySizeMax.text = "Max = ${(keySize.getValue(cipher_alg)[2].toString())} Байт"
+        KeySizeMin.text = "Min = ${(keySize.getValue(cipher_alg)[0].toString())} Байт"
 
-        if (cipher_alg in set.cipherStream) {
+        if (cipher_alg in cipherStream) {
             LinearLayoutCBC.visibility = View.GONE
             LinearLayoutPadding.visibility = View.GONE
         }
@@ -286,19 +285,19 @@ class SettingsActivity : AppCompatActivity() {
     private val CipherAlg = DialogInterface.OnClickListener { _, which ->
         TextCipher.text = list[which]
         cipher_alg = list[which]
-        if (cipher_alg in set.cipherStream) {
+        if (cipher_alg in cipherStream) {
             LinearLayoutCBC.visibility = View.GONE
             LinearLayoutPadding.visibility = View.GONE
         } else {
             LinearLayoutCBC.visibility = View.VISIBLE
             LinearLayoutPadding.visibility = View.VISIBLE
         }
-        if ((cipher_alg !in set.cipher64 && bcm == GOFB) || (cipher_alg !in set.cipher128 && bcm in set.cbc128) || cipher_alg == GOST34122015 && bcm == CTR) {
+        if ((cipher_alg !in cipher64 && bcm == GOFB) || (cipher_alg !in cipher128 && bcm in cbc128) || cipher_alg == GOST34122015 && bcm == CTR) {
             bcm = CBC
             TextBCM.text = CBC
         }
 
-        val step = set.keySize[cipher_alg]
+        val step = keySize[cipher_alg]
         val values = mutableListOf<String>()
         for (i in step!![0]..step[2] step (step[1])) values.add(i.toString())
         if (KeySizePicker.maxValue < values.size) {
@@ -311,15 +310,15 @@ class SettingsActivity : AppCompatActivity() {
         KeySizePicker.minValue = 0
         KeySizePicker.value = values.size - 1
         key_size = step[2]
-        KeySizeMax.text = "Max = ${(set.keySize.getValue(cipher_alg)[2].toString())} Байт"
-        KeySizeMin.text = "Min = ${(set.keySize.getValue(cipher_alg)[0].toString())} Байт"
+        KeySizeMax.text = "Max = ${(keySize.getValue(cipher_alg)[2].toString())} Байт"
+        KeySizeMin.text = "Min = ${(keySize.getValue(cipher_alg)[0].toString())} Байт"
     }
 
     @SuppressLint("SetTextI18n")
     private val CipherBCM = DialogInterface.OnClickListener { _, which ->
         TextBCM.text = list[which]
         bcm = list[which]
-        if (bcm in set.AEAD) {
+        if (bcm in AEAD) {
             TextPadding.text = NoPadding
             padding = NoPadding
         }
@@ -376,8 +375,6 @@ class SettingsActivity : AppCompatActivity() {
         private var cipher_password = false
 
         private val yesNo = mapOf(Pair(true, "Да"), Pair(false, "Нет"))
-
-        private val set = SetOfAlg()
 
         //private val LOG_TAG = "LOG"
         private lateinit var list: List<String>
