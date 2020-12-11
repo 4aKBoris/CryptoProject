@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Fragments.SettingsFragments.OtherFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginVertical="@dimen/d_other"
+        android:text="@string/other_header"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/d25"
+        android:textStyle="italic" />
+
+    <LinearLayout
+        android:layout_marginHorizontal="@dimen/d40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/d_other"
+        android:layout_gravity="left"
+        android:orientation="vertical"
+        tools:ignore="RtlHardcoded">
+
+        <Switch
+            android:id="@+id/salt_flag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/salt_title"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/d18"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/salt_flag_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textSize="@dimen/d15"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/password"
+        android:layout_marginHorizontal="@dimen/d40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginVertical="@dimen/d_other"
+        android:orientation="vertical"
+        tools:ignore="RtlHardcoded">
+
+        <Switch
+            android:id="@+id/second_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/d20"
+            android:text="@string/secondpassword_title"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/d18"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/second_password_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textSize="@dimen/d15"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/d40"
+        android:layout_gravity="left"
+        android:layout_marginVertical="@dimen/d_other"
+        android:orientation="vertical"
+        tools:ignore="RtlHardcoded">
+
+        <Switch
+            android:id="@+id/delete_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/deletefile_title"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/d18"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/delete_file_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textSize="@dimen/d15"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/d40"
+        android:layout_gravity="left"
+        android:layout_marginVertical="@dimen/d_other"
+        android:orientation="vertical"
+        tools:ignore="RtlHardcoded">
+
+        <Switch
+            android:id="@+id/password_flag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/password_flag"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/d18"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/password_flag_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textSize="@dimen/d15"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/d40"
+        android:layout_gravity="left"
+        android:layout_marginVertical="@dimen/d_other"
+        android:orientation="vertical"
+        tools:ignore="RtlHardcoded">
+
+        <Switch
+            android:id="@+id/cipherPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/cipherPassword_flag"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/d18"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/cipherPassword_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:textSize="@dimen/d15"
+            tools:ignore="RtlHardcoded" />
+    </LinearLayout>
+
+</LinearLayout>
