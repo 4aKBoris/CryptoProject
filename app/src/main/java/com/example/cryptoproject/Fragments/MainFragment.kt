@@ -4,7 +4,6 @@ package com.example.cryptoproject.Fragments
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
@@ -13,16 +12,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import com.example.cryptoproject.Expeptions.MyException
 import com.example.cryptoproject.R
 import com.example.cryptoproject.Сonstants.*
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.security.KeyStore
 
 
 @Suppress("DEPRECATION")
@@ -59,9 +52,11 @@ class MainFragment : Fragment() {
                 val input: InputStream = url.openStream()
                 val buffer: ByteArray = input.readBytes()
                 FileReadWrite().writeFile("", buffer)*/
-                val intent = Intent(Intent.ACTION_GET_CONTENT)
-                intent.type = "file/*"
-                startActivityForResult(intent, FILE_OPEN_CODE)
+                /*val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "file"
+                startActivityForResult(intent, FILE_OPEN_CODE)*/
+                /*val intent = Intent(view.context, MainActivity4::class.java)
+                startActivity(intent)*/
             }
             val thread = Thread(runnable)
             thread.start()
