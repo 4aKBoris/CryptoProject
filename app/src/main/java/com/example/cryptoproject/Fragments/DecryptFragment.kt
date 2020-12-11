@@ -88,7 +88,7 @@ class DecryptFragment : Fragment() {
 
             } catch (e: MyException) {
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                Log.d(LOG_TAG, e.message)
+                Log.d(LOG_TAG, e.message!!)
             }
         }
 

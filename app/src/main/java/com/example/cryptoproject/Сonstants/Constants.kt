@@ -85,3 +85,4 @@ const val NotSignAlg = "Алгоритм цифровой подписи не с
 const val SelectAlg = "Выберите агроритм!"
 const val CerfExport = "Сертификат экпортирован!"
 const val Zero = 0.toByte()
+const val NumberPage = "numberPage"

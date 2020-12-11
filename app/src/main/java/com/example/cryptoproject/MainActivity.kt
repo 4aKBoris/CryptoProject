@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         if (!sp.contains(PasswordFlag)) editor.putBoolean(PasswordFlag, NOT)
         if (!sp.contains(Signature)) editor.putString(Signature, NotUse)
         if (!sp.contains(CipherPassword)) editor.putBoolean(CipherPassword, NOT)
+        if (!sp.contains(NumberPage)) editor.putInt(NumberPage, 0)
         editor.apply()
     }
 
