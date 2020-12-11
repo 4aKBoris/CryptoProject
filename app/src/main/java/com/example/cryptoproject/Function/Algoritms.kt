@@ -3,6 +3,7 @@
 package com.example.cryptoproject.Function
 
 import android.content.SharedPreferences
+import com.example.cryptoproject.Сonstants.*
 import java.security.MessageDigest
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
@@ -11,66 +12,8 @@ import javax.crypto.spec.SecretKeySpec
 
 open class Algoritms {
 
-    protected val cipherStream = setOf(
-        "HC128",
-        "RC4",
-        "HC256",
-        "ChaCha",
-        "Salsa20",
-        "XSalsa20",
-        "VMPC",
-        "Grainv1",
-        "Grain128",
-        "Zuc128",
-        "Zuc256"
-    )
-
-
-    private val setIV_8 =
-        setOf(
-            "ChaCha",
-            "Salsa20",
-            "Grainv1",
-            "DES",
-            "DESede",
-            "Blowfish",
-            "XTEA",
-            "GOST28147",
-            "CAST5",
-            "IDEA",
-            "Skipjack",
-            "TEA",
-            "RC2",
-            "RC5"
-        )
-    private val setIV_12 = setOf("Grain128")
-    private val setIV_16 = setOf(
-        "AES",
-        "Rijndael",
-        "HC128",
-        "HC256",
-        "Serpent",
-        "SM4",
-        "Twofish",
-        "Camellia",
-        "Noekeon",
-        "SEED",
-        "CAST6",
-        "VMPC",
-        "ARIA",
-        "GCM",
-        "RC6",
-        "DSTU7624",
-        "GOST3412-2015"
-    )
-
-    private val setIV_24 = setOf("XSalsa20")
-    private val setIV_32 = setOf("Shacal2", "Threefish-256")
-    private val setIV_64 = setOf("Threefish-512")
-    private val setIV_128 = setOf("Threefish-1024")
-
     protected fun keyGenerator(hash: ByteArray, algoritm: String, keysize: Int): SecretKeySpec {
-        val digest = MessageDigest.getInstance("SHA-512")
+        val digest = MessageDigest.getInstance(SHA512)
         var hs = digest.digest(hash)
         hs = hs.plus(digest.digest(hs))
         return SecretKeySpec(hs, 0, keysize, algoritm)
@@ -82,10 +25,10 @@ open class Algoritms {
         key: SecretKey,
         mode: Int,
         iv: ByteArray,
-        BCM: String
+        bcm: String,
     ): Cipher {
-        if (algoritm !in cipherStream && BCM == "ECB") cipher.init(mode, key)
-        else if (algoritm !in cipherStream && (BCM == "CCM" || BCM == "OCB")) cipher.init(
+        if (algoritm !in cipherStream && bcm == ECB) cipher.init(mode, key)
+        else if (algoritm !in cipherStream && (bcm == CCM || bcm == OCB)) cipher.init(
             mode,
             key,
             IvParameterSpec(iv.copyOf(12))
@@ -101,41 +44,5 @@ open class Algoritms {
             else -> cipher.init(mode, key)
         }
         return cipher
-    }
-
-    protected fun spCipherAlg(sp: SharedPreferences): String {
-        return sp.getString("cipherAlgorithm", "AES")!!
-    }
-
-    protected fun spCipherCount(sp: SharedPreferences): Int {
-        return sp.getInt("cipherCount", 1)
-    }
-
-    protected fun spHashAlg(sp: SharedPreferences): String {
-        return sp.getString("hashAlgorithm", "SHA-256")!!
-    }
-
-    protected fun spHashCount(sp: SharedPreferences): Int {
-        return sp.getInt("hashCount", 1)
-    }
-
-    protected fun spSalt(sp: SharedPreferences): Boolean {
-        return sp.getBoolean("salt", false)
-    }
-
-    protected fun spProvider(sp: SharedPreferences): Boolean {
-        return sp.getBoolean("provider", false)
-    }
-
-    protected fun spCBC(sp: SharedPreferences): String {
-        return sp.getString("bcm", "CBC")!!
-    }
-
-    protected fun spPadding(sp: SharedPreferences): String {
-        return sp.getString("padding", "NoPadding")!!
-    }
-
-    protected fun spKeySize(sp: SharedPreferences): Int {
-        return sp.getInt("keysize", 32)
     }
 }

@@ -2,101 +2,80 @@
 
 package com.example.cryptoproject.Function
 
-import kotlin.experimental.xor
+import com.example.cryptoproject.DataObject.MetaData
+import com.example.cryptoproject.Сonstants.*
+import java.io.FileInputStream
+import java.security.KeyStore
+import javax.crypto.Cipher
 import kotlin.math.abs
 
-class MetaDataOutput(private var arr: ByteArray, password: String) :
-    MetaData(password) {
+class MetaDataOutput(private var meta: MetaData) {
 
-    private val BlockSize = 128
-    private lateinit var hash_alg: String
-    private var hash_count: Int = 0
-    private var salt: ByteArray? = null
-    private lateinit var cipher_alg: String
-    private var cipher_count = 0
-    private var iv = ByteArray(BlockSize)
-    private var flagSalt: Boolean = false
-    private var provider = false
-    private var cbc = ""
-    private var padding = ""
-    private var keysize = 32
-    private var zeroByte = 0
+    private var i = 0
 
+    private lateinit var password_key_store: CharArray
 
-    fun getCipherAlg(): String {
-        return cipher_alg
+    fun setPasswordKeyStore(password_key_store: String) {
+        this.password_key_store = password_key_store.toCharArray()
     }
 
-    fun getHashAlg(): String {
-        return hash_alg
+    fun setPassword(password: String) {
+        meta.password = password
     }
 
-    fun getHashCount(): Int {
-        return hash_count
-    }
-
-    fun getCipherCount(): Int {
-        return cipher_count
-    }
-
-    fun getIV(): ByteArray {
-        return iv
-    }
-
-    fun getFlagSalt(): Boolean {
-        return flagSalt
-    }
-
-    fun getSalt(): ByteArray? {
-        return salt
-    }
-
-    fun getProvader() : Boolean {
-        return provider
-    }
-
-    fun getCBC() : String {
-        return cbc
-    }
-
-    fun getPadding() : String {
-        return padding
-    }
-
-    fun getKeySize() : Int {
-        return keysize
-    }
-
-    fun getZeroByte() : Int {
-        return zeroByte
-    }
-
-    fun metaData(): ByteArray {
-        val mas = arr.toMutableList()
-        provider = mas.removeAt(0) % 2 != 0
-        hash_alg = hashfunOutput.getValue(mas.removeAt(0) xor rndSeek.nextInt().toByte())
-        if (mas.removeAt(0) % 2 == 0) {
-            hash_count = mas.removeAt(0).toInt()
-            mas.removeAt(0)
-        } else {
-            val hLeft = mas.removeAt(0)
-            val hRight = mas.removeAt(0)
-            hash_count = hRight + hLeft * 128
+    fun metaData(): MetaData {
+        meta.run {
+            if (array[i++] % 2 != 0) Decrypt()
+            hash_alg = hashAlg[array[i++].toInt()]
+            if (array[i++] % 2 == 0) {
+                hash_count = array[i++].toInt()
+                array[i++]
+            } else {
+                val hLeft = array[i++]
+                val hRight = array[i++]
+                hash_count = hRight + hLeft * BlockSize
+            }
+            if (array[i++] % 2 != 0) {
+                flag_salt = true
+                salt = array.copyOfRange(i, i + n16)
+                i += n16
+            }
+            cipher_alg = cipherAlg[array[i++].toInt()]
+            cipher_count = array[i++].toInt()
+            if (cipher_alg !in cipherStream) {
+                bcm = cipherBcm[array[i++].toInt()]
+                padding = cipherPadding[array[i++].toInt()]
+            }
+            iv = array.copyOfRange(i, i + BlockSize)
+            i += BlockSize
+            keysize = abs(array[i++].toInt())
+            zeroByte = abs(array[i++].toInt())
+            array = array.copyOfRange(i, array.size)
         }
-        if (mas.removeAt(0) % 2 != 0) {
-            flagSalt = true
-            salt = ByteArray(16)
-            for (i in 0 until 16) salt!![i] = mas.removeAt(0)
+        return meta
+    }
+
+    private fun Decrypt() {
+        meta.run {
+            cipher_password = true
+            i += n256
+            val pass = array.copyOfRange(i - n256, i)
+            if (password == "") {
+                val cipher = Cipher.getInstance(RSA)
+                val keyStoreData = FileInputStream(PATH_KEY_STORE)
+                val keyStore = KeyStore.getInstance(KEY_STORE_ALGORITHM)
+                keyStore.load(keyStoreData, password_key_store)
+                val entryPassword = KeyStore.PasswordProtection(password_key_store)
+                val privateKeyEntry =
+                    keyStore.getEntry(ALGORITHM, entryPassword) as KeyStore.PrivateKeyEntry
+                cipher.init(Cipher.DECRYPT_MODE, privateKeyEntry.privateKey)
+                password = cipher.doFinal(pass).toString(Charsets.UTF_8)
+            }
         }
-        cipher_alg = cryptofunOutput.getValue(mas.removeAt(0) xor rndSeek.nextInt().toByte())
-        cipher_count = (mas.removeAt(0) xor rndSeek.nextInt().toByte()).toInt()
-        if (cipher_alg !in cipherStream) {
-            cbc = cryptoCBCOutput.getValue(mas.removeAt(0) xor rndSeek.nextInt().toByte())
-            padding = cryptoPaddingOutput.getValue(mas.removeAt(0) xor rndSeek.nextInt().toByte())
-        }
-        for (i in 0 until BlockSize) iv[i] = mas.removeAt(0)
-        keysize = abs((mas.removeAt(0) xor rndSeek.nextInt().toByte()).toInt())
-        zeroByte = abs((mas.removeAt(0) xor rndSeek.nextInt().toByte()).toInt())
-        return mas.toByteArray()
+    }
+
+    companion object {
+        private const val n16 = 16
+        private const val n256 = 256
     }
 }

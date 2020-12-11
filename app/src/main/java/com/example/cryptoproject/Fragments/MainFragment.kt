@@ -4,6 +4,7 @@ package com.example.cryptoproject.Fragments
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
@@ -11,11 +12,17 @@ import android.os.StatFs
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import com.example.cryptoproject.Expeptions.MyException
 import com.example.cryptoproject.R
+import com.example.cryptoproject.Сonstants.*
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.security.KeyStore
 
 
 @Suppress("DEPRECATION")
@@ -60,16 +67,17 @@ class MainFragment : Fragment() {
             thread.start()
         }
 
-        val ButtonCertificate = view.findViewById<Button>(R.id.Certificate)
-        ButtonCertificate.setOnClickListener {
+        val Cert = view.findViewById<Button>(R.id.cert)
+        Cert.setOnClickListener {
             NavHostFragment.findNavController(this)
                 .navigate(R.id.action_mainFragment_to_certificateFragment)
         }
 
+
         val Memory = view.findViewById<TextView>(R.id.memory)
         val statFs = StatFs(Environment.getExternalStorageDirectory().absolutePath)
-        val freeSpace = String.format("%.3f", statFs.freeBytes.toDouble() / 1000000000)
-        val fullSpace = String.format("%.3f", statFs.totalBytes.toDouble() / 1000000000)
+        val freeSpace = String.format("%.3f", statFs.freeBytes.toDouble() / TEN)
+        val fullSpace = String.format("%.3f", statFs.totalBytes.toDouble() / TEN)
         Memory.text = "Свободно $freeSpace / $fullSpace ГБ"
         return view
     }

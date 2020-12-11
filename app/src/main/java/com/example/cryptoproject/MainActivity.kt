@@ -10,15 +10,12 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cryptoproject.Function.Permissions
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+import com.example.cryptoproject.Сonstants.*
 import java.io.File
 
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
-
-    private val PERMISSION_REQUEST_CODE = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,9 +24,10 @@ class MainActivity : AppCompatActivity() {
 
         val p = Permissions()
         p.requestMultiplePermissions(this, PERMISSION_REQUEST_CODE)
-        create("RWork")!!
-        create("RWork/Cipher")!!
-        create("RWork/Clear_files")!!
+        create(RWork)!!
+        create(RCipher)!!
+        create(RClear)!!
+        create(RCertificates)!!
         CreateSP()
     }
 
@@ -52,54 +50,19 @@ class MainActivity : AppCompatActivity() {
     private fun CreateSP() {
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
         val editor = sp.edit()
-        if (!sp.contains(getString(R.string.HashAlgorithm))) editor.putString(
-            getString(R.string.HashAlgorithm),
-            getString(R.string.SHA)
-        )
-        if (!sp.contains(getString(R.string.HashCount))) editor.putInt(
-            getString(R.string.HashCount),
-            1
-        )
-        if (!sp.contains(getString(R.string.CipherAlgorithm))) editor.putString(
-            getString(R.string.CipherAlgorithm),
-            getString(R.string.AES)
-        )
-        if (!sp.contains(getString(R.string.CipherCount))) editor.putInt(
-            getString(R.string.CipherCount),
-            1
-        )
-        if (!sp.contains(getString(R.string.BCM))) editor.putString(
-            getString(R.string.BCM),
-            getString(R.string.CBC)
-        )
-        if (!sp.contains(getString(R.string.Padding))) editor.putString(
-            getString(R.string.Padding),
-            getString(R.string.PKCS5Padding)
-        )
-        if (!sp.contains(getString(R.string.Salt))) editor.putBoolean(
-            getString(R.string.Salt),
-            false
-        )
-        if (!sp.contains(getString(R.string.SecordPassword))) editor.putBoolean(
-            getString(R.string.SecordPassword),
-            false
-        )
-        if (!sp.contains(getString(R.string.DeleteFile))) editor.putBoolean(
-            getString(R.string.DeleteFile),
-            false
-        )
-        if (!sp.contains(getString(R.string.keySize))) editor.putInt(
-            getString(R.string.keySize),
-            32
-        )
-        if (!sp.contains(getString(R.string.keySize))) editor.putInt(
-            getString(R.string.keySize),
-            32
-        )
-        if (!sp.contains(getString(R.string.PasswordFlag))) editor.putBoolean(
-            getString(R.string.PasswordFlag),
-            false
-        )
+        if (!sp.contains(HashAlgorithm)) editor.putString(HashAlgorithm, SHA256)
+        if (!sp.contains(HashCount)) editor.putInt(HashCount, ONE)
+        if (!sp.contains(CipherAlgorithm)) editor.putString(CipherAlgorithm, AES)
+        if (!sp.contains(CipherCount)) editor.putInt(CipherCount, ONE)
+        if (!sp.contains(BCM)) editor.putString(BCM, CBC)
+        if (!sp.contains(Padding)) editor.putString(Padding, PKCS5Padding)
+        if (!sp.contains(Salt)) editor.putBoolean(Salt, NOT)
+        if (!sp.contains(SecordPassword)) editor.putBoolean(SecordPassword, NOT)
+        if (!sp.contains(DeleteFile)) editor.putBoolean(DeleteFile, NOT)
+        if (!sp.contains(KeySize)) editor.putInt(KeySize, KEYSIZE)
+        if (!sp.contains(PasswordFlag)) editor.putBoolean(PasswordFlag, NOT)
+        if (!sp.contains(Signature)) editor.putString(Signature, NotUse)
+        if (!sp.contains(CipherPassword)) editor.putBoolean(CipherPassword, NOT)
         editor.apply()
     }
 
