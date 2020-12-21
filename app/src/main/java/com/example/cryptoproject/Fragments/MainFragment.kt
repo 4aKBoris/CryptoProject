@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import com.example.cryptoproject.R
 import com.example.cryptoproject.Сonstants.*
+import java.io.File
 
 
 @Suppress("DEPRECATION")
@@ -57,6 +58,8 @@ class MainFragment : Fragment() {
                 startActivityForResult(intent, FILE_OPEN_CODE)*/
                 /*val intent = Intent(view.context, MainActivity4::class.java)
                 startActivity(intent)*/
+                NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_mainFragment_to_testFragment)
             }
             val thread = Thread(runnable)
             thread.start()
@@ -75,6 +78,29 @@ class MainFragment : Fragment() {
         val fullSpace = String.format("%.3f", statFs.totalBytes.toDouble() / TEN)
         Memory.text = "Свободно $freeSpace / $fullSpace ГБ"
         return view
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        create(RWork)!!
+        create(RCipher)!!
+        create(RClear)!!
+        create(RCertificates)!!
+    }
+
+    private fun create(name: String): File? {
+        val baseDir: File = Environment.getExternalStorageDirectory()
+            ?: return Environment.getExternalStorageDirectory()
+        val folder = File(baseDir, name)
+        if (folder.exists()) {
+            return folder
+        }
+        if (folder.isFile) {
+            folder.delete()
+        }
+        return if (folder.mkdirs()) {
+            folder
+        } else Environment.getExternalStorageDirectory()
     }
 
     @SuppressLint("SetTextI18n")

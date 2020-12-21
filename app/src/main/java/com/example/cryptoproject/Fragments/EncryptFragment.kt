@@ -96,6 +96,7 @@ class EncryptFragment : Fragment() {
                 if (spCipherPassword(sp) && certificate_path == "") throw MyException(CertificSelect)
                 if (spSignature(sp) != NotUse && PasswordKeyStore.text.toString() == "") throw MyException(
                     EnterPasswordKeyStore)
+                if (spSignature(sp) != NotUse && !File(PATH_KEY_STORE).exists()) throw MyException(CreateKeyStore)
                 ProgresBar.visibility = View.VISIBLE
                 Body(sp, password1)
 
@@ -190,6 +191,8 @@ class EncryptFragment : Fragment() {
 
     companion object {
         private const val FILE_OPEN_CODE = 0
+        private const val CreateKeyStore = "Создайте сертификаты!"
+
         private var FILENAME: String = ""
         private var passwordFlag = false
         private lateinit var ProgresBar: ProgressBar

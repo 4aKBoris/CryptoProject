@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.preference.PreferenceManager
+import android.preference.PreferenceManager.getDefaultSharedPreferences
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -24,10 +25,6 @@ class MainActivity : AppCompatActivity() {
 
         val p = Permissions()
         p.requestMultiplePermissions(this, PERMISSION_REQUEST_CODE)
-        create(RWork)!!
-        create(RCipher)!!
-        create(RClear)!!
-        create(RCertificates)!!
         CreateSP()
     }
 
@@ -48,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun CreateSP() {
-        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        val sp = getDefaultSharedPreferences(this)
         val editor = sp.edit()
         if (!sp.contains(HashAlgorithm)) editor.putString(HashAlgorithm, SHA256)
         if (!sp.contains(HashCount)) editor.putInt(HashCount, ONE)
@@ -65,20 +62,5 @@ class MainActivity : AppCompatActivity() {
         if (!sp.contains(CipherPassword)) editor.putBoolean(CipherPassword, NOT)
         if (!sp.contains(NumberPage)) editor.putInt(NumberPage, 0)
         editor.apply()
-    }
-
-    private fun create(name: String): File? {
-        val baseDir: File = Environment.getExternalStorageDirectory()
-            ?: return Environment.getExternalStorageDirectory()
-        val folder = File(baseDir, name)
-        if (folder.exists()) {
-            return folder
-        }
-        if (folder.isFile) {
-            folder.delete()
-        }
-        return if (folder.mkdirs()) {
-            folder
-        } else Environment.getExternalStorageDirectory()
     }
 }

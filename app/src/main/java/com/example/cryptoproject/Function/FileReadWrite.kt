@@ -10,15 +10,9 @@ fun writeFile(FileName: String, arr: ByteArray) {
     bw.close()
 }
 
-fun readFile(FileName: String): ByteArray {
-    val br = BufferedInputStream(FileInputStream(File(FileName)))
-    return br.readBytes()
-}
+fun readFile(FileName: String): ByteArray = BufferedInputStream(FileInputStream(File(FileName))).readBytes()
 
-fun readFileOne(FileName: String): Int {
-    val br = BufferedInputStream(FileInputStream(File(FileName)))
-    return br.read()
-}
+fun readFileOne(FileName: String): Int = BufferedInputStream(FileInputStream(File(FileName))).read()
 
 fun readFileN(FileName: String, n: Int): ByteArray {
     val br = BufferedInputStream(FileInputStream(File(FileName)))

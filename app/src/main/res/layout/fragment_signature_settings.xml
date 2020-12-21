@@ -3,43 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Fragments.SettingsFragments.SignatureFragment">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="@dimen/d_sign"
-            android:text="@string/sign"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/d25"
-            android:textStyle="italic" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="@dimen/d_sign"
+        android:text="@string/sign"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/d25"
+        android:textStyle="italic" />
 
-        <LinearLayout
-            android:id="@+id/signature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="@dimen/d_sign"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sign_alg"
-                android:textColor="@color/colorBlack"
-                android:layout_gravity="center_horizontal"
-                android:textSize="@dimen/d18" />
-
-            <TextView
-                android:id="@+id/sign_alg_text"
-                android:layout_width="wrap_content"
-                android:layout_gravity="left"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/d15"
-                tools:ignore="RtlHardcoded" />
-        </LinearLayout>
-
+    <com.example.cryptoproject.CustomView.CustomSelectAlgrorithm
+        android:id="@+id/signature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="@dimen/d_sign"
+        android:orientation="vertical"
+        app:title_text="@string/signatute_algorithm" />
 
 </LinearLayout>

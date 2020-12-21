@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbars="none"
     tools:context=".Fragments.SettingsFragments.CipherFragment">
 
@@ -175,31 +176,15 @@
                 tools:ignore="RtlHardcoded" />
         </LinearLayout>
 
-        <LinearLayout
+        <com.example.cryptoproject.CustomView.CustomSelectAlgrorithm
             android:id="@+id/cipher_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/d_cipher"
             android:layout_marginBottom="@dimen/d40"
             android:layout_gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/padding_title"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/d18" />
-
-            <TextView
-                android:id="@+id/cipher_padding_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:textSize="@dimen/d15"
-                tools:ignore="RtlHardcoded" />
-        </LinearLayout>
+            android:orientation="vertical"
+            app:title_text="@string/padding_title"/>
 
     </LinearLayout>
 

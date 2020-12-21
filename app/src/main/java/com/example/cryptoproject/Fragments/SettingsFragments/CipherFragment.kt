@@ -16,6 +16,7 @@ import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.example.cryptoproject.CustomView.CustomSelectAlgrorithm
 import com.example.cryptoproject.R
 import com.example.cryptoproject.Сonstants.*
 
@@ -31,9 +32,8 @@ class CipherFragment : Fragment() {
 
         TextCipher = view.findViewById(R.id.cipher_alg_text)
         TextBCM = view.findViewById(R.id.cipher_bcm_text)
-        TextPadding = view.findViewById(R.id.cipher_padding_text)
         LinearLayoutCBC = view.findViewById(R.id.cipher_bcm)
-        LinearLayoutPadding = view.findViewById(R.id.cipher_padding)
+        PaddingView = view.findViewById(R.id.cipher_padding)
         CipherCnt = view.findViewById(R.id.cipher_count)
         KeySizePicker = view.findViewById(R.id.key_size)
         KeySizeMin = view.findViewById(R.id.min_key_size)
@@ -96,7 +96,7 @@ class CipherFragment : Fragment() {
                 .show()
         }
 
-        view.findViewById<View>(R.id.cipher_padding).setOnClickListener {
+        PaddingView.setOnClickListener {
             list = cipherPadding
             //if (BCM == "CTR") list = listOf("ECB", "CBC")
             if (bcm != ECB && bcm != CBC) {
@@ -105,16 +105,7 @@ class CipherFragment : Fragment() {
                 list = l.toList()
             }
             if (bcm in AEAD) list = listOf(NoPadding)
-            AlertDialog.Builder(view.context).setTitle(FillingMode)
-                .setCancelable(false)
-                .setAdapter(
-                    ArrayAdapter(view.context, android.R.layout.simple_list_item_1, list),
-                    CipherPadding
-                )
-                .setNegativeButton(
-                    Cansel
-                ) { dialog, _ -> dialog.cancel() }.create()
-                .show()
+            PaddingView.OnClick(view.context, list, FillingMode)
         }
 
         setSettings()
@@ -127,12 +118,11 @@ class CipherFragment : Fragment() {
         cipher_alg = sp.getString(CipherAlgorithm, AES)!!
         cipher_count = sp.getInt(CipherCount, 1)
         bcm = sp.getString(BCM, CBC)!!
-        padding = sp.getString(Padding, PKCS5Padding)!!
         key_size = sp.getInt(KeySize, keySize.getValue(cipher_alg)[2])
 
         TextCipher.text = cipher_alg
         TextBCM.text = bcm
-        TextPadding.text = padding
+        PaddingView.setSelectText(sp.getString(Padding, PKCS5Padding)!!)
         CipherCnt.value = cipher_count
         val step = keySize[cipher_alg]
         val values = mutableListOf<String>()
@@ -148,7 +138,7 @@ class CipherFragment : Fragment() {
 
         if (cipher_alg in cipherStream) {
             LinearLayoutCBC.visibility = View.GONE
-            LinearLayoutPadding.visibility = View.GONE
+            PaddingView.visibility = View.GONE
         }
     }
 
@@ -158,10 +148,10 @@ class CipherFragment : Fragment() {
         cipher_alg = list[which]
         if (cipher_alg in cipherStream) {
             LinearLayoutCBC.visibility = View.GONE
-            LinearLayoutPadding.visibility = View.GONE
+            PaddingView.visibility = View.GONE
         } else {
             LinearLayoutCBC.visibility = View.VISIBLE
-            LinearLayoutPadding.visibility = View.VISIBLE
+            PaddingView.visibility = View.VISIBLE
         }
         if ((cipher_alg !in cipher64 && bcm == GOFB) || (cipher_alg !in cipher128 && bcm in cbc128) || cipher_alg == GOST34122015 && bcm == CTR) {
             bcm = CBC
@@ -192,18 +182,11 @@ class CipherFragment : Fragment() {
         TextBCM.text = list[which]
         bcm = list[which]
         if (bcm in AEAD) {
-            TextPadding.text = NoPadding
-            padding = NoPadding
+            PaddingView.setSelectText(NoPadding)
         }
-        if (bcm != ECB && bcm != CBC && padding == WithCTS) {
-            TextPadding.text = CBC
-            padding = CBC
+        if (bcm != ECB && bcm != CBC && PaddingView.text == WithCTS) {
+            PaddingView.setSelectText(NoPadding)
         }
-    }
-
-    private val CipherPadding = DialogInterface.OnClickListener { _, which ->
-        TextPadding.text = list[which]
-        padding = list[which]
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -212,8 +195,8 @@ class CipherFragment : Fragment() {
         val editor = sp.edit()
         editor.putString(CipherAlgorithm, cipher_alg)
         editor.putInt(CipherCount, cipher_count)
-        editor.putString(bcm, bcm)
-        editor.putString(padding, padding)
+        editor.putString(BCM, bcm)
+        editor.putString(Padding, PaddingView.text)
         editor.apply()
     }
 
@@ -223,15 +206,13 @@ class CipherFragment : Fragment() {
         private lateinit var cipher_alg: String
         private var cipher_count = 1
         private lateinit var bcm: String
-        private lateinit var padding: String
         private var key_size = 32
         private lateinit var list: List<String>
 
         private lateinit var TextCipher: TextView
         private lateinit var TextBCM: TextView
-        private lateinit var TextPadding: TextView
+        private lateinit var PaddingView: CustomSelectAlgrorithm
         private lateinit var LinearLayoutCBC: LinearLayout
-        private lateinit var LinearLayoutPadding: LinearLayout
         private lateinit var CipherCnt: NumberPicker
         private lateinit var KeySizePicker: NumberPicker
         private lateinit var KeySizeMin: TextView

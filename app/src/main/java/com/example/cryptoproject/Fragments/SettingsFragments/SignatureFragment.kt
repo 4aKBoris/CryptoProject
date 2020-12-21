@@ -2,21 +2,18 @@
 
 package com.example.cryptoproject.Fragments.SettingsFragments
 
-import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.preference.PreferenceManager.*
-import androidx.fragment.app.Fragment
+import android.preference.PreferenceManager.getDefaultSharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import com.example.cryptoproject.CustomView.CustomSelectAlgrorithm
 import com.example.cryptoproject.R
-import com.example.cryptoproject.SettingsActivity
-import com.example.cryptoproject.Сonstants.*
+import com.example.cryptoproject.Сonstants.NotUse
+import com.example.cryptoproject.Сonstants.Signature
+import com.example.cryptoproject.Сonstants.sign
 
 class SignatureFragment : Fragment() {
 
@@ -28,42 +25,30 @@ class SignatureFragment : Fragment() {
 
         sp = getDefaultSharedPreferences(view.context)
 
-        SignatureAlgorithm = view.findViewById(R.id.sign_alg_text)
-
-        view.findViewById<View>(R.id.signature).setOnClickListener {
-            AlertDialog.Builder(view.context).setTitle(Sign).setCancelable(false).setAdapter(
-                ArrayAdapter(view.context, android.R.layout.simple_list_item_1, sign),
-                SignatureAlg
-            )
-                .setNegativeButton(Cansel) { dialog, _ ->
-                    dialog.cancel()
-                }.create().show()
+        SignatureView = view.findViewById(R.id.signature)
+        SignatureView.setOnClickListener {
+            SignatureView.OnClick(view.context, sign, Sign)
         }
 
         setSettings()
         return view
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
         val editor = sp.edit()
-        editor.putString(Signature, signature)
+        editor.putString(Signature, SignatureView.text)
         editor.apply()
     }
 
     private fun setSettings() {
-        signature = sp.getString(Signature, NotUse)!!
-        SignatureAlgorithm.text = signature
-    }
-
-    private val SignatureAlg = DialogInterface.OnClickListener { _, which ->
-        SignatureAlgorithm.text = sign[which]
-        signature = sign[which]
+        SignatureView.setSelectText(sp.getString(Signature, NotUse)!!)
     }
 
     companion object {
+        private const val Sign = "Цифровая подпись"
+
         private lateinit var sp: SharedPreferences
-        private lateinit var signature: String
-        private lateinit var SignatureAlgorithm: TextView
+        private lateinit var SignatureView: CustomSelectAlgrorithm
     }
 }

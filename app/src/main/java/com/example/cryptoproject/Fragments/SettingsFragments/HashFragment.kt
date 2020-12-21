@@ -13,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.cryptoproject.CustomView.CustomSelectAlgrorithm
 import com.example.cryptoproject.Expeptions.MyException
 import com.example.cryptoproject.R
 import com.example.cryptoproject.SettingsActivity
@@ -29,24 +31,16 @@ class HashFragment : Fragment() {
 
         sp = PreferenceManager.getDefaultSharedPreferences(view.context)
 
-        TextHash = view.findViewById(R.id.hash_alg_text)
+        HashView = view.findViewById(R.id.hash_view)
         HashCnt = view.findViewById(R.id.hash_count)
         HashCountValue = view.findViewById(R.id.hash_count_value)
         HashCountEdit = view.findViewById(R.id.hash_count_edit)
         HashButton = view.findViewById(R.id.hash_set_count)
 
-        view.findViewById<View>(R.id.hash_alg).setOnClickListener {
-            AlertDialog.Builder(view.context).setTitle(AlgHash)
-                .setCancelable(false)
-                .setAdapter(
-                    ArrayAdapter(view.context, android.R.layout.simple_list_item_1, hashAlg),
-                    HashAlg
-                )
-                .setNegativeButton(
-                    Cansel
-                ) { dialog, _ -> dialog.cancel() }.create()
-                .show()
+        HashView.setOnClickListener {
+            HashView.OnClick(view.context, hashAlg, AlgHash)
         }
+
 
         HashCnt.min = ONE
         HashCnt.max = 16383
@@ -80,41 +74,32 @@ class HashFragment : Fragment() {
                 HashCountEdit.text.clear()
             }
         }
-
         setSettings()
 
         return view
     }
 
     private fun setSettings() {
-        hash_alg = sp.getString(HashAlgorithm, SHA256)!!
         hash_count = sp.getInt(HashCount, ONE)
-        TextHash.text = hash_alg
+        HashView.setSelectText(sp.getString(HashAlgorithm, SHA256)!!)
         HashCountValue.text = hash_count.toString()
         HashCnt.progress = hash_count
-
     }
 
     @SuppressLint("CommitPrefEdits")
     override fun onDestroy() {
         super.onDestroy()
         val editor = sp.edit()
-        editor.putString(HashAlgorithm, hash_alg)
+        editor.putString(HashAlgorithm, HashView.text)
         editor.putInt(HashCount, hash_count)
         editor.apply()
     }
 
-    private val HashAlg = DialogInterface.OnClickListener { _, which ->
-        TextHash.text = hashAlg[which]
-        hash_alg = hashAlg[which]
-    }
-
     companion object {
         private lateinit var sp: SharedPreferences
-        private lateinit var hash_alg: String
         private var hash_count = 1
 
-        private lateinit var TextHash: TextView
+        private lateinit var HashView: CustomSelectAlgrorithm
         private lateinit var HashCnt: SeekBar
         private lateinit var HashCountValue: TextView
         private lateinit var HashCountEdit: EditText

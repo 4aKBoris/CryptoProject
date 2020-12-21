@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.cryptoproject.CustomView.CustomSwitch
 import com.example.cryptoproject.R
 import com.example.cryptoproject.Сonstants.*
 
@@ -25,10 +26,9 @@ class OtherFragment : Fragment() {
 
         sp = getDefaultSharedPreferences(view.context)
 
-        TextFlagSalt = view.findViewById(R.id.salt_flag_text)
+        FlagSalt = view.findViewById(R.id.salt)
         TextSecondPassword = view.findViewById(R.id.second_password_text)
         TextDeleteFile = view.findViewById(R.id.delete_file_text)
-        FlagSalt = view.findViewById(R.id.salt_flag)
         SecondPassword = view.findViewById(R.id.second_password)
         DeleteFileSwitch = view.findViewById(R.id.delete_file)
         PasswordFlagSwitch = view.findViewById(R.id.password_flag)
@@ -36,10 +36,6 @@ class OtherFragment : Fragment() {
         CipherPasswordSwitch = view.findViewById(R.id.cipherPassword)
         TextCipherPassword = view.findViewById(R.id.cipherPassword_text)
 
-        FlagSalt.setOnCheckedChangeListener { _, isChecked ->
-            salt_flag = isChecked
-            TextFlagSalt.text = yesNo[salt_flag]
-        }
 
         SecondPassword.setOnCheckedChangeListener { _, isChecked ->
             second_password = isChecked
@@ -68,7 +64,6 @@ class OtherFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun setSettings() {
-        salt_flag = sp.getBoolean(Salt, NOT)
         second_password = sp.getBoolean(SecordPassword, NOT)
         delete_file = sp.getBoolean(DeleteFile, NOT)
         password_flag = sp.getBoolean(PasswordFlag, NOT)
@@ -77,8 +72,7 @@ class OtherFragment : Fragment() {
 
         CipherPasswordSwitch.isChecked = cipher_password
         TextCipherPassword.text = yesNo[cipher_password]
-        FlagSalt.isChecked = salt_flag
-        TextFlagSalt.text = yesNo[salt_flag]
+        FlagSalt.setFlag(sp.getBoolean(Salt, NOT))
         SecondPassword.isChecked = second_password
         TextSecondPassword.text = yesNo[second_password]
         DeleteFileSwitch.isChecked = delete_file
@@ -91,7 +85,7 @@ class OtherFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         val editor = sp.edit()
-        editor.putBoolean(Salt, salt_flag)
+        editor.putBoolean(Salt, FlagSalt.getFlag())
         editor.putBoolean(SecordPassword, second_password)
         editor.putBoolean(DeleteFile, delete_file)
         editor.putBoolean(PasswordFlag, password_flag)
@@ -101,7 +95,6 @@ class OtherFragment : Fragment() {
 
     companion object {
         private lateinit var sp: SharedPreferences
-        private var salt_flag = false
         private var second_password = false
         private var delete_file = false
         private var password_flag = false
@@ -109,12 +102,9 @@ class OtherFragment : Fragment() {
 
         private val yesNo = mapOf(Pair(true, "Да"), Pair(false, "Нет"))
 
-        private lateinit var TextFlagSalt: TextView
         private lateinit var TextSecondPassword: TextView
         private lateinit var TextDeleteFile: TextView
-
-        @SuppressLint("UseSwitchCompatOrMaterialCode")
-        private lateinit var FlagSalt: Switch
+        private lateinit var FlagSalt: CustomSwitch
 
         @SuppressLint("UseSwitchCompatOrMaterialCode")
         private lateinit var SecondPassword: Switch

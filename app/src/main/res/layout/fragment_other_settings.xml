@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Fragments.SettingsFragments.OtherFragment">
 
@@ -17,35 +18,18 @@
         android:textSize="@dimen/d25"
         android:textStyle="italic" />
 
-    <LinearLayout
+    <com.example.cryptoproject.CustomView.CustomSwitch
+        android:id="@+id/salt"
         android:layout_marginHorizontal="@dimen/d40"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/d_other"
         android:layout_gravity="left"
         android:orientation="vertical"
-        tools:ignore="RtlHardcoded">
-
-        <Switch
-            android:id="@+id/salt_flag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/salt_title"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/d18"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-        <TextView
-            android:id="@+id/salt_flag_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:textSize="@dimen/d15"
-            tools:ignore="RtlHardcoded" />
-    </LinearLayout>
+        app:switch_text="@string/salt_title"
+        tools:ignore="RtlHardcoded" />
 
     <LinearLayout
-        android:id="@+id/password"
         android:layout_marginHorizontal="@dimen/d40"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

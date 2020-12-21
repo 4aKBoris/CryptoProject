@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Fragments.SettingsFragments.HashFragment"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical"
+    tools:context=".Fragments.SettingsFragments.HashFragment">
 
     <TextView
         android:layout_width="wrap_content"
@@ -16,30 +15,14 @@
         android:textSize="25sp"
         android:textStyle="italic" />
 
-    <LinearLayout
-        android:id="@+id/hash_alg"
+    <com.example.cryptoproject.CustomView.CustomSelectAlgrorithm
+        android:id="@+id/hash_view"
         android:layout_width="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/d20"
-            android:text="@string/hash_title"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/d18" />
-
-        <TextView
-            android:id="@+id/hash_alg_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:textSize="@dimen/d15"
-            tools:ignore="RtlHardcoded" />
-    </LinearLayout>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="@dimen/d_cipher"
+        android:orientation="vertical"
+        app:title_text="@string/hash_title" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,23 +38,24 @@
             android:layout_gravity="center_horizontal"
             android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/d20"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/hash_count"
-            android:textColor="@color/colorBlack"
-            android:textSize="18sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/d20"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/hash_count"
+                android:textColor="@color/colorBlack"
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/hash_count_value"
-            android:layout_width="@dimen/d50"
-            android:layout_gravity="left"
-            android:layout_height="wrap_content"
-            tools:ignore="RtlHardcoded,TextViewEdits" />
+            <TextView
+                android:id="@+id/hash_count_value"
+                android:layout_width="@dimen/d50"
+                android:layout_gravity="left"
+                android:layout_height="wrap_content"
+                tools:ignore="RtlHardcoded,TextViewEdits" />
 
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -131,5 +115,4 @@
         </LinearLayout>
 
     </LinearLayout>
-
 </LinearLayout>
